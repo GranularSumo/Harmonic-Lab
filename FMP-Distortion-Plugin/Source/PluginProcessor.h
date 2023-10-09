@@ -9,11 +9,12 @@
 #pragma once
 
 #include <JuceHeader.h>
+#include "Parameters.h"
 
 //==============================================================================
 /**
 */
-class FMPDistortionPluginAudioProcessor  : public juce::AudioProcessor
+class FMPDistortionPluginAudioProcessor  : public juce::AudioProcessor, public juce::AudioProcessorValueTreeState::Listener
                             #if JucePlugin_Enable_ARA
                              , public juce::AudioProcessorARAExtension
                             #endif
@@ -57,6 +58,14 @@ public:
     void setStateInformation (const void* data, int sizeInBytes) override;
 
 private:
+
+    juce::AudioProcessorValueTreeState treestate;
+    juce::AudioProcessorValueTreeState::ParameterLayout createParameterLayout();
+    void parameterChanged(const juce::String& parameterID, float newValue) override;
+
+    juce::dsp::Gain<float> gainProcessor;
+
+
     //==============================================================================
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (FMPDistortionPluginAudioProcessor)
 };

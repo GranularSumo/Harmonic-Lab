@@ -28,3 +28,86 @@ FMP-Distortion-Plugin/JuceLibraryCode/include_juce_audio_plugin_client_AAX.cpp
 FMP-Distortion-Plugin/JuceLibraryCode/include_juce_audio_formats.cpp
 FMP-Distortion-Plugin/JuceLibraryCode/include_juce_audio_devices.cpp
 FMP-Distortion-Plugin/JuceLibraryCode/include_juce_audio_basics.cpp
+FMP-Distortion-Plugin/Builds/VisualStudio2022/.vs/FMP-Distortion-Plugin/FileContentIndex/3e07e491-c784-40c2-8598-71752b1b258a.vsidx
+FMP-Distortion-Plugin/Builds/VisualStudio2022/.vs/FMP-Distortion-Plugin/FileContentIndex/ccf6bafa-d598-47c5-b143-377a6cfbe160.vsidx
+FMP-Distortion-Plugin/Builds/VisualStudio2022/.vs/FMP-Distortion-Plugin/FileContentIndex/fa781d84-dc45-4ea5-a653-f6b59fafd7c4.vsidx
+FMP-Distortion-Plugin/Builds/VisualStudio2022/.vs/FMP-Distortion-Plugin/FileContentIndex/read.lock
+FMP-Distortion-Plugin/Builds/VisualStudio2022/.vs/FMP-Distortion-Plugin/v17/.suo
+FMP-Distortion-Plugin/Builds/VisualStudio2022/.vs/FMP-Distortion-Plugin/v17/Browse.VC.db
+FMP-Distortion-Plugin/Builds/VisualStudio2022/.vs/FMP-Distortion-Plugin/v17/fileList.bin
+FMP-Distortion-Plugin/Builds/VisualStudio2022/.vs/FMP-Distortion-Plugin/v17/ipch/AutoPCH/1c5048b2d2c55449/PLUGINEDITOR.ipch
+FMP-Distortion-Plugin/Builds/VisualStudio2022/.vs/FMP-Distortion-Plugin/v17/ipch/AutoPCH/81a2a1f56c49ee2/PARAMETERS.ipch
+FMP-Distortion-Plugin/Builds/VisualStudio2022/.vs/FMP-Distortion-Plugin/v17/ipch/AutoPCH/e9690165eb1aad46/PLUGINPROCESSOR.ipch
+FMP-Distortion-Plugin/Builds/VisualStudio2022/.vs/FMP-Distortion-Plugin/v17/Solution.VC.db
+FMP-Distortion-Plugin/Builds/VisualStudio2022/FMP-Distortion-Plugin_SharedCode.vcxproj.user
+FMP-Distortion-Plugin/Builds/VisualStudio2022/FMP-Distortion-Plugin_StandalonePlugin.vcxproj.user
+FMP-Distortion-Plugin/Builds/VisualStudio2022/FMP-Distortion-Plugin_VST3.vcxproj.user
+FMP-Distortion-Plugin/Builds/VisualStudio2022/x64/Debug/Shared Code/FMP-Dist.EB6D7229.tlog/CL.10820.write.1.tlog
+FMP-Distortion-Plugin/Builds/VisualStudio2022/x64/Debug/Shared Code/FMP-Dist.EB6D7229.tlog/CL.command.1.tlog
+FMP-Distortion-Plugin/Builds/VisualStudio2022/x64/Debug/Shared Code/FMP-Dist.EB6D7229.tlog/CL.read.1.tlog
+FMP-Distortion-Plugin/Builds/VisualStudio2022/x64/Debug/Shared Code/FMP-Dist.EB6D7229.tlog/FMP-Distortion-Plugin_SharedCode.lastbuildstate
+FMP-Distortion-Plugin/Builds/VisualStudio2022/x64/Debug/Shared Code/FMP-Dist.EB6D7229.tlog/Lib-link.read.1.tlog
+FMP-Distortion-Plugin/Builds/VisualStudio2022/x64/Debug/Shared Code/FMP-Dist.EB6D7229.tlog/Lib-link.write.1.tlog
+FMP-Distortion-Plugin/Builds/VisualStudio2022/x64/Debug/Shared Code/FMP-Dist.EB6D7229.tlog/Lib.command.1.tlog
+FMP-Distortion-Plugin/Builds/VisualStudio2022/x64/Debug/Shared Code/FMP-Distortion-Plugin.lib
+FMP-Distortion-Plugin/Builds/VisualStudio2022/x64/Debug/Shared Code/FMP-Distortion-Plugin.lib.recipe
+FMP-Distortion-Plugin/Builds/VisualStudio2022/x64/Debug/Shared Code/FMP-Distortion-Plugin.pdb
+FMP-Distortion-Plugin/Builds/VisualStudio2022/x64/Debug/Shared Code/FMP-Distortion-Plugin_SharedCode.log
+FMP-Distortion-Plugin/Builds/VisualStudio2022/x64/Debug/Shared Code/FMP-Distortion-Plugin_SharedCode.vcxproj.FileListAbsolute.txt
+FMP-Distortion-Plugin/Builds/VisualStudio2022/x64/Debug/Shared Code/include_juce_audio_basics.obj
+FMP-Distortion-Plugin/Builds/VisualStudio2022/x64/Debug/Shared Code/include_juce_audio_devices.obj
+FMP-Distortion-Plugin/Builds/VisualStudio2022/x64/Debug/Shared Code/include_juce_audio_formats.obj
+FMP-Distortion-Plugin/Builds/VisualStudio2022/x64/Debug/Shared Code/include_juce_audio_plugin_client_ARA.obj
+FMP-Distortion-Plugin/Builds/VisualStudio2022/x64/Debug/Shared Code/include_juce_audio_plugin_client_utils.obj
+FMP-Distortion-Plugin/Builds/VisualStudio2022/x64/Debug/Shared Code/include_juce_audio_processors.obj
+FMP-Distortion-Plugin/Builds/VisualStudio2022/x64/Debug/Shared Code/include_juce_audio_processors_ara.obj
+FMP-Distortion-Plugin/Builds/VisualStudio2022/x64/Debug/Shared Code/include_juce_audio_processors_lv2_libs.obj
+FMP-Distortion-Plugin/Builds/VisualStudio2022/x64/Debug/Shared Code/include_juce_audio_utils.obj
+FMP-Distortion-Plugin/Builds/VisualStudio2022/x64/Debug/Shared Code/include_juce_core.obj
+FMP-Distortion-Plugin/Builds/VisualStudio2022/x64/Debug/Shared Code/include_juce_data_structures.obj
+FMP-Distortion-Plugin/Builds/VisualStudio2022/x64/Debug/Shared Code/include_juce_dsp.obj
+FMP-Distortion-Plugin/Builds/VisualStudio2022/x64/Debug/Shared Code/include_juce_events.obj
+FMP-Distortion-Plugin/Builds/VisualStudio2022/x64/Debug/Shared Code/include_juce_graphics.obj
+FMP-Distortion-Plugin/Builds/VisualStudio2022/x64/Debug/Shared Code/include_juce_gui_basics.obj
+FMP-Distortion-Plugin/Builds/VisualStudio2022/x64/Debug/Shared Code/include_juce_gui_extra.obj
+FMP-Distortion-Plugin/Builds/VisualStudio2022/x64/Debug/Shared Code/PluginEditor.obj
+FMP-Distortion-Plugin/Builds/VisualStudio2022/x64/Debug/Shared Code/PluginProcessor.obj
+FMP-Distortion-Plugin/Builds/VisualStudio2022/x64/Debug/Standalone Plugin/FMP-Dist.AFB82FA4.tlog/CL.command.1.tlog
+FMP-Distortion-Plugin/Builds/VisualStudio2022/x64/Debug/Standalone Plugin/FMP-Dist.AFB82FA4.tlog/CL.read.1.tlog
+FMP-Distortion-Plugin/Builds/VisualStudio2022/x64/Debug/Standalone Plugin/FMP-Dist.AFB82FA4.tlog/CL.write.1.tlog
+FMP-Distortion-Plugin/Builds/VisualStudio2022/x64/Debug/Standalone Plugin/FMP-Dist.AFB82FA4.tlog/FMP-Distortion-Plugin_StandalonePlugin.lastbuildstate
+FMP-Distortion-Plugin/Builds/VisualStudio2022/x64/Debug/Standalone Plugin/FMP-Dist.AFB82FA4.tlog/link.command.1.tlog
+FMP-Distortion-Plugin/Builds/VisualStudio2022/x64/Debug/Standalone Plugin/FMP-Dist.AFB82FA4.tlog/link.read.1.tlog
+FMP-Distortion-Plugin/Builds/VisualStudio2022/x64/Debug/Standalone Plugin/FMP-Dist.AFB82FA4.tlog/link.write.1.tlog
+FMP-Distortion-Plugin/Builds/VisualStudio2022/x64/Debug/Standalone Plugin/FMP-Dist.AFB82FA4.tlog/rc.command.1.tlog
+FMP-Distortion-Plugin/Builds/VisualStudio2022/x64/Debug/Standalone Plugin/FMP-Dist.AFB82FA4.tlog/rc.read.1.tlog
+FMP-Distortion-Plugin/Builds/VisualStudio2022/x64/Debug/Standalone Plugin/FMP-Dist.AFB82FA4.tlog/rc.write.1.tlog
+FMP-Distortion-Plugin/Builds/VisualStudio2022/x64/Debug/Standalone Plugin/FMP-Distortion-Plugin.exe
+FMP-Distortion-Plugin/Builds/VisualStudio2022/x64/Debug/Standalone Plugin/FMP-Distortion-Plugin.exe.recipe
+FMP-Distortion-Plugin/Builds/VisualStudio2022/x64/Debug/Standalone Plugin/FMP-Distortion-Plugin.ilk
+FMP-Distortion-Plugin/Builds/VisualStudio2022/x64/Debug/Standalone Plugin/FMP-Distortion-Plugin.pdb
+FMP-Distortion-Plugin/Builds/VisualStudio2022/x64/Debug/Standalone Plugin/FMP-Distortion-Plugin_StandalonePlugin.log
+FMP-Distortion-Plugin/Builds/VisualStudio2022/x64/Debug/Standalone Plugin/FMP-Distortion-Plugin_StandalonePlugin.vcxproj.FileListAbsolute.txt
+FMP-Distortion-Plugin/Builds/VisualStudio2022/x64/Debug/Standalone Plugin/include_juce_audio_plugin_client_Standalone.obj
+FMP-Distortion-Plugin/Builds/VisualStudio2022/x64/Debug/Standalone Plugin/resources.res
+FMP-Distortion-Plugin/Builds/VisualStudio2022/x64/Debug/VST3/FMP-Dist.7B2C1854.tlog/CL.command.1.tlog
+FMP-Distortion-Plugin/Builds/VisualStudio2022/x64/Debug/VST3/FMP-Dist.7B2C1854.tlog/CL.read.1.tlog
+FMP-Distortion-Plugin/Builds/VisualStudio2022/x64/Debug/VST3/FMP-Dist.7B2C1854.tlog/CL.write.1.tlog
+FMP-Distortion-Plugin/Builds/VisualStudio2022/x64/Debug/VST3/FMP-Dist.7B2C1854.tlog/FMP-Distortion-Plugin_VST3.lastbuildstate
+FMP-Distortion-Plugin/Builds/VisualStudio2022/x64/Debug/VST3/FMP-Dist.7B2C1854.tlog/link.command.1.tlog
+FMP-Distortion-Plugin/Builds/VisualStudio2022/x64/Debug/VST3/FMP-Dist.7B2C1854.tlog/link.read.1.tlog
+FMP-Distortion-Plugin/Builds/VisualStudio2022/x64/Debug/VST3/FMP-Dist.7B2C1854.tlog/link.write.1.tlog
+FMP-Distortion-Plugin/Builds/VisualStudio2022/x64/Debug/VST3/FMP-Dist.7B2C1854.tlog/link.write.2u.tlog
+FMP-Distortion-Plugin/Builds/VisualStudio2022/x64/Debug/VST3/FMP-Dist.7B2C1854.tlog/rc.command.1.tlog
+FMP-Distortion-Plugin/Builds/VisualStudio2022/x64/Debug/VST3/FMP-Dist.7B2C1854.tlog/rc.read.1.tlog
+FMP-Distortion-Plugin/Builds/VisualStudio2022/x64/Debug/VST3/FMP-Dist.7B2C1854.tlog/rc.write.1.tlog
+FMP-Distortion-Plugin/Builds/VisualStudio2022/x64/Debug/VST3/FMP-Distortion-Plugin.exp
+FMP-Distortion-Plugin/Builds/VisualStudio2022/x64/Debug/VST3/FMP-Distortion-Plugin.ilk
+FMP-Distortion-Plugin/Builds/VisualStudio2022/x64/Debug/VST3/FMP-Distortion-Plugin.lib
+FMP-Distortion-Plugin/Builds/VisualStudio2022/x64/Debug/VST3/FMP-Distortion-Plugin.pdb
+FMP-Distortion-Plugin/Builds/VisualStudio2022/x64/Debug/VST3/FMP-Distortion-Plugin.vst3
+FMP-Distortion-Plugin/Builds/VisualStudio2022/x64/Debug/VST3/FMP-Distortion-Plugin.vst3.recipe
+FMP-Distortion-Plugin/Builds/VisualStudio2022/x64/Debug/VST3/FMP-Distortion-Plugin_VST3.log
+FMP-Distortion-Plugin/Builds/VisualStudio2022/x64/Debug/VST3/FMP-Distortion-Plugin_VST3.vcxproj.FileListAbsolute.txt
+FMP-Distortion-Plugin/Builds/VisualStudio2022/x64/Debug/VST3/include_juce_audio_plugin_client_VST3.obj
+FMP-Distortion-Plugin/Builds/VisualStudio2022/x64/Debug/VST3/resources.res
