@@ -10,6 +10,7 @@
 
 #include <JuceHeader.h>
 #include "Parameters.h"
+#include "Dsp.h"
 
 //==============================================================================
 /**
@@ -64,6 +65,10 @@ private:
     void parameterChanged(const juce::String& parameterID, float newValue) override;
 
     juce::dsp::Gain<float> gainProcessor;
+    Dsp dspProcessor;
+    juce::dsp::Oversampling<float> oversamplingProcessor; 
+
+    bool isOversampled{ false };
 
 
     //==============================================================================

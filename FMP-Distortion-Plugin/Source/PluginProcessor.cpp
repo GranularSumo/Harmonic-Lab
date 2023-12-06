@@ -19,18 +19,25 @@ FMPDistortionPluginAudioProcessor::FMPDistortionPluginAudioProcessor()
                       #endif
                        .withOutput ("Output", juce::AudioChannelSet::stereo(), true)
                      #endif
-                       )
-, treestate(*this, nullptr, "PARAMETERS", createParameterLayout())
+                       ),
+        treestate(*this, nullptr, "PARAMETERS", createParameterLayout()),
+        oversamplingProcessor(2, 2, juce::dsp::Oversampling<float>::FilterType::filterHalfBandPolyphaseIIR)
 #endif
 {
     using namespace parameterInfo;
     treestate.addParameterListener(inputGainId, this);
+    treestate.addParameterListener(saturationId, this);
+    treestate.addParameterListener(oversamplingId, this);
 }
 
 FMPDistortionPluginAudioProcessor::~FMPDistortionPluginAudioProcessor()
 {
     using namespace parameterInfo;
     treestate.removeParameterListener(inputGainId, this);
+    treestate.removeParameterListener(saturationId, this);
+    treestate.removeParameterListener(oversamplingId, this);
+
+    
 }
 
 //==============================================================================
@@ -42,6 +49,8 @@ juce::AudioProcessorValueTreeState::ParameterLayout FMPDistortionPluginAudioProc
 
     using namespace parameterInfo;
     parameters.push_back(std::make_unique<juce::AudioParameterFloat>(inputGainId, inputGainName, -24.0f, 24.0f, 0.0f));
+    parameters.push_back(std::make_unique<juce::AudioParameterBool>(saturationId, sautrationName, false));
+    parameters.push_back(std::make_unique<juce::AudioParameterBool>(oversamplingId, oversamplingName, false));
 
 
     return { parameters.begin(), parameters.end() };
@@ -54,6 +63,16 @@ void FMPDistortionPluginAudioProcessor::parameterChanged(const juce::String& par
     if (parameterID == inputGainId)
     {
         gainProcessor.setGainDecibels(newValue);
+    }
+
+    if (parameterID == saturationId)
+    {
+        dspProcessor.setProcessState();
+    }
+
+    if (parameterID == oversamplingId)
+    {
+        isOversampled = newValue;
     }
 }
 
@@ -131,6 +150,10 @@ void FMPDistortionPluginAudioProcessor::prepareToPlay (double sampleRate, int sa
     gainProcessor.setGainDecibels(treestate.getRawParameterValue(parameterInfo::inputGainId)->load());
     gainProcessor.setRampDurationSeconds(0.02f);
 
+    oversamplingProcessor.initProcessing(samplesPerBlock);
+
+    isOversampled = treestate.getRawParameterValue(parameterInfo::oversamplingId)->load();
+
 }
 
 void FMPDistortionPluginAudioProcessor::releaseResources()
@@ -177,9 +200,16 @@ void FMPDistortionPluginAudioProcessor::processBlock (juce::AudioBuffer<float>& 
 
     juce::dsp::AudioBlock<float> block(buffer);
 
-    gainProcessor.process(juce::dsp::ProcessContextReplacing<float>(block));
+    if (isOversampled) 
+    {
+        oversamplingProcessor.processSamplesUp(block);
 
-    
+        gainProcessor.process(juce::dsp::ProcessContextReplacing<float>(block));
+        dspProcessor.process(block);
+        // DBG("test");
+
+        oversamplingProcessor.processSamplesDown(block);
+    }
 }
 
 //==============================================================================

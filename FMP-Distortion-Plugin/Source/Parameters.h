@@ -17,5 +17,11 @@ namespace parameterInfo
 {
     const juce::String inputGainName = "Input Gain";
     const juce::String inputGainId = "inputGain";
+
+    const juce::String sautrationName = "Saturation";
+    const juce::String saturationId = "saturation";
+
+    const juce::String oversamplingName = "Oversampling";
+    const juce::String oversamplingId = "oversampling";
 }
 
