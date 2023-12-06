@@ -23,5 +23,8 @@ namespace parameterInfo
 
     const juce::String oversamplingName = "Oversampling";
     const juce::String oversamplingId = "oversampling";
+
+    const juce::String dryWetName = "Dry/Wet";
+    const juce::String dryWetId = "dry/wet";
 }
 

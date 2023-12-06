@@ -66,7 +66,8 @@ private:
 
     juce::dsp::Gain<float> gainProcessor;
     Dsp dspProcessor;
-    juce::dsp::Oversampling<float> oversamplingProcessor; 
+    juce::dsp::Oversampling<float> oversamplingProcessor;
+    juce::dsp::DryWetMixer<float> dryWet;
 
     bool isOversampled{ false };
 

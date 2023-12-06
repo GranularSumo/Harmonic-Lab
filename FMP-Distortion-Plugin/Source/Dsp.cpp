@@ -23,7 +23,18 @@ float Dsp::arctanSoftClipper(float currentSample, float amount)
 
 float Dsp::hardClipper(float currentSample, float amount)
 {
-    return 0.0f;
+    if (currentSample > 1.0f)
+    {
+        return 1.0f;
+    }
+    else if (currentSample < -1.0f)
+    {
+        return -1.0f;
+    }
+    else
+    {
+        return currentSample;
+    }
 }
 
 float Dsp::bitcrusher(float currentSample, float bitDepth)
@@ -56,7 +67,7 @@ void Dsp::algorithmSelector(float& sample)
              sample = arctanSoftClipper(sample, 8.0f);
              break;
         case hardclip:
-            // sample = hardClipper(sample, 8.0f);
+            sample = hardClipper(sample, 10.0f);
             break;
     }
 }
