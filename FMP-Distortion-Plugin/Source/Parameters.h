@@ -26,5 +26,13 @@ namespace parameterInfo
 
     const juce::String dryWetName = "Dry/Wet";
     const juce::String dryWetId = "dry/wet";
+
+    const juce::String distortionTypeName = "Distortion Type";
+    const juce::String distortionTypeId = "distortionType";
+    const juce::StringArray distortionTypes = { "softclip", "hardclip", "bitcrush", "wavefold", "wfxs", "feedbackWavefold"};
+
+    const juce::String driveName = "Drive";
+    const juce::String driveId = "drive";
+
 }
 

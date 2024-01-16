@@ -26,18 +26,20 @@ FMPDistortionPluginAudioProcessor::FMPDistortionPluginAudioProcessor()
 {
     using namespace parameterInfo;
     treestate.addParameterListener(inputGainId, this);
-    treestate.addParameterListener(saturationId, this);
     treestate.addParameterListener(oversamplingId, this);
     treestate.addParameterListener(dryWetId, this);
+    treestate.addParameterListener(distortionTypeId, this);
+    treestate.addParameterListener(driveId, this);
 }
 
 FMPDistortionPluginAudioProcessor::~FMPDistortionPluginAudioProcessor()
 {
     using namespace parameterInfo;
     treestate.removeParameterListener(inputGainId, this);
-    treestate.removeParameterListener(saturationId, this);
     treestate.removeParameterListener(oversamplingId, this);
     treestate.removeParameterListener(dryWetId, this);
+    treestate.removeParameterListener(distortionTypeId, this);
+    treestate.removeParameterListener(driveId, this);
 
     
 }
@@ -51,10 +53,10 @@ juce::AudioProcessorValueTreeState::ParameterLayout FMPDistortionPluginAudioProc
 
     using namespace parameterInfo;
     parameters.push_back(std::make_unique<juce::AudioParameterFloat>(inputGainId, inputGainName, -24.0f, 24.0f, 0.0f));
-    parameters.push_back(std::make_unique<juce::AudioParameterBool>(saturationId, sautrationName, false));
     parameters.push_back(std::make_unique<juce::AudioParameterBool>(oversamplingId, oversamplingName, false));
     parameters.push_back(std::make_unique<juce::AudioParameterFloat>(dryWetId, dryWetName, 0.0f, 1.0f, 1.0f));
-
+    parameters.push_back(std::make_unique<juce::AudioParameterChoice>(distortionTypeId, distortionTypeName, distortionTypes, 0));
+    parameters.push_back(std::make_unique<juce::AudioParameterFloat>(driveId, driveName, 1.0f, 24.0f, 1.0f));
 
     return { parameters.begin(), parameters.end() };
 }
@@ -68,11 +70,6 @@ void FMPDistortionPluginAudioProcessor::parameterChanged(const juce::String& par
         gainProcessor.setGainDecibels(newValue);
     }
 
-    if (parameterID == saturationId)
-    {
-        dspProcessor.setProcessState();
-    }
-
     if (parameterID == oversamplingId)
     {
         isOversampled = newValue;
@@ -81,6 +78,17 @@ void FMPDistortionPluginAudioProcessor::parameterChanged(const juce::String& par
     if (parameterID == dryWetId)
     {
         dryWet.setWetMixProportion(newValue);
+    }
+
+    if (parameterID == distortionTypeId)
+    {
+        int index = static_cast<int>(newValue);
+        dspProcessor.setDistortionType(distortionTypes[index]);
+    }
+
+    if (parameterID == driveId)
+    {
+        dspProcessor.setDriveAmount(newValue);
     }
 }
 
@@ -220,7 +228,7 @@ void FMPDistortionPluginAudioProcessor::processBlock (juce::AudioBuffer<float>& 
 
         gainProcessor.process(juce::dsp::ProcessContextReplacing<float>(oversampledBlock));
         dspProcessor.process(oversampledBlock);
-        DBG("test");
+        //DBG("test");
 
         oversamplingProcessor.processSamplesDown(block);
     }

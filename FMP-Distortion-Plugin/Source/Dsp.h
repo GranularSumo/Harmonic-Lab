@@ -15,20 +15,26 @@
 class Dsp
 {
 public:
-    void setProcessState();
+    void setDistortionType(juce::String newValue);
+    void setDriveAmount(float amount);
 
-    float arctanSoftClipper(float currentSample, float amount);
-    float hardClipper(float currentSample, float amount);
+    float arctanSoftClipper(float currentSample);
+    float hardClipper(float currentSample);
     float bitcrusher(float currentSample, float bitDepth);
-    float wavefolder(float currentSample, float amount);
+    float wavefolder(float currentSample);
+    float wavefolderXs(float currentSample);
+    float feedbackWavefolder(float currentSample, int channel);
 
     void process(juce::dsp::AudioBlock<float>& block);
 
-    void algorithmSelector(float& sample);
+    void algorithmSelector(float& sample, int channel);
 
 
 private:
-    const float piDivisor = juce::MathConstants<float>::halfPi;
+    const float piDivisor = 2.0f / juce::MathConstants<float>::pi;
+    float alpha = 1.0f;
+    float sampleDelay1 = 0.0f;
+    float sampleDelay2 = 0.0f;
 
     bool procesState = false;
     
@@ -36,7 +42,10 @@ private:
         softclip,
         hardclip,
         bitcrush,
-        wavefolde
+        wavefold,
+        wfxs,
+        feedbackWavefold,
+
     };
 
     Algorithm currentAlgorithm = Algorithm::softclip;
