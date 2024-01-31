@@ -9,6 +9,7 @@
 */
 
 #include "Dsp.h"
+#include <math.h>
 
 void Dsp::setDistortionType(juce::String newValue)
 {
@@ -36,11 +37,20 @@ void Dsp::setDistortionType(juce::String newValue)
     {
         currentAlgorithm = Algorithm::feedbackWavefold;
     }
+    else if (newValue == "chaos")
+    {
+        currentAlgorithm = Algorithm::chaos;
+    }
 }
 
 void Dsp::setDriveAmount(float amount)
 {
     alpha = amount;
+}
+
+void Dsp::setSampleRate(float sampleRate)
+{
+    originalSampleRate = sampleRate;
 }
 
 
@@ -52,6 +62,8 @@ float Dsp::arctanSoftClipper(float currentSample)
 float Dsp::hardClipper(float currentSample)
 {
 
+    float drive = pow(10.0, alpha / 20.0f);
+    currentSample = currentSample * drive;
 
     if (currentSample > 1.0f)
     {
@@ -67,9 +79,13 @@ float Dsp::hardClipper(float currentSample)
     }
 }
 
-float Dsp::bitcrusher(float currentSample, float bitDepth)
+float Dsp::bitcrusher(float currentSample)
 {
-    return 0.0f;
+    // this remaps the parameter that controlls alpha so that it has a range of 1 to 8.
+    float parameterRangeRemap = (alpha - 1.0f) * (8.0f - 1.0f) / (24.0f - 1.0f) + 1.0f;
+    float ampValues = pow(2, parameterRangeRemap) - 1;
+    return round(ampValues * currentSample) * (1 / ampValues);
+
 }
 
 float Dsp::wavefolder(float currentSample)
@@ -121,6 +137,38 @@ float Dsp::feedbackWavefolder(float currentSample, int channel)
     return output;
 }
 
+float Dsp::Chaos(float currentSample, int channel)
+{
+    float minTargetSampleRate = 200.0f;
+    float maxTargetSampleRate = 1000.0f;
+
+    float targetSampleRate = minTargetSampleRate + (alpha - 1.0f) / (24.0f - 1.0f) * (maxTargetSampleRate - minTargetSampleRate);
+
+    float decimateFactor = originalSampleRate / targetSampleRate;
+
+    //float parameterRangeRemap = (alpha - 1.0f) * (100000.0f - 200.0f) / (24.0f - 1.0f) + 200.0f;
+    if (channel == 0)
+    {
+
+        if (++counter1 >= decimateFactor)
+        {
+            counter1 = 0;
+            sampleDelay1 = bitcrusher(currentSample);
+        }
+        return sampleDelay1;
+    }
+    else
+    {
+        if (++counter2 >= decimateFactor)
+        {
+            counter2 = 0;
+            sampleDelay2 = bitcrusher(currentSample);
+        }
+        return sampleDelay2;
+    }
+}
+
+
 void Dsp::process(juce::dsp::AudioBlock<float>& block)
 {
     for (int channel = 0; channel < block.getNumChannels(); ++channel)
@@ -146,7 +194,7 @@ void Dsp::algorithmSelector(float& sample, int channel)
             //DBG("hard");
             break;
         case bitcrush:
-            sample = bitcrusher(sample, 8.0f);
+            sample = bitcrusher(sample);
             //DBG("bit");
             break;
         case wavefold:
@@ -159,7 +207,9 @@ void Dsp::algorithmSelector(float& sample, int channel)
             break;
         case feedbackWavefold:
             sample = feedbackWavefolder(sample, channel);
-
+            break;
+        case chaos:
+            sample = Chaos(sample, channel);
             break;
     }
 }

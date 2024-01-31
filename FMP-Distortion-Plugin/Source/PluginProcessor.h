@@ -68,6 +68,8 @@ private:
     Dsp dspProcessor;
     juce::dsp::Oversampling<float> oversamplingProcessor;
     juce::dsp::DryWetMixer<float> dryWet;
+    juce::dsp::StateVariableTPTFilter<float> preFilter;
+    juce::dsp::StateVariableTPTFilter<float> postFilter;
 
     bool isOversampled{ false };
 

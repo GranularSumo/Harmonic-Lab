@@ -83,7 +83,18 @@ void FMPDistortionPluginAudioProcessor::parameterChanged(const juce::String& par
     if (parameterID == distortionTypeId)
     {
         int index = static_cast<int>(newValue);
+
+        if (newValue != 2 && newValue != 6)
+        {
+            treestate.getParameterAsValue(parameterInfo::driveId).setValue(1.0f);
+        } 
+        else
+        {
+            treestate.getParameterAsValue(parameterInfo::driveId).setValue(24.0f);
+        }
+
         dspProcessor.setDistortionType(distortionTypes[index]);
+        
     }
 
     if (parameterID == driveId)
@@ -91,6 +102,8 @@ void FMPDistortionPluginAudioProcessor::parameterChanged(const juce::String& par
         dspProcessor.setDriveAmount(newValue);
     }
 }
+
+
 
 //==============================================================================
 const juce::String FMPDistortionPluginAudioProcessor::getName() const
@@ -172,6 +185,8 @@ void FMPDistortionPluginAudioProcessor::prepareToPlay (double sampleRate, int sa
     oversamplingProcessor.initProcessing(samplesPerBlock);
 
     isOversampled = treestate.getRawParameterValue(parameterInfo::oversamplingId)->load();
+
+    dspProcessor.setSampleRate(sampleRate);
 
 }
 
@@ -259,12 +274,24 @@ void FMPDistortionPluginAudioProcessor::getStateInformation (juce::MemoryBlock& 
     // You should use this method to store your parameters in the memory block.
     // You could do that either as raw data, or use the XML or ValueTree classes
     // as intermediaries to make it easy to save and load complex data.
+    auto state = treestate.copyState();
+    std::unique_ptr<juce::XmlElement> xml(state.createXml());
+    copyXmlToBinary(*xml, destData);
 }
 
 void FMPDistortionPluginAudioProcessor::setStateInformation (const void* data, int sizeInBytes)
 {
     // You should use this method to restore your parameters from this memory block,
     // whose contents will have been created by the getStateInformation() call.
+    std::unique_ptr<juce::XmlElement> xmlState(getXmlFromBinary(data, sizeInBytes));
+
+    if (xmlState.get() != nullptr)
+    {
+        if (xmlState->hasTagName(treestate.state.getType()))
+        {
+            treestate.replaceState(juce::ValueTree::fromXml(*xmlState));
+        }
+    }
 }
 
 //==============================================================================

@@ -29,7 +29,7 @@ namespace parameterInfo
 
     const juce::String distortionTypeName = "Distortion Type";
     const juce::String distortionTypeId = "distortionType";
-    const juce::StringArray distortionTypes = { "softclip", "hardclip", "bitcrush", "wavefold", "wfxs", "feedbackWavefold"};
+    const juce::StringArray distortionTypes = { "softclip", "hardclip", "bitcrush", "wavefold", "wfxs", "feedbackWavefold", "chaos"};
 
     const juce::String driveName = "Drive";
     const juce::String driveId = "drive";
