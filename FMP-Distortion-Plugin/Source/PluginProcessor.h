@@ -58,9 +58,11 @@ public:
     void getStateInformation (juce::MemoryBlock& destData) override;
     void setStateInformation (const void* data, int sizeInBytes) override;
 
+    juce::AudioProcessorValueTreeState treestate;
+
 private:
 
-    juce::AudioProcessorValueTreeState treestate;
+
     juce::AudioProcessorValueTreeState::ParameterLayout createParameterLayout();
     void parameterChanged(const juce::String& parameterID, float newValue) override;
 
@@ -70,6 +72,7 @@ private:
     juce::dsp::DryWetMixer<float> dryWet;
     juce::dsp::StateVariableTPTFilter<float> preFilter;
     juce::dsp::StateVariableTPTFilter<float> postFilter;
+
 
     bool isOversampled{ false };
 

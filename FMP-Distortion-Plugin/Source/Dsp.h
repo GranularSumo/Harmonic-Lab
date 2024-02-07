@@ -21,15 +21,20 @@ public:
 
     float arctanSoftClipper(float currentSample);
     float hardClipper(float currentSample);
-    float bitcrusher(float currentSample);
+    float bitCrusher(float currentSample);
+    float squareFolder(float currentSample, int channel);
     float wavefolder(float currentSample);
     float wavefolderXs(float currentSample);
     float feedbackWavefolder(float currentSample, int channel);
-    float Chaos(float currentSample, int channel);
-
+    float downSample(float currentSample, int channel);
+    
+    void resetDelaySamples();
+    void resetCounters();
     void process(juce::dsp::AudioBlock<float>& block);
 
     void algorithmSelector(float& sample, int channel);
+
+    juce::LinearSmoothedValue<float>& getSmoothedDrive();
 
 
 private:
@@ -38,19 +43,24 @@ private:
     float alpha = 1.0f;
     float sampleDelay1 = 0.0f;
     float sampleDelay2 = 0.0f;
-    float counter1 = 0;
-    float counter2 = 0;
+    int counter1 = 0;
+    int counter2 = 0;
+    float lastProcessedSample = 0.0f;
+
 
     bool procesState = false;
+
+    juce::LinearSmoothedValue<float> smoothedDrive;
     
     enum Algorithm {
         softclip,
         hardclip,
         bitcrush,
+        squareFold,
         wavefold,
         wfxs,
-        feedbackWavefold,
-        chaos,
+        feedbackwavefold,
+        downsample,
     };
 
     Algorithm currentAlgorithm = Algorithm::softclip;

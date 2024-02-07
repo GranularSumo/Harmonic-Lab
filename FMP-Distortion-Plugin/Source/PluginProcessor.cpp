@@ -84,22 +84,27 @@ void FMPDistortionPluginAudioProcessor::parameterChanged(const juce::String& par
     {
         int index = static_cast<int>(newValue);
 
-        if (newValue != 2 && newValue != 6)
-        {
-            treestate.getParameterAsValue(parameterInfo::driveId).setValue(1.0f);
-        } 
-        else
-        {
-            treestate.getParameterAsValue(parameterInfo::driveId).setValue(24.0f);
-        }
+        //if (newValue != 2 && newValue != 7)
+        //{
+        //    treestate.getParameterAsValue(parameterInfo::driveId).setValue(1.0f);
+        //} 
+        //else
+        //{
+        //    treestate.getParameterAsValue(parameterInfo::driveId).setValue(24.0f);
+        //}
 
+        dspProcessor.resetDelaySamples();
+        dspProcessor.resetCounters();
         dspProcessor.setDistortionType(distortionTypes[index]);
+
         
     }
 
     if (parameterID == driveId)
     {
-        dspProcessor.setDriveAmount(newValue);
+        dspProcessor.getSmoothedDrive().setTargetValue(newValue);
+        DBG(dspProcessor.getSmoothedDrive().getNextValue());
+        //dspProcessor.setDriveAmount(newValue);
     }
 }
 
@@ -188,6 +193,9 @@ void FMPDistortionPluginAudioProcessor::prepareToPlay (double sampleRate, int sa
 
     dspProcessor.setSampleRate(sampleRate);
 
+    dspProcessor.getSmoothedDrive().reset(sampleRate, 0.25);
+    dspProcessor.getSmoothedDrive().setCurrentAndTargetValue(1.0);
+
 }
 
 void FMPDistortionPluginAudioProcessor::releaseResources()
@@ -264,8 +272,8 @@ bool FMPDistortionPluginAudioProcessor::hasEditor() const
 
 juce::AudioProcessorEditor* FMPDistortionPluginAudioProcessor::createEditor()
 {
-    //return new FMPDistortionPluginAudioProcessorEditor (*this);
-    return new juce::GenericAudioProcessorEditor(*this);
+    return new FMPDistortionPluginAudioProcessorEditor (*this);
+    //return new juce::GenericAudioProcessorEditor(*this);
 }
 
 //==============================================================================

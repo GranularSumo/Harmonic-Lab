@@ -4,6 +4,12 @@
               useAppConfig="0" addUsingNamespaceToJuceHeader="0" jucerFormatVersion="1">
   <MAINGROUP id="Era7EM" name="FMP-Distortion-Plugin">
     <GROUP id="{1792BE37-7486-8904-F4CB-FEBAA0054F22}" name="Source">
+      <FILE id="yQ7RFr" name="TextLoader.cpp" compile="1" resource="0" file="Source/TextLoader.cpp"/>
+      <FILE id="v3b5sA" name="TextLoader.h" compile="0" resource="0" file="Source/TextLoader.h"/>
+      <GROUP id="{D7D54DCB-8074-61BF-AFCF-AEAD36CE9A22}" name="Components">
+        <FILE id="IdA7Fb" name="Logo.cpp" compile="1" resource="0" file="Source/Logo.cpp"/>
+        <FILE id="FMvqt7" name="Logo.h" compile="0" resource="0" file="Source/Logo.h"/>
+      </GROUP>
       <FILE id="iPNBko" name="Dsp.cpp" compile="1" resource="0" file="Source/Dsp.cpp"/>
       <FILE id="awv290" name="Dsp.h" compile="0" resource="0" file="Source/Dsp.h"/>
       <FILE id="iiIBxC" name="Parameters.h" compile="0" resource="0" file="Source/Parameters.h"/>

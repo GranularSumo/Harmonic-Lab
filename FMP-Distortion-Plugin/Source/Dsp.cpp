@@ -25,6 +25,10 @@ void Dsp::setDistortionType(juce::String newValue)
     {
         currentAlgorithm = Algorithm::bitcrush;
     }
+    else if (newValue == "squareFold")
+    {
+        currentAlgorithm = Algorithm::squareFold;
+    }
     else if (newValue == "wavefold")
     {
         currentAlgorithm = Algorithm::wavefold;
@@ -35,11 +39,11 @@ void Dsp::setDistortionType(juce::String newValue)
     }
     else if (newValue == "feedbackWavefold")
     {
-        currentAlgorithm = Algorithm::feedbackWavefold;
+        currentAlgorithm = Algorithm::feedbackwavefold;
     }
-    else if (newValue == "chaos")
+    else if (newValue == "downsample")
     {
-        currentAlgorithm = Algorithm::chaos;
+        currentAlgorithm = Algorithm::downsample;
     }
 }
 
@@ -79,13 +83,37 @@ float Dsp::hardClipper(float currentSample)
     }
 }
 
-float Dsp::bitcrusher(float currentSample)
+float Dsp::bitCrusher(float currentSample)
 {
     // this remaps the parameter that controlls alpha so that it has a range of 1 to 8.
-    float parameterRangeRemap = (alpha - 1.0f) * (8.0f - 1.0f) / (24.0f - 1.0f) + 1.0f;
+    //float parameterRangeRemap = (alpha - 1.0f) * (8.0f - 1.0f) / (24.0f - 1.0f) + 1.0f; -- this would make it so that the effect happens as you lower the slider
+    float parameterRangeRemap = 8.0f - (alpha - 1.0f) * (7.0f / 23.0f);
     float ampValues = pow(2, parameterRangeRemap) - 1;
     return round(ampValues * currentSample) * (1 / ampValues);
 
+}
+
+float Dsp::squareFolder(float currentSample, int channel)
+{
+    float feedback = 0;
+    float output = 0;
+
+    float feedbackMix = 0.2f;
+
+    if (channel == 0)
+    {
+        feedback = bitCrusher(sampleDelay1);
+        output = bitCrusher(currentSample) * (1.0f - feedbackMix) + feedback * feedbackMix;
+        sampleDelay1 = output;
+    }
+    else
+    {
+        feedback = bitCrusher(sampleDelay2);
+        output = bitCrusher(currentSample) * (1.0f - feedbackMix) + feedback * feedbackMix;
+        sampleDelay2 = output;
+    }
+    return output;
+    //return processFeedback(bitcrusher(currentSample), channel);
 }
 
 float Dsp::wavefolder(float currentSample)
@@ -137,37 +165,50 @@ float Dsp::feedbackWavefolder(float currentSample, int channel)
     return output;
 }
 
-float Dsp::Chaos(float currentSample, int channel)
+float Dsp::downSample(float currentSample, int channel)
 {
-    float minTargetSampleRate = 200.0f;
-    float maxTargetSampleRate = 1000.0f;
+    float minTargetSampleRate = 0.0f;
+    float maxTargetSampleRate = 5000.0f;
 
-    float targetSampleRate = minTargetSampleRate + (alpha - 1.0f) / (24.0f - 1.0f) * (maxTargetSampleRate - minTargetSampleRate);
+    //normalize alpha to 0.0 - 1.0 range
+    float normalizedAlpha = (alpha - 1.0f) / (24.0f - 1.0f);
 
+    // Calculate the decimation factor based on alpha, controlling the downsampling effect.
+    float targetSampleRate = maxTargetSampleRate - normalizedAlpha * (maxTargetSampleRate - minTargetSampleRate);
     float decimateFactor = originalSampleRate / targetSampleRate;
 
-    //float parameterRangeRemap = (alpha - 1.0f) * (100000.0f - 200.0f) / (24.0f - 1.0f) + 200.0f;
-    if (channel == 0)
-    {
-
-        if (++counter1 >= decimateFactor)
-        {
-            counter1 = 0;
-            sampleDelay1 = bitcrusher(currentSample);
+    // Use separate counters for each channel to maintain stereo processing integrity.
+    if (channel == 0) {
+        counter1++;
+        if (counter1 >= decimateFactor) {
+            counter1 = 0; // Reset counter
+            currentSample = arctanSoftClipper(currentSample);
+            sampleDelay1 = bitCrusher(currentSample); // Hold this sample until the counter resets again
         }
-        return sampleDelay1;
+        return sampleDelay1; // Output held sample
     }
-    else
-    {
-        if (++counter2 >= decimateFactor)
-        {
-            counter2 = 0;
-            sampleDelay2 = bitcrusher(currentSample);
+    else { // Assuming channel == 1 for stereo
+        counter2++;
+        if (counter2 >= decimateFactor) {
+            counter2 = 0; // Reset counter
+            currentSample = arctanSoftClipper(currentSample);
+            sampleDelay2 = bitCrusher(currentSample); // Hold this sample until the counter resets again
         }
-        return sampleDelay2;
+        return sampleDelay2; // Output held sample
     }
 }
 
+void Dsp::resetDelaySamples()
+{
+    sampleDelay1 = 0.0f;
+    sampleDelay2 = 0.0f;
+}
+
+void Dsp::resetCounters()
+{
+    counter1 = 0;
+    counter2 = 0;
+}
 
 void Dsp::process(juce::dsp::AudioBlock<float>& block)
 {
@@ -177,6 +218,7 @@ void Dsp::process(juce::dsp::AudioBlock<float>& block)
 
         for (int sample = 0; sample < block.getNumSamples(); ++sample)
         {
+            setDriveAmount(smoothedDrive.getNextValue());
             algorithmSelector(channelData[sample], channel); 
         }
     }
@@ -194,9 +236,12 @@ void Dsp::algorithmSelector(float& sample, int channel)
             //DBG("hard");
             break;
         case bitcrush:
-            sample = bitcrusher(sample);
+            sample = bitCrusher(sample);
             //DBG("bit");
             break;
+        case squareFold:
+            sample = squareFolder(sample, channel);
+            //DBG("working");
         case wavefold:
             sample = wavefolder(sample);
             //DBG("fold");
@@ -205,14 +250,20 @@ void Dsp::algorithmSelector(float& sample, int channel)
             sample = wavefolderXs(sample);
             //DBG("wfsx");
             break;
-        case feedbackWavefold:
+        case feedbackwavefold:
             sample = feedbackWavefolder(sample, channel);
             break;
-        case chaos:
-            sample = Chaos(sample, channel);
+        case downsample:
+            sample = downSample(sample, channel);
             break;
     }
 }
+
+juce::LinearSmoothedValue<float>& Dsp::getSmoothedDrive()
+{
+    return smoothedDrive;
+}
+
 
 
 
