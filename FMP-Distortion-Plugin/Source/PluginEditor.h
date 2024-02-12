@@ -12,20 +12,21 @@
 #include "PluginProcessor.h"
 #include "Logo.h"
 #include "TextLoader.h"
+#include "BasicModeUI.h"
+#include "AdvancedModeUI.h"
 
 //==============================================================================
 /**
 */
-class FMPDistortionPluginAudioProcessorEditor  : public juce::AudioProcessorEditor, public juce::ComboBox::Listener
+class FMPDistortionPluginAudioProcessorEditor : public juce::AudioProcessorEditor
 {
 public:
-    FMPDistortionPluginAudioProcessorEditor (FMPDistortionPluginAudioProcessor&);
+    FMPDistortionPluginAudioProcessorEditor(FMPDistortionPluginAudioProcessor&);
     ~FMPDistortionPluginAudioProcessorEditor() override;
 
     //==============================================================================
-    void paint (juce::Graphics&) override;
+    void paint(juce::Graphics&) override;
     void resized() override;
-    void comboBoxChanged(juce::ComboBox* comboBox) override;
 
 private:
     // This reference is provided as a quick way for your editor to
@@ -35,18 +36,29 @@ private:
     const float pluginWidth = 900.0f;
     const float pluginHeight = 675.0f;
 
-
-    juce::Slider distortionSlider;
-    juce::ComboBox algorithmSelector;
-    juce::Label infoBoxTitle;
-    juce::TextEditor infoBox;
     juce::TextButton uiSelectorButton;
 
     Logo logo;
-    TextLoader textLoader;
 
-    std::unique_ptr<juce::AudioProcessorValueTreeState::SliderAttachment> distortionAttachment;
-    std::unique_ptr<juce::AudioProcessorValueTreeState::ComboBoxAttachment> selectorAttachment;
+    BasicModeUI basicModeUI = BasicModeUI(audioProcessor, pluginHeight, pluginWidth);
+    AdvancedModeUI advancedModeUI = AdvancedModeUI(audioProcessor, pluginHeight, pluginWidth);
 
-    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (FMPDistortionPluginAudioProcessorEditor)
+    juce::Colour backgroundColour = juce::Colour::fromString("#ff253353");
+    juce::Colour ShadowColour = juce::Colour::fromString("#ff222A3E");
+    juce::Colour lineHighlightColour = juce::Colour::fromString("#ff47526D");
+
+    
+    juce::Colour sliderBackgroundColour = juce::Colour::fromString("#ff1A2039");
+
+    juce::Colour driveSliderFillColour = juce::Colour::fromString("#ffDC603C");
+
+    juce::Colour filterSliderFillColour = juce::Colour::fromString("#ff8371C3");
+
+    juce::Colour gainSliderFillColour = juce::Colour::fromString("#ffBF4467");
+
+    juce::Colour dryWetMixFillColour = juce::Colour::fromString("#ffB1C371");
+
+    bool uiModeSwitcher = true;
+
+    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(FMPDistortionPluginAudioProcessorEditor)
 };

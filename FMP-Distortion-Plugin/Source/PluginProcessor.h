@@ -72,10 +72,15 @@ private:
     juce::dsp::DryWetMixer<float> dryWet;
     juce::dsp::StateVariableTPTFilter<float> preFilter;
     juce::dsp::StateVariableTPTFilter<float> postFilter;
-
+    
 
     bool isOversampled{ false };
+    bool preFilterIsOn{ false };
+    bool postFilterIsOn{ false };
 
+    juce::dsp::ProcessSpec spec;
+    double currentSampleRate = 0.0;
+    int currentSamplePerBlock = 0;
 
     //==============================================================================
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (FMPDistortionPluginAudioProcessor)

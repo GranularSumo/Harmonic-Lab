@@ -7,6 +7,12 @@
       <FILE id="yQ7RFr" name="TextLoader.cpp" compile="1" resource="0" file="Source/TextLoader.cpp"/>
       <FILE id="v3b5sA" name="TextLoader.h" compile="0" resource="0" file="Source/TextLoader.h"/>
       <GROUP id="{D7D54DCB-8074-61BF-AFCF-AEAD36CE9A22}" name="Components">
+        <FILE id="uAz3QV" name="AdvancedModeUI.cpp" compile="1" resource="0"
+              file="Source/AdvancedModeUI.cpp"/>
+        <FILE id="xXPdXB" name="AdvancedModeUI.h" compile="0" resource="0"
+              file="Source/AdvancedModeUI.h"/>
+        <FILE id="rjKVH5" name="BasicModeUI.cpp" compile="1" resource="0" file="Source/BasicModeUI.cpp"/>
+        <FILE id="Xoi0LN" name="BasicModeUI.h" compile="0" resource="0" file="Source/BasicModeUI.h"/>
         <FILE id="IdA7Fb" name="Logo.cpp" compile="1" resource="0" file="Source/Logo.cpp"/>
         <FILE id="FMvqt7" name="Logo.h" compile="0" resource="0" file="Source/Logo.h"/>
       </GROUP>

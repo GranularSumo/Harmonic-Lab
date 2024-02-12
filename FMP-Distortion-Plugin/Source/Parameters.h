@@ -32,7 +32,14 @@ namespace parameterInfo
     const juce::StringArray distortionTypes = { "softclip", "hardclip", "bitcrush", "squareFold", "wavefold", "wfxs", "feedbackWavefold", "downsample"};
                                               
     const juce::String driveName = "Drive";   
-    const juce::String driveId = "drive";     
+    const juce::String driveId = "drive";  
+
+    const juce::String preFilterName = "Pre-Filter";
+    const juce::String preFilterId = "preFilter";
+
+    const juce::String postFilterName = "Post-Filter";
+    const juce::String postFilterId = "postFilter";
+
                                              
 }                                            
                                            

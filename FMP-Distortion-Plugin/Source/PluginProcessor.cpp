@@ -30,6 +30,8 @@ FMPDistortionPluginAudioProcessor::FMPDistortionPluginAudioProcessor()
     treestate.addParameterListener(dryWetId, this);
     treestate.addParameterListener(distortionTypeId, this);
     treestate.addParameterListener(driveId, this);
+    treestate.addParameterListener(preFilterId, this);
+    treestate.addParameterListener(postFilterId, this);
 }
 
 FMPDistortionPluginAudioProcessor::~FMPDistortionPluginAudioProcessor()
@@ -40,6 +42,8 @@ FMPDistortionPluginAudioProcessor::~FMPDistortionPluginAudioProcessor()
     treestate.removeParameterListener(dryWetId, this);
     treestate.removeParameterListener(distortionTypeId, this);
     treestate.removeParameterListener(driveId, this);
+    treestate.removeParameterListener(preFilterId, this);
+    treestate.removeParameterListener(postFilterId, this);
 
     
 }
@@ -57,6 +61,8 @@ juce::AudioProcessorValueTreeState::ParameterLayout FMPDistortionPluginAudioProc
     parameters.push_back(std::make_unique<juce::AudioParameterFloat>(dryWetId, dryWetName, 0.0f, 1.0f, 1.0f));
     parameters.push_back(std::make_unique<juce::AudioParameterChoice>(distortionTypeId, distortionTypeName, distortionTypes, 0));
     parameters.push_back(std::make_unique<juce::AudioParameterFloat>(driveId, driveName, 1.0f, 24.0f, 1.0f));
+    parameters.push_back(std::make_unique<juce::AudioParameterBool>(preFilterId, preFilterName, false));
+    parameters.push_back(std::make_unique<juce::AudioParameterBool>(postFilterId, postFilterName, false));
 
     return { parameters.begin(), parameters.end() };
 }
@@ -73,6 +79,21 @@ void FMPDistortionPluginAudioProcessor::parameterChanged(const juce::String& par
     if (parameterID == oversamplingId)
     {
         isOversampled = newValue;
+        if (isOversampled)
+        {
+            auto oversamplingFactor = oversamplingProcessor.getOversamplingFactor();
+            spec.sampleRate = currentSampleRate * oversamplingFactor;
+            spec.maximumBlockSize = currentSamplePerBlock * oversamplingFactor;
+            spec.numChannels = getTotalNumInputChannels();
+            preFilter.prepare(spec);
+        }
+        else
+        {
+            spec.sampleRate = currentSampleRate;
+            spec.maximumBlockSize = currentSamplePerBlock;
+            spec.numChannels = getTotalNumInputChannels();
+            preFilter.prepare(spec);
+        }
     }
 
     if (parameterID == dryWetId)
@@ -83,16 +104,6 @@ void FMPDistortionPluginAudioProcessor::parameterChanged(const juce::String& par
     if (parameterID == distortionTypeId)
     {
         int index = static_cast<int>(newValue);
-
-        //if (newValue != 2 && newValue != 7)
-        //{
-        //    treestate.getParameterAsValue(parameterInfo::driveId).setValue(1.0f);
-        //} 
-        //else
-        //{
-        //    treestate.getParameterAsValue(parameterInfo::driveId).setValue(24.0f);
-        //}
-
         dspProcessor.resetDelaySamples();
         dspProcessor.resetCounters();
         dspProcessor.setDistortionType(distortionTypes[index]);
@@ -103,8 +114,16 @@ void FMPDistortionPluginAudioProcessor::parameterChanged(const juce::String& par
     if (parameterID == driveId)
     {
         dspProcessor.getSmoothedDrive().setTargetValue(newValue);
-        DBG(dspProcessor.getSmoothedDrive().getNextValue());
-        //dspProcessor.setDriveAmount(newValue);
+    }
+
+    if (parameterID == preFilterId)
+    {
+        preFilterIsOn = newValue;
+    }
+
+    if (parameterID == postFilterId)
+    {
+        postFilterIsOn = newValue;
     }
 }
 
@@ -175,7 +194,8 @@ void FMPDistortionPluginAudioProcessor::changeProgramName (int index, const juce
 //==============================================================================
 void FMPDistortionPluginAudioProcessor::prepareToPlay (double sampleRate, int samplesPerBlock)
 {
-    juce::dsp::ProcessSpec spec;
+    currentSampleRate = sampleRate;
+    currentSamplePerBlock = samplesPerBlock;
     spec.sampleRate = sampleRate;
     spec.maximumBlockSize = samplesPerBlock;
     spec.numChannels = getTotalNumInputChannels();
@@ -195,6 +215,13 @@ void FMPDistortionPluginAudioProcessor::prepareToPlay (double sampleRate, int sa
 
     dspProcessor.getSmoothedDrive().reset(sampleRate, 0.25);
     dspProcessor.getSmoothedDrive().setCurrentAndTargetValue(1.0);
+
+    preFilter.prepare(spec);
+    preFilter.setType(juce::dsp::StateVariableTPTFilterType::lowpass);
+    preFilter.setCutoffFrequency(500);
+    postFilter.prepare(spec);
+    postFilter.setType(juce::dsp::StateVariableTPTFilterType::lowpass);
+    postFilter.setCutoffFrequency(500);
 
 }
 
@@ -248,17 +275,32 @@ void FMPDistortionPluginAudioProcessor::processBlock (juce::AudioBuffer<float>& 
     {
         auto oversampledBlock = oversamplingProcessor.processSamplesUp(block);
 
-
+        if (preFilterIsOn)
+        {
+            preFilter.process(juce::dsp::ProcessContextReplacing<float>(oversampledBlock));
+        }
         gainProcessor.process(juce::dsp::ProcessContextReplacing<float>(oversampledBlock));
         dspProcessor.process(oversampledBlock);
+        if (postFilterIsOn)
+        {
+            postFilter.process(juce::dsp::ProcessContextReplacing<float>(oversampledBlock));
+        }
         //DBG("test");
 
         oversamplingProcessor.processSamplesDown(block);
     }
     else
     {
+        if (preFilterIsOn)
+        {
+            preFilter.process(juce::dsp::ProcessContextReplacing<float>(block));
+        }
         gainProcessor.process(juce::dsp::ProcessContextReplacing<float>(block));
         dspProcessor.process(block);
+        if (postFilterIsOn)
+        {
+            postFilter.process(juce::dsp::ProcessContextReplacing<float>(block));
+        }
     }
 
     dryWet.mixWetSamples(block);
@@ -272,8 +314,8 @@ bool FMPDistortionPluginAudioProcessor::hasEditor() const
 
 juce::AudioProcessorEditor* FMPDistortionPluginAudioProcessor::createEditor()
 {
-    return new FMPDistortionPluginAudioProcessorEditor (*this);
-    //return new juce::GenericAudioProcessorEditor(*this);
+    //return new FMPDistortionPluginAudioProcessorEditor (*this);
+    return new juce::GenericAudioProcessorEditor(*this);
 }
 
 //==============================================================================
