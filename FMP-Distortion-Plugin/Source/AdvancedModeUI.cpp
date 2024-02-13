@@ -14,6 +14,8 @@
 //==============================================================================
 AdvancedModeUI::AdvancedModeUI(FMPDistortionPluginAudioProcessor& processor, float height, float width) : audioProcessor(processor), pluginHeight(height), pluginWidth(width)
 {
+    // Algorithm selector setup
+
     addAndMakeVisible(algorithmSelector);
     algorithmSelector.setColour(juce::ComboBox::backgroundColourId, juce::Colour::fromString("#ff253353"));
     algorithmSelector.addItem("Softclipper", 1);
@@ -27,11 +29,15 @@ AdvancedModeUI::AdvancedModeUI(FMPDistortionPluginAudioProcessor& processor, flo
 
     selectorAttachment = std::make_unique<juce::AudioProcessorValueTreeState::ComboBoxAttachment>(audioProcessor.treestate, parameterInfo::distortionTypeId, algorithmSelector);
 
+    // Drive slider setup
+
     addAndMakeVisible(driveSlider);
     driveSlider.setSliderStyle(juce::Slider::RotaryHorizontalVerticalDrag);
     driveSlider.setTextBoxStyle(juce::Slider::NoTextBox, false, 0, 0);
 
     distortionAttachment = std::make_unique<juce::AudioProcessorValueTreeState::SliderAttachment>(audioProcessor.treestate, parameterInfo::driveId, driveSlider);
+
+    // Pre Filter Setup
 
     addAndMakeVisible(preFilterLabel);
     preFilterLabel.setText("Pre-Filter", juce::dontSendNotification);
@@ -44,38 +50,64 @@ AdvancedModeUI::AdvancedModeUI(FMPDistortionPluginAudioProcessor& processor, flo
     preFilterSelector.addItem("Lowpass", 1);
     preFilterSelector.addItem("Highpass", 2);
     preFilterSelector.addItem("Bandpass", 3);
+    preFilterSelectorAttachment = std::make_unique<juce::AudioProcessorValueTreeState::ComboBoxAttachment>(audioProcessor.treestate, parameterInfo::preFilterTypeId, preFilterSelector);
 
     addAndMakeVisible(preFilterFreqSlider);
     preFilterFreqSlider.setSliderStyle(juce::Slider::RotaryHorizontalVerticalDrag);
     preFilterFreqSlider.setTextBoxStyle(juce::Slider::NoTextBox, false, 0, 0);
+    preFilterCutoffAttachment = std::make_unique<juce::AudioProcessorValueTreeState::SliderAttachment>(audioProcessor.treestate, parameterInfo::preFilterCutoffId, preFilterFreqSlider);
+
 
     addAndMakeVisible(preFilterResSlider);
     preFilterResSlider.setSliderStyle(juce::Slider::RotaryHorizontalVerticalDrag);
     preFilterResSlider.setTextBoxStyle(juce::Slider::NoTextBox, false, 0, 0);
-
-    preFilterSelectorAttachment = std::make_unique<juce::AudioProcessorValueTreeState::ComboBoxAttachment>(audioProcessor.treestate, parameterInfo::preFilterTypeId, preFilterSelector);
+    preFilterResAttachment = std::make_unique<juce::AudioProcessorValueTreeState::SliderAttachment>(audioProcessor.treestate, parameterInfo::preFilterResId, preFilterResSlider);
     
+    // Post filter setup
+
     addAndMakeVisible(postFilterLabel);
     postFilterLabel.setText("Post-Filter", juce::dontSendNotification);
     postFilterLabel.setJustificationType(juce::Justification::centredTop);
+
     addAndMakeVisible(postFilterButton);
+    postFilterCheckBoxAttachment = std::make_unique<juce::AudioProcessorValueTreeState::ButtonAttachment>(audioProcessor.treestate, parameterInfo::postFilterId, postFilterButton);
+
     addAndMakeVisible(postFilterSelector);
+    postFilterSelector.addItem("Lowpass", 1);
+    postFilterSelector.addItem("Highpass", 2);
+    postFilterSelector.addItem("Bandpass", 3);
+    postFilterSelectorAttachment = std::make_unique<juce::AudioProcessorValueTreeState::ComboBoxAttachment>(audioProcessor.treestate, parameterInfo::postFilterTypeId, postFilterSelector);
+
     addAndMakeVisible(postFilterFreqSlider);
     postFilterFreqSlider.setSliderStyle(juce::Slider::RotaryHorizontalVerticalDrag);
     postFilterFreqSlider.setTextBoxStyle(juce::Slider::NoTextBox, false, 0, 0);
+    postFilterCutoffAttachment = std::make_unique<juce::AudioProcessorValueTreeState::SliderAttachment>(audioProcessor.treestate, parameterInfo::postFilterCutoffId, postFilterFreqSlider);
+
     addAndMakeVisible(postFilterResSlider);
     postFilterResSlider.setSliderStyle(juce::Slider::RotaryHorizontalVerticalDrag);
     postFilterResSlider.setTextBoxStyle(juce::Slider::NoTextBox, false, 0, 0);
+    postFilterResAttachment = std::make_unique<juce::AudioProcessorValueTreeState::SliderAttachment>(audioProcessor.treestate, parameterInfo::postFilterResId, postFilterResSlider);
+
+    // Input slider setup
 
     addAndMakeVisible(inputGainSlider);
     inputGainSlider.setSliderStyle(juce::Slider::RotaryHorizontalVerticalDrag);
     inputGainSlider.setTextBoxStyle(juce::Slider::NoTextBox, false, 0, 0);
+    inputGainAttachment = std::make_unique<juce::AudioProcessorValueTreeState::SliderAttachment>(audioProcessor.treestate, parameterInfo::inputGainId, inputGainSlider);
+
+    // Output slider setup
+
     addAndMakeVisible(outputGainSlider);
     outputGainSlider.setSliderStyle(juce::Slider::RotaryHorizontalVerticalDrag);
     outputGainSlider.setTextBoxStyle(juce::Slider::NoTextBox, false, 0, 0);
+    outputGainAttachment = std::make_unique<juce::AudioProcessorValueTreeState::SliderAttachment>(audioProcessor.treestate, parameterInfo::outputGainId, outputGainSlider);
+
+    // Mix slider setup
+
     addAndMakeVisible(dryWetMixSlider);
     dryWetMixSlider.setSliderStyle(juce::Slider::RotaryHorizontalVerticalDrag);
     dryWetMixSlider.setTextBoxStyle(juce::Slider::NoTextBox, false, 0, 0);
+    dryWetAttachment = std::make_unique<juce::AudioProcessorValueTreeState::SliderAttachment>(audioProcessor.treestate, parameterInfo::dryWetId, dryWetMixSlider);
 
 }
 

@@ -26,28 +26,38 @@ FMPDistortionPluginAudioProcessor::FMPDistortionPluginAudioProcessor()
 {
     using namespace parameterInfo;
     treestate.addParameterListener(inputGainId, this);
+    treestate.addParameterListener(outputGainId, this);
     treestate.addParameterListener(oversamplingId, this);
     treestate.addParameterListener(dryWetId, this);
     treestate.addParameterListener(distortionTypeId, this);
     treestate.addParameterListener(driveId, this);
     treestate.addParameterListener(preFilterId, this);
     treestate.addParameterListener(preFilterTypeId, this);
+    treestate.addParameterListener(preFilterCutoffId, this);
+    treestate.addParameterListener(preFilterResId, this);
     treestate.addParameterListener(postFilterId, this);
     treestate.addParameterListener(postFilterTypeId, this);
+    treestate.addParameterListener(postFilterCutoffId, this);
+    treestate.addParameterListener(postFilterResId, this);
 }
 
 FMPDistortionPluginAudioProcessor::~FMPDistortionPluginAudioProcessor()
 {
     using namespace parameterInfo;
     treestate.removeParameterListener(inputGainId, this);
+    treestate.removeParameterListener(outputGainId, this);
     treestate.removeParameterListener(oversamplingId, this);
     treestate.removeParameterListener(dryWetId, this);
     treestate.removeParameterListener(distortionTypeId, this);
     treestate.removeParameterListener(driveId, this);
     treestate.removeParameterListener(preFilterId, this);
     treestate.removeParameterListener(preFilterTypeId, this);
+    treestate.removeParameterListener(preFilterCutoffId, this);
+    treestate.removeParameterListener(preFilterResId, this);
     treestate.removeParameterListener(postFilterId, this);
     treestate.removeParameterListener(postFilterTypeId, this);
+    treestate.removeParameterListener(postFilterCutoffId, this);
+    treestate.removeParameterListener(postFilterResId, this);
 
     
 }
@@ -61,14 +71,26 @@ juce::AudioProcessorValueTreeState::ParameterLayout FMPDistortionPluginAudioProc
 
     using namespace parameterInfo;
     parameters.push_back(std::make_unique<juce::AudioParameterFloat>(inputGainId, inputGainName, -24.0f, 24.0f, 0.0f));
+
+    parameters.push_back(std::make_unique<juce::AudioParameterFloat>(outputGainId, outputGainName, -24.0f, 24.0f, 0.0f));
+
     parameters.push_back(std::make_unique<juce::AudioParameterBool>(oversamplingId, oversamplingName, false));
+
     parameters.push_back(std::make_unique<juce::AudioParameterFloat>(dryWetId, dryWetName, 0.0f, 1.0f, 1.0f));
+
     parameters.push_back(std::make_unique<juce::AudioParameterChoice>(distortionTypeId, distortionTypeName, distortionTypes, 0));
+
     parameters.push_back(std::make_unique<juce::AudioParameterFloat>(driveId, driveName, 1.0f, 24.0f, 1.0f));
+
     parameters.push_back(std::make_unique<juce::AudioParameterBool>(preFilterId, preFilterName, false));
     parameters.push_back(std::make_unique<juce::AudioParameterChoice>(preFilterTypeId, preFilterTypeName, preFilterTypes, 0));
+    parameters.push_back(std::make_unique<juce::AudioParameterFloat>(preFilterCutoffId, preFilterCutoffName, juce::NormalisableRange<float>(20.0f, 20000.0f, 1.0f, 0.2f), 22000.0f));
+    parameters.push_back(std::make_unique<juce::AudioParameterFloat>(preFilterResId, preFilterResName, 1.0f / std::sqrt(2), (1.0f / std::sqrt(2)) * 20.0f, 1.0f / std::sqrt(2)));
+
     parameters.push_back(std::make_unique<juce::AudioParameterBool>(postFilterId, postFilterName, false));
     parameters.push_back(std::make_unique<juce::AudioParameterChoice>(postFilterTypeId, postFilterTypeName, postFilterTypes, 0));
+    parameters.push_back(std::make_unique<juce::AudioParameterFloat>(postFilterCutoffId, postFilterCutoffName, juce::NormalisableRange<float>(20.0f, 20000.0f, 1.0f, 0.2f), 22000.0f));
+    parameters.push_back(std::make_unique<juce::AudioParameterFloat>(postFilterResId, postFilterResName, 1.0f / std::sqrt(2), (1.0f / std::sqrt(2)) * 20.0f, 1.0f / std::sqrt(2)));
 
     return { parameters.begin(), parameters.end() };
 }
@@ -80,6 +102,11 @@ void FMPDistortionPluginAudioProcessor::parameterChanged(const juce::String& par
     if (parameterID == inputGainId)
     {
         gainProcessor.setGainDecibels(newValue);
+    }
+
+    if (parameterID == outputGainId)
+    {
+        outputGainProcessor.setGainDecibels(newValue);
     }
 
     if (parameterID == oversamplingId)
@@ -130,6 +157,58 @@ void FMPDistortionPluginAudioProcessor::parameterChanged(const juce::String& par
     if (parameterID == postFilterId)
     {
         postFilterIsOn = newValue;
+    }
+
+    if (parameterID == preFilterTypeId)
+    {
+        if (newValue == 0)
+        {
+            preFilter.setType(juce::dsp::StateVariableTPTFilterType::lowpass);
+        }
+        else if (newValue == 1)
+        {
+            preFilter.setType(juce::dsp::StateVariableTPTFilterType::highpass);
+        }
+        else
+        {
+            preFilter.setType(juce::dsp::StateVariableTPTFilterType::bandpass);
+        }
+    }
+
+    if (parameterID == preFilterCutoffId)
+    {
+        preFilter.setCutoffFrequency(newValue);
+    }
+
+    if (parameterID == preFilterResId)
+    {
+        preFilter.setResonance(newValue);
+    }
+
+    if (parameterID == postFilterTypeId)
+    {
+        if (newValue == 0)
+        {
+            postFilter.setType(juce::dsp::StateVariableTPTFilterType::lowpass);
+        }
+        else if (newValue == 1)
+        {
+            postFilter.setType(juce::dsp::StateVariableTPTFilterType::highpass);
+        }
+        else
+        {
+            postFilter.setType(juce::dsp::StateVariableTPTFilterType::bandpass);
+        }
+    }
+
+    if (parameterID == postFilterCutoffId)
+    {
+        postFilter.setCutoffFrequency(newValue);
+    }
+
+    if (parameterID == postFilterResId)
+    {
+        postFilter.setResonance(newValue);
     }
 }
 
@@ -213,6 +292,10 @@ void FMPDistortionPluginAudioProcessor::prepareToPlay (double sampleRate, int sa
     gainProcessor.setGainDecibels(treestate.getRawParameterValue(parameterInfo::inputGainId)->load());
     gainProcessor.setRampDurationSeconds(0.02f);
 
+    outputGainProcessor.prepare(spec);
+    outputGainProcessor.setGainDecibels(treestate.getRawParameterValue(parameterInfo::outputGainId)->load());
+    outputGainProcessor.setRampDurationSeconds(0.02f);
+
     oversamplingProcessor.initProcessing(samplesPerBlock);
 
     isOversampled = treestate.getRawParameterValue(parameterInfo::oversamplingId)->load();
@@ -224,10 +307,10 @@ void FMPDistortionPluginAudioProcessor::prepareToPlay (double sampleRate, int sa
 
     preFilter.prepare(spec);
     preFilter.setType(juce::dsp::StateVariableTPTFilterType::lowpass);
-    preFilter.setCutoffFrequency(500);
+    preFilter.setCutoffFrequency(treestate.getRawParameterValue(parameterInfo::preFilterCutoffId)->load());
     postFilter.prepare(spec);
     postFilter.setType(juce::dsp::StateVariableTPTFilterType::lowpass);
-    postFilter.setCutoffFrequency(500);
+    postFilter.setCutoffFrequency(treestate.getRawParameterValue(parameterInfo::postFilterCutoffId)->load());
 
 }
 
@@ -310,6 +393,7 @@ void FMPDistortionPluginAudioProcessor::processBlock (juce::AudioBuffer<float>& 
     }
 
     dryWet.mixWetSamples(block);
+    outputGainProcessor.process(juce::dsp::ProcessContextReplacing<float>(block));
 }
 
 //==============================================================================

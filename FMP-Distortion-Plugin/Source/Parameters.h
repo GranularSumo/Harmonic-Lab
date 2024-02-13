@@ -18,6 +18,9 @@ namespace parameterInfo
     const juce::String inputGainName = "Input Gain";
     const juce::String inputGainId = "inputGain";
 
+    const juce::String outputGainName = "Output Gain";
+    const juce::String outputGainId = "outputGain";
+
     const juce::String sautrationName = "Saturation";
     const juce::String saturationId = "saturation";
 
@@ -41,12 +44,24 @@ namespace parameterInfo
     const juce::String preFilterTypeId = "preFilterType";
     const juce::StringArray preFilterTypes = { "lowpass", "highpass", "bandpass" };
 
+    const juce::String preFilterCutoffName = "Pre Filter Cutoff";
+    const juce::String preFilterCutoffId = "preFilterCutoff";
+
+    const juce::String preFilterResName = "Pre Filter Res";
+    const juce::String preFilterResId = "preFilterRes";
+
     const juce::String postFilterName = "Post-Filter";
     const juce::String postFilterId = "postFilter";
 
     const juce::String postFilterTypeName = "Post Filter Type";
     const juce::String postFilterTypeId = "postFilterType";
     const juce::StringArray postFilterTypes = { "lowpass", "highpass", "bandpass" };
+
+    const juce::String postFilterCutoffName = "Post Filter Cutoff";
+    const juce::String postFilterCutoffId = "postFilterCutoff";
+                        
+    const juce::String postFilterResName = "Post Filter Res";
+    const juce::String postFilterResId = "postFilterRes";
     
                                              
 }                                            

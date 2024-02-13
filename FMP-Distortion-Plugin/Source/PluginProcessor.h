@@ -67,6 +67,7 @@ private:
     void parameterChanged(const juce::String& parameterID, float newValue) override;
 
     juce::dsp::Gain<float> gainProcessor;
+    juce::dsp::Gain<float> outputGainProcessor;
     Dsp dspProcessor;
     juce::dsp::Oversampling<float> oversamplingProcessor;
     juce::dsp::DryWetMixer<float> dryWet;

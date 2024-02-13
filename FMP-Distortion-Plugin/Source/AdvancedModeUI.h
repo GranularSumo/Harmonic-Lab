@@ -71,8 +71,16 @@ private:
     std::unique_ptr<juce::AudioProcessorValueTreeState::ComboBoxAttachment> selectorAttachment;
     std::unique_ptr<juce::AudioProcessorValueTreeState::ButtonAttachment> preFilterCheckBoxAttachment;
     std::unique_ptr<juce::AudioProcessorValueTreeState::ComboBoxAttachment> preFilterSelectorAttachment;
+    std::unique_ptr<juce::AudioProcessorValueTreeState::SliderAttachment> preFilterCutoffAttachment;
+    std::unique_ptr<juce::AudioProcessorValueTreeState::SliderAttachment> preFilterResAttachment;
     std::unique_ptr<juce::AudioProcessorValueTreeState::ButtonAttachment> postFilterCheckBoxAttachment;
     std::unique_ptr<juce::AudioProcessorValueTreeState::ComboBoxAttachment> postFilterSelectorAttachment;
+    std::unique_ptr<juce::AudioProcessorValueTreeState::SliderAttachment> postFilterCutoffAttachment;
+    std::unique_ptr<juce::AudioProcessorValueTreeState::SliderAttachment> postFilterResAttachment;
+    std::unique_ptr<juce::AudioProcessorValueTreeState::SliderAttachment> inputGainAttachment;
+    std::unique_ptr<juce::AudioProcessorValueTreeState::SliderAttachment> outputGainAttachment;
+    std::unique_ptr<juce::AudioProcessorValueTreeState::SliderAttachment> dryWetAttachment;
+
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (AdvancedModeUI)
 };
