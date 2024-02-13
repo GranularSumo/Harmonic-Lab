@@ -36,14 +36,24 @@ AdvancedModeUI::AdvancedModeUI(FMPDistortionPluginAudioProcessor& processor, flo
     addAndMakeVisible(preFilterLabel);
     preFilterLabel.setText("Pre-Filter", juce::dontSendNotification);
     preFilterLabel.setJustificationType(juce::Justification::centredTop);
-    addAndMakeVisible(preFilterSelector);
+
     addAndMakeVisible(preFilterButton);
+    preFilterCheckBoxAttachment = std::make_unique<juce::AudioProcessorValueTreeState::ButtonAttachment>(audioProcessor.treestate, parameterInfo::preFilterId, preFilterButton);
+
+    addAndMakeVisible(preFilterSelector);
+    preFilterSelector.addItem("Lowpass", 1);
+    preFilterSelector.addItem("Highpass", 2);
+    preFilterSelector.addItem("Bandpass", 3);
+
     addAndMakeVisible(preFilterFreqSlider);
     preFilterFreqSlider.setSliderStyle(juce::Slider::RotaryHorizontalVerticalDrag);
     preFilterFreqSlider.setTextBoxStyle(juce::Slider::NoTextBox, false, 0, 0);
+
     addAndMakeVisible(preFilterResSlider);
     preFilterResSlider.setSliderStyle(juce::Slider::RotaryHorizontalVerticalDrag);
     preFilterResSlider.setTextBoxStyle(juce::Slider::NoTextBox, false, 0, 0);
+
+    preFilterSelectorAttachment = std::make_unique<juce::AudioProcessorValueTreeState::ComboBoxAttachment>(audioProcessor.treestate, parameterInfo::preFilterTypeId, preFilterSelector);
     
     addAndMakeVisible(postFilterLabel);
     postFilterLabel.setText("Post-Filter", juce::dontSendNotification);

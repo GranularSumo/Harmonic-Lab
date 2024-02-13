@@ -31,7 +31,9 @@ FMPDistortionPluginAudioProcessor::FMPDistortionPluginAudioProcessor()
     treestate.addParameterListener(distortionTypeId, this);
     treestate.addParameterListener(driveId, this);
     treestate.addParameterListener(preFilterId, this);
+    treestate.addParameterListener(preFilterTypeId, this);
     treestate.addParameterListener(postFilterId, this);
+    treestate.addParameterListener(postFilterTypeId, this);
 }
 
 FMPDistortionPluginAudioProcessor::~FMPDistortionPluginAudioProcessor()
@@ -43,7 +45,9 @@ FMPDistortionPluginAudioProcessor::~FMPDistortionPluginAudioProcessor()
     treestate.removeParameterListener(distortionTypeId, this);
     treestate.removeParameterListener(driveId, this);
     treestate.removeParameterListener(preFilterId, this);
+    treestate.removeParameterListener(preFilterTypeId, this);
     treestate.removeParameterListener(postFilterId, this);
+    treestate.removeParameterListener(postFilterTypeId, this);
 
     
 }
@@ -62,7 +66,9 @@ juce::AudioProcessorValueTreeState::ParameterLayout FMPDistortionPluginAudioProc
     parameters.push_back(std::make_unique<juce::AudioParameterChoice>(distortionTypeId, distortionTypeName, distortionTypes, 0));
     parameters.push_back(std::make_unique<juce::AudioParameterFloat>(driveId, driveName, 1.0f, 24.0f, 1.0f));
     parameters.push_back(std::make_unique<juce::AudioParameterBool>(preFilterId, preFilterName, false));
+    parameters.push_back(std::make_unique<juce::AudioParameterChoice>(preFilterTypeId, preFilterTypeName, preFilterTypes, 0));
     parameters.push_back(std::make_unique<juce::AudioParameterBool>(postFilterId, postFilterName, false));
+    parameters.push_back(std::make_unique<juce::AudioParameterChoice>(postFilterTypeId, postFilterTypeName, postFilterTypes, 0));
 
     return { parameters.begin(), parameters.end() };
 }
@@ -314,8 +320,8 @@ bool FMPDistortionPluginAudioProcessor::hasEditor() const
 
 juce::AudioProcessorEditor* FMPDistortionPluginAudioProcessor::createEditor()
 {
-    //return new FMPDistortionPluginAudioProcessorEditor (*this);
-    return new juce::GenericAudioProcessorEditor(*this);
+    return new FMPDistortionPluginAudioProcessorEditor (*this);
+    //return new juce::GenericAudioProcessorEditor(*this);
 }
 
 //==============================================================================

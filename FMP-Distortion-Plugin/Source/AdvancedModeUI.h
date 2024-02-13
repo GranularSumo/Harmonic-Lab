@@ -69,6 +69,10 @@ private:
 
     std::unique_ptr<juce::AudioProcessorValueTreeState::SliderAttachment> distortionAttachment;
     std::unique_ptr<juce::AudioProcessorValueTreeState::ComboBoxAttachment> selectorAttachment;
+    std::unique_ptr<juce::AudioProcessorValueTreeState::ButtonAttachment> preFilterCheckBoxAttachment;
+    std::unique_ptr<juce::AudioProcessorValueTreeState::ComboBoxAttachment> preFilterSelectorAttachment;
+    std::unique_ptr<juce::AudioProcessorValueTreeState::ButtonAttachment> postFilterCheckBoxAttachment;
+    std::unique_ptr<juce::AudioProcessorValueTreeState::ComboBoxAttachment> postFilterSelectorAttachment;
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (AdvancedModeUI)
 };
