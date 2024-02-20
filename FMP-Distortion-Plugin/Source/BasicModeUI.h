@@ -11,10 +11,9 @@
 #pragma once
 
 #include <JuceHeader.h>
-#include <JuceHeader.h>
 #include "PluginProcessor.h"
 #include "TextLoader.h"
-//#include "Logo.h" 
+#include "SvgPathManager.h"
 
 //==============================================================================
 /*
@@ -44,6 +43,9 @@ private:
     juce::ComboBox algorithmSelector;
     juce::Label infoBoxTitle;
     juce::TextEditor infoBox;
+
+    SvgPathManager sinePath;
+    SvgPathManager pathSelector;
 
     juce::Colour backgroundColour;
     juce::Colour shadowColour;

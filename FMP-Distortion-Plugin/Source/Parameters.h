@@ -11,6 +11,7 @@
 #pragma once
 
 #include <JuceHeader.h>
+#include "Dsp.h"
 
 
 namespace parameterInfo
@@ -32,7 +33,20 @@ namespace parameterInfo
 
     const juce::String distortionTypeName = "Distortion Type";
     const juce::String distortionTypeId = "distortionType";
-    const juce::StringArray distortionTypes = { "softclip", "hardclip", "bitcrush", "squareFold", "wavefold", "wfxs", "feedbackWavefold", "downsample"};
+
+    const juce::StringArray distortionTypes = { "softclip", 
+                                                "brokenSoftclip",
+                                                "hardclip",
+                                                "wavefold", 
+                                                "foldback", 
+                                                "asymetricSoftclip", 
+                                                "biasShape", 
+                                                "biasFold", 
+                                                "foldCrush", 
+                                                "dualPathBitFold", 
+                                                "bitcrush", 
+                                                "squarefold", 
+                                                "downsample"};
                                               
     const juce::String driveName = "Drive";   
     const juce::String driveId = "drive";  
@@ -42,7 +56,10 @@ namespace parameterInfo
 
     const juce::String preFilterTypeName = "Pre Filter Type";
     const juce::String preFilterTypeId = "preFilterType";
-    const juce::StringArray preFilterTypes = { "lowpass", "highpass", "bandpass" };
+
+    const juce::StringArray preFilterTypes = { "lowpass", 
+                                               "highpass", 
+                                               "bandpass" };
 
     const juce::String preFilterCutoffName = "Pre Filter Cutoff";
     const juce::String preFilterCutoffId = "preFilterCutoff";
@@ -55,7 +72,10 @@ namespace parameterInfo
 
     const juce::String postFilterTypeName = "Post Filter Type";
     const juce::String postFilterTypeId = "postFilterType";
-    const juce::StringArray postFilterTypes = { "lowpass", "highpass", "bandpass" };
+
+    const juce::StringArray postFilterTypes = { "lowpass",
+                                                "highpass",
+                                                "bandpass" };
 
     const juce::String postFilterCutoffName = "Post Filter Cutoff";
     const juce::String postFilterCutoffId = "postFilterCutoff";
@@ -63,6 +83,9 @@ namespace parameterInfo
     const juce::String postFilterResName = "Post Filter Res";
     const juce::String postFilterResId = "postFilterRes";
     
-                                             
+       
+
+    Dsp::Algorithm indexToAlgorithm(int index);
+
 }                                            
                                            

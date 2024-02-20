@@ -14,6 +14,8 @@
 #include "TextLoader.h"
 #include "BasicModeUI.h"
 #include "AdvancedModeUI.h"
+#include "Settings.h"
+
 
 //==============================================================================
 /**
@@ -37,11 +39,13 @@ private:
     const float pluginHeight = 675.0f;
 
     juce::TextButton uiSelectorButton;
+    juce::TextButton settingsButton;
 
     Logo logo;
 
     BasicModeUI basicModeUI = BasicModeUI(audioProcessor, pluginHeight, pluginWidth);
     AdvancedModeUI advancedModeUI = AdvancedModeUI(audioProcessor, pluginHeight, pluginWidth);
+    Settings settingsMenu = Settings(pluginHeight, pluginWidth);
 
     juce::Colour backgroundColour = juce::Colour::fromString("#ff253353");
     juce::Colour ShadowColour = juce::Colour::fromString("#ff222A3E");
@@ -59,6 +63,7 @@ private:
     juce::Colour dryWetMixFillColour = juce::Colour::fromString("#ffB1C371");
 
     bool uiModeSwitcher = true;
+    bool settingsMenuIsActiveWindow = false;
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(FMPDistortionPluginAudioProcessorEditor)
 };

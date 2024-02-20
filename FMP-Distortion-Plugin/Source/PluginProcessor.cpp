@@ -85,12 +85,12 @@ juce::AudioProcessorValueTreeState::ParameterLayout FMPDistortionPluginAudioProc
     parameters.push_back(std::make_unique<juce::AudioParameterBool>(preFilterId, preFilterName, false));
     parameters.push_back(std::make_unique<juce::AudioParameterChoice>(preFilterTypeId, preFilterTypeName, preFilterTypes, 0));
     parameters.push_back(std::make_unique<juce::AudioParameterFloat>(preFilterCutoffId, preFilterCutoffName, juce::NormalisableRange<float>(20.0f, 20000.0f, 1.0f, 0.2f), 22000.0f));
-    parameters.push_back(std::make_unique<juce::AudioParameterFloat>(preFilterResId, preFilterResName, 1.0f / std::sqrt(2), (1.0f / std::sqrt(2)) * 20.0f, 1.0f / std::sqrt(2)));
+    parameters.push_back(std::make_unique<juce::AudioParameterFloat>(preFilterResId, preFilterResName, 1.0f / std::sqrt(2), (1.0f / std::sqrt(2)) * 20.0f, 1.0f / std::sqrt(2) + 3));
 
     parameters.push_back(std::make_unique<juce::AudioParameterBool>(postFilterId, postFilterName, false));
     parameters.push_back(std::make_unique<juce::AudioParameterChoice>(postFilterTypeId, postFilterTypeName, postFilterTypes, 0));
     parameters.push_back(std::make_unique<juce::AudioParameterFloat>(postFilterCutoffId, postFilterCutoffName, juce::NormalisableRange<float>(20.0f, 20000.0f, 1.0f, 0.2f), 22000.0f));
-    parameters.push_back(std::make_unique<juce::AudioParameterFloat>(postFilterResId, postFilterResName, 1.0f / std::sqrt(2), (1.0f / std::sqrt(2)) * 20.0f, 1.0f / std::sqrt(2)));
+    parameters.push_back(std::make_unique<juce::AudioParameterFloat>(postFilterResId, postFilterResName, 1.0f / std::sqrt(2), (1.0f / std::sqrt(2)) * 20.0f, 1.0f / std::sqrt(2) + 3));
 
     return { parameters.begin(), parameters.end() };
 }
@@ -119,6 +119,8 @@ void FMPDistortionPluginAudioProcessor::parameterChanged(const juce::String& par
             spec.maximumBlockSize = currentSamplePerBlock * oversamplingFactor;
             spec.numChannels = getTotalNumInputChannels();
             preFilter.prepare(spec);
+
+            dspProcessor.updateDcBlockerCoefficient(spec.sampleRate);
         }
         else
         {
@@ -126,6 +128,8 @@ void FMPDistortionPluginAudioProcessor::parameterChanged(const juce::String& par
             spec.maximumBlockSize = currentSamplePerBlock;
             spec.numChannels = getTotalNumInputChannels();
             preFilter.prepare(spec);
+
+            dspProcessor.updateDcBlockerCoefficient(spec.sampleRate);
         }
     }
 
@@ -137,11 +141,10 @@ void FMPDistortionPluginAudioProcessor::parameterChanged(const juce::String& par
     if (parameterID == distortionTypeId)
     {
         int index = static_cast<int>(newValue);
+        auto algorithm = parameterInfo::indexToAlgorithm(index);
         dspProcessor.resetDelaySamples();
         dspProcessor.resetCounters();
-        dspProcessor.setDistortionType(distortionTypes[index]);
-
-        
+        dspProcessor.setDistortionType(algorithm);
     }
 
     if (parameterID == driveId)
@@ -301,6 +304,7 @@ void FMPDistortionPluginAudioProcessor::prepareToPlay (double sampleRate, int sa
     isOversampled = treestate.getRawParameterValue(parameterInfo::oversamplingId)->load();
 
     dspProcessor.setSampleRate(sampleRate);
+    dspProcessor.updateDcBlockerCoefficient(sampleRate);
 
     dspProcessor.getSmoothedDrive().reset(sampleRate, 0.25);
     dspProcessor.getSmoothedDrive().setCurrentAndTargetValue(1.0);
@@ -311,6 +315,7 @@ void FMPDistortionPluginAudioProcessor::prepareToPlay (double sampleRate, int sa
     postFilter.prepare(spec);
     postFilter.setType(juce::dsp::StateVariableTPTFilterType::lowpass);
     postFilter.setCutoffFrequency(treestate.getRawParameterValue(parameterInfo::postFilterCutoffId)->load());
+
 
 }
 

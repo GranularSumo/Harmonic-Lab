@@ -14,35 +14,31 @@ void TextLoader::setAlgorithm(juce::String algorithm)
 {
     if (algorithm == "Softclipper")
     {
-        algorithmDescription = "this is a test to see if softclip is working.";
+        algorithmDescription = "This is the Softclip Algorithm.";
     }
     else if (algorithm == "Hardclipper")
     {
-        algorithmDescription = "this is a test to see if hardclip is working.";
+        algorithmDescription = "This is the Hardclip Algorithm.";
     }
     else if (algorithm == "BitCrusher")
     {
-        algorithmDescription = "this is a test to see if bitcrush is working.";
+        algorithmDescription = "This is the Bitcrush Algorithm.";
     }
     else if (algorithm == "SquareFolder")
     {
-        algorithmDescription = "test";
+        algorithmDescription = "This is the Squarefold Algorithm.";
     }
     else if (algorithm == "WaveShaper")
     {
-        algorithmDescription = "this is a test to see if wavefold is working.";
-    }
-    else if (algorithm == "WaveShaped-Clipper")
-    {
-        algorithmDescription = "this is a test to see if wfxs is working.";
+        algorithmDescription = "This is the Waveshaper Algorithm.";
     }
     else if (algorithm == "Feedback-Waveshaper")
     {
-        algorithmDescription = "this is a test to see if feedbackwavefold is working.";
+        algorithmDescription = "This is the Feedback-Waveshaper Algorithm.";
     }
     else if (algorithm == "Downsample")
     {
-        algorithmDescription = "this is a test to see if chaos is working.";
+        algorithmDescription = "This is the Downsample Algorithm.";
     }
 
 }

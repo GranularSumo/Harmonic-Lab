@@ -4,21 +4,30 @@
               useAppConfig="0" addUsingNamespaceToJuceHeader="0" jucerFormatVersion="1">
   <MAINGROUP id="Era7EM" name="FMP-Distortion-Plugin">
     <GROUP id="{1792BE37-7486-8904-F4CB-FEBAA0054F22}" name="Source">
-      <FILE id="yQ7RFr" name="TextLoader.cpp" compile="1" resource="0" file="Source/TextLoader.cpp"/>
-      <FILE id="v3b5sA" name="TextLoader.h" compile="0" resource="0" file="Source/TextLoader.h"/>
-      <GROUP id="{D7D54DCB-8074-61BF-AFCF-AEAD36CE9A22}" name="Components">
+      <GROUP id="{8874B2DE-8A12-45C8-6044-2391FFB9C9EA}" name="UI">
+        <GROUP id="{D7D54DCB-8074-61BF-AFCF-AEAD36CE9A22}" name="Components">
+          <FILE id="FMvqt7" name="Logo.h" compile="0" resource="0" file="Source/Logo.h"/>
+          <FILE id="IdA7Fb" name="Logo.cpp" compile="1" resource="0" file="Source/Logo.cpp"/>
+          <FILE id="eot5AX" name="SvgPathManager.h" compile="0" resource="0"
+                file="Source/SvgPathManager.h"/>
+          <FILE id="eK9jMB" name="SvgPathManager.cpp" compile="1" resource="0"
+                file="Source/SvgPathManager.cpp"/>
+          <FILE id="yQ7RFr" name="TextLoader.cpp" compile="1" resource="0" file="Source/TextLoader.cpp"/>
+          <FILE id="v3b5sA" name="TextLoader.h" compile="0" resource="0" file="Source/TextLoader.h"/>
+        </GROUP>
+        <FILE id="BoyE0E" name="Settings.cpp" compile="1" resource="0" file="Source/Settings.cpp"/>
+        <FILE id="yZUDid" name="Settings.h" compile="0" resource="0" file="Source/Settings.h"/>
         <FILE id="uAz3QV" name="AdvancedModeUI.cpp" compile="1" resource="0"
               file="Source/AdvancedModeUI.cpp"/>
         <FILE id="xXPdXB" name="AdvancedModeUI.h" compile="0" resource="0"
               file="Source/AdvancedModeUI.h"/>
         <FILE id="rjKVH5" name="BasicModeUI.cpp" compile="1" resource="0" file="Source/BasicModeUI.cpp"/>
         <FILE id="Xoi0LN" name="BasicModeUI.h" compile="0" resource="0" file="Source/BasicModeUI.h"/>
-        <FILE id="IdA7Fb" name="Logo.cpp" compile="1" resource="0" file="Source/Logo.cpp"/>
-        <FILE id="FMvqt7" name="Logo.h" compile="0" resource="0" file="Source/Logo.h"/>
       </GROUP>
       <FILE id="iPNBko" name="Dsp.cpp" compile="1" resource="0" file="Source/Dsp.cpp"/>
       <FILE id="awv290" name="Dsp.h" compile="0" resource="0" file="Source/Dsp.h"/>
       <FILE id="iiIBxC" name="Parameters.h" compile="0" resource="0" file="Source/Parameters.h"/>
+      <FILE id="zz5E54" name="Parameters.cpp" compile="1" resource="0" file="Source/Parameters.cpp"/>
       <FILE id="ZpsYfT" name="PluginProcessor.cpp" compile="1" resource="0"
             file="Source/PluginProcessor.cpp"/>
       <FILE id="Vh7DWY" name="PluginProcessor.h" compile="0" resource="0"

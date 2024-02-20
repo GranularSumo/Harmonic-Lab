@@ -15,19 +15,55 @@
 class Dsp
 {
 public:
-    void setDistortionType(juce::String newValue);
+    Dsp();
+    enum Algorithm {
+        softclip,
+        brokenSoftclip,
+        hardclip,
+        wavefold,
+        foldback,
+        asymetricSoftclip,
+        biasShape,
+        biasFold,
+        foldCrush,
+        dualPathBitFold,
+        bitcrush,
+        squarefold,
+        downsample,
+    };
+
+    void setDistortionType(Algorithm algorithm);
     void setDriveAmount(float amount);
     void setSampleRate(float sampleRate);
 
-    float arctanSoftClipper(float currentSample);
+    void updateDcBlockerCoefficient(float sampleRate);
+    float processDcBlocker(float sample, int channel);
+
+
+    // odd harmonic algorithms
+    float softClipper(float currentSample);
+    float brokenSoftclipper(float currentSample);
     float hardClipper(float currentSample);
+    float wavefolder(float currentSample);
+    float saturatedWavefolder(float currentSample);
+    float feedbackWavefolder(float currentSample, int channel);
+
+
+    //even harmonic algorithms
+    float asymetricSoftClipper(float currentSample);
+    float BiasShaper(float currentSample);
+    float BiasFolder(float currentSample, int channel);
+    float foldCrusher(float currentSample, int channel);
+    float dualPathBitFolder(float currentSample, int channel);
+
+    // quantization algorithms
     float bitCrusher(float currentSample);
     float squareFolder(float currentSample, int channel);
-    float wavefolder(float currentSample);
-    float wavefolderXs(float currentSample);
-    float feedbackWavefolder(float currentSample, int channel);
-    float downSample(float currentSample, int channel);
-    
+    float downSampler(float currentSample, int channel);
+
+
+
+
     void resetDelaySamples();
     void resetCounters();
     void process(juce::dsp::AudioBlock<float>& block);
@@ -35,6 +71,7 @@ public:
     void algorithmSelector(float& sample, int channel);
 
     juce::LinearSmoothedValue<float>& getSmoothedDrive();
+
 
 
 private:
@@ -47,24 +84,25 @@ private:
     int counter2 = 0;
     float lastProcessedSample = 0.0f;
 
+    float phase = 0.0f;
 
+    bool dcFilterOn = true;
     bool procesState = false;
 
     juce::LinearSmoothedValue<float> smoothedDrive;
+    juce::Random random;
     
-    enum Algorithm {
-        softclip,
-        hardclip,
-        bitcrush,
-        squareFold,
-        wavefold,
-        wfxs,
-        feedbackwavefold,
-        downsample,
-    };
+
 
     Algorithm currentAlgorithm = Algorithm::softclip;
 
+
+    // dc filter stuff
+    float pi = juce::MathConstants<float>::pi;
+    float prevInput[2] = { 0.0f, 0.0f }; // Previous input samples for left and right channels
+    float prevOutput[2] = { 0.0f, 0.0f }; // Previous output samples for left and right channels
+    float dcBlockerAlpha;
 };
+
 
 

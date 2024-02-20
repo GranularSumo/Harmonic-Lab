@@ -27,21 +27,37 @@ BasicModeUI::BasicModeUI(FMPDistortionPluginAudioProcessor& processor, float hei
     distortionAttachment = std::make_unique<juce::AudioProcessorValueTreeState::SliderAttachment>(audioProcessor.treestate, parameterInfo::driveId, driveSlider);
 
 
-    algorithmSelector.setColour(juce::ComboBox::backgroundColourId, juce::Colour::fromString("#ff253353"));
+
+    algorithmSelector.setJustificationType(juce::Justification::centred);
+    algorithmSelector.addSectionHeading("Odd Harmonics");
     algorithmSelector.addItem("Softclipper", 1);
-    algorithmSelector.addItem("Hardclipper", 2);
-    algorithmSelector.addItem("BitCrusher", 3);
-    algorithmSelector.addItem("SquareFolder", 4);
-    algorithmSelector.addItem("WaveShaper", 5);
-    algorithmSelector.addItem("WaveShaped-Clipper", 6);
-    algorithmSelector.addItem("Feedback-Waveshaper", 7);
-    algorithmSelector.addItem("Downsample", 8);
+    algorithmSelector.addItem("Broken Softclipper", 2);
+    algorithmSelector.addItem("Hardclipper", 3);
+    algorithmSelector.addItem("Wavefolder", 4);
+    algorithmSelector.addItem("Foldback", 5);
+
+    algorithmSelector.addSeparator();
+    algorithmSelector.addSectionHeading("Even Harmonics");
+    algorithmSelector.addItem("Asymetric Softclipper", 6);
+    algorithmSelector.addItem("Bias Shaper", 7);
+    algorithmSelector.addItem("Bias Folder", 8);
+    algorithmSelector.addItem("Fold Crusher", 9);
+    algorithmSelector.addItem("Dual Path BitFolder", 10);
+
+    algorithmSelector.addSeparator();
+    algorithmSelector.addSectionHeading("Quantization");
+    algorithmSelector.addItem("Bitcrusher", 11);
+    algorithmSelector.addItem("Square Folder", 12);
+    algorithmSelector.addItem("Downsample", 13);
+
     algorithmSelector.onChange = [this]()
         {
 
             auto selectedAlgorithm = algorithmSelector.getText();
             textLoader.setAlgorithm(selectedAlgorithm);
             infoBox.setText(textLoader.getAlgorithmDescription(selectedAlgorithm), juce::dontSendNotification);
+
+            pathSelector.setCurrentPath(pathSelector.getPath(algorithmSelector.getSelectedId()));
         };
 
     addAndMakeVisible(algorithmSelector);
@@ -61,6 +77,12 @@ BasicModeUI::BasicModeUI(FMPDistortionPluginAudioProcessor& processor, float hei
     infoBoxTitle.setJustificationType(juce::Justification::centred);
     infoBoxTitle.setColour(juce::Label::textColourId, juce::Colour::fromString("#ffFAFBFB"));
     addAndMakeVisible(infoBoxTitle);
+
+    addAndMakeVisible(sinePath);
+    sinePath.setCurrentPath(SvgPathManager::sine);
+
+    addAndMakeVisible(pathSelector);
+    pathSelector.setCurrentPath(SvgPathManager::softclip);
 
     setSize(pluginWidth, pluginHeight);
 }
@@ -121,6 +143,20 @@ void BasicModeUI::paint (juce::Graphics& g)
         row2Bounds.getBottom() - 1,
         row2Bounds.getRight() - (row2Bounds.getWidth() * 0.1f),
         row2Bounds.getBottom() - 1);
+
+    // draws an arrow between sinePath and drive slider
+    g.setColour(lineHighlightColour);
+    auto leftArrowStart = juce::Point<float>(sinePath.getRight() + 10.0f, sinePath.getBounds().getCentreY());
+    auto leftArrowEnd = juce::Point<float>(sinePath.getRight() + 50.0f, sinePath.getBounds().getCentreY());
+    auto leftArrow = juce::Line<float>(leftArrowStart, leftArrowEnd);
+    g.drawArrow(leftArrow, 3.0f, 10.0f, 10.0f);
+
+    // draws an arrow between drive slider and path selector
+    g.setColour(lineHighlightColour);
+    auto rightArrowStart = juce::Point<float>(pathSelector.getX() - 50.0f, sinePath.getBounds().getCentreY());
+    auto rightArrowEnd = juce::Point<float>(pathSelector.getX() - 10.0f, sinePath.getBounds().getCentreY());
+    auto rightArrow = juce::Line<float>(rightArrowStart, rightArrowEnd);
+    g.drawArrow(rightArrow, 3.0f, 10.0f, 10.0f);
 }
 
 void BasicModeUI::resized()
@@ -162,6 +198,21 @@ void BasicModeUI::resized()
         bounds.getY(),
         bounds.getWidth() - (widthToRemove * 2),
         bounds.getHeight() - (heightToRemove * 2));
+
+    // setting the bounds for the sinePath
+    auto sinePathWidth = row2Bounds.getHeight() * 0.75f;
+    sinePath.setBounds(
+        row2Bounds.getX() + (row2Bounds.getWidth() * 0.25f),
+        row2Bounds.getY() + row2Bounds.getHeight() * 0.1f,
+        sinePathWidth,
+        sinePathWidth * 0.5f);
+
+    // setting the bounds for the pathSelector
+    pathSelector.setBounds(
+        row2Bounds.getX() + (row2Bounds.getWidth() * 0.75f) - sinePathWidth,
+        row2Bounds.getY() + row2Bounds.getHeight() * 0.1f,
+        sinePathWidth,
+        sinePathWidth * 0.5f);
 }
 
 void BasicModeUI::setBackgroundColour(juce::Colour& colour)

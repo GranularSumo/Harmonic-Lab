@@ -14,7 +14,7 @@
 #include <JuceHeader.h>
 #include "PluginProcessor.h"
 #include "TextLoader.h"
-#include "Logo.h" 
+#include "SvgPathManager.h"
 
 //==============================================================================
 /*
@@ -35,6 +35,7 @@ public:
     void setFilterSliderColours(juce::Colour& fillColour, juce::Colour& backgroundColour);
     void setGainSliderColours(juce::Colour& fillColour, juce::Colour& backgroundColour);
     void setMixSliderColours(juce::Colour& fillColour, juce::Colour& backgroundColour);
+    void setAlgorithmSymbol(SvgPathManager::PathType newSymbol);
 private:
 
     FMPDistortionPluginAudioProcessor& audioProcessor;
@@ -43,6 +44,9 @@ private:
 
     float pluginHeight;
     float pluginWidth;
+
+    SvgPathManager sinePath;
+    SvgPathManager pathSelector;
 
     juce::Colour backgroundColour;
     juce::Colour shadowColour;
