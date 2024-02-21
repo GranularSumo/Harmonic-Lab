@@ -87,7 +87,8 @@ namespace parameterInfo
     const juce::String themePickerId = "themePicker";
     const juce::StringArray themePickerThemes = { "Default", "Vamp" };
     
-       
+    const juce::String uiModeName = "UI Mode";
+    const juce::String uiModeId = "uiMode";
 
     Dsp::Algorithm indexToAlgorithm(int index);
 

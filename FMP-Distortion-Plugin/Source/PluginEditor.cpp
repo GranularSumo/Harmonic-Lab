@@ -27,19 +27,24 @@ FMPDistortionPluginAudioProcessorEditor::FMPDistortionPluginAudioProcessorEditor
     uiSelectorButton.setButtonText("Advanced View");
     uiSelectorButton.onClick = [this]()
         {
-            if (uiModeSwitcher)
+            // Toggle the mode
+            basicModeIsSelected = !basicModeIsSelected;
+            audioProcessor.treestate.getParameter(parameterInfo::uiModeId)->setValueNotifyingHost(basicModeIsSelected ? 1.0f : 0.0f);
+
+            // Update UI based on the new state
+            if (basicModeIsSelected)
             {
-                basicModeUI.setVisible(false);
-                advancedModeUI.setVisible(true);
-                uiModeSwitcher = false;
-                uiSelectorButton.setButtonText("Basic View");
+                basicModeUI.setVisible(true);
+                advancedModeUI.setVisible(false);
+                uiSelectorButton.setButtonText("Advanced View");
+                setSize(basicModeUI.getWidth(), basicModeUI.getHeight());
             }
             else
             {
-                advancedModeUI.setVisible(false);
-                basicModeUI.setVisible(true);
-                uiModeSwitcher = true;
-                uiSelectorButton.setButtonText("Advanced View");
+                basicModeUI.setVisible(false);
+                advancedModeUI.setVisible(true);
+                uiSelectorButton.setButtonText("Basic View");
+                setSize(advancedModeUI.getWidth(), advancedModeUI.getHeight());
             }
         };
     uiSelectorButton.setAlwaysOnTop(true);
@@ -66,7 +71,7 @@ FMPDistortionPluginAudioProcessorEditor::FMPDistortionPluginAudioProcessorEditor
                 settingsButton.setButtonText("Settings");
 
                 // Return to the appropriate UI based on `uiModeSwitcher`
-                if (uiModeSwitcher)
+                if (basicModeIsSelected)
                 {
                     basicModeUI.setVisible(true);
                     setSize(basicModeUI.getWidth(), basicModeUI.getHeight());
@@ -139,6 +144,42 @@ void FMPDistortionPluginAudioProcessorEditor::themeChanged(int newThemeId)
     themeManager.switchTheme(static_cast<ThemeManager::ThemeId>(newThemeId));
 
     setTheme(themeManager.getCurrentTheme());
+}
+
+
+void FMPDistortionPluginAudioProcessorEditor::restoreUiState()
+{
+    bool uiMode = *audioProcessor.treestate.getRawParameterValue(parameterInfo::uiModeId);
+    basicModeIsSelected = uiMode;
+
+    if (basicModeIsSelected)
+    {
+        basicModeUI.setVisible(true);
+        advancedModeUI.setVisible(false);
+        uiSelectorButton.setButtonText("Advanced View");
+        setSize(basicModeUI.getWidth(), basicModeUI.getHeight());
+    }
+    else
+    {
+        advancedModeUI.setVisible(true);
+        basicModeUI.setVisible(false);
+        uiSelectorButton.setButtonText("Basic View");
+        setSize(advancedModeUI.getWidth(), advancedModeUI.getHeight());
+    }
+    
+}
+
+void FMPDistortionPluginAudioProcessorEditor::visibilityChanged()
+{
+    if (isVisible())
+    {
+        restoreUiState();
+    }
+    else
+    {
+        audioProcessor.treestate.getParameter(parameterInfo::uiModeId)->setValue(basicModeIsSelected);
+    }
+
 }
 
 

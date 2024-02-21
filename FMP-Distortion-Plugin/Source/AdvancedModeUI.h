@@ -47,8 +47,6 @@ private:
 
     FMPDistortionPluginAudioProcessor& audioProcessor;
 
-
-
     float pluginHeight;
     float pluginWidth;
 

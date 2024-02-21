@@ -53,9 +53,9 @@ BasicModeUI::BasicModeUI(FMPDistortionPluginAudioProcessor& processor, float hei
     algorithmSelector.onChange = [this]()
         {
 
-            auto selectedAlgorithm = algorithmSelector.getText();
-            textLoader.setAlgorithm(selectedAlgorithm);
-            infoBox.setText(textLoader.getAlgorithmDescription(selectedAlgorithm), juce::dontSendNotification);
+            selectedPath = algorithmSelector.getText();
+            textLoader.setAlgorithm(selectedPath);
+            infoBox.setText(textLoader.getAlgorithmDescription(selectedPath), juce::dontSendNotification);
 
             pathSelector.setCurrentPath(pathSelector.getPath(algorithmSelector.getSelectedId()));
         };
@@ -81,7 +81,7 @@ BasicModeUI::BasicModeUI(FMPDistortionPluginAudioProcessor& processor, float hei
     sinePath.setCurrentPath(SvgPathManager::sine);
 
     addAndMakeVisible(pathSelector);
-    pathSelector.setCurrentPath(SvgPathManager::softclip);
+    pathSelector.setCurrentPath(pathSelector.getPath(algorithmSelector.getSelectedId()));
 
     setSize(pluginWidth, pluginHeight);
 }
@@ -253,3 +253,6 @@ void BasicModeUI::setInfoBoxColours(const juce::Colour& backgroundColour, const 
     infoBox.setColour(juce::TextEditor::backgroundColourId, backgroundColour);
     infoBox.setColour(juce::TextEditor::outlineColourId, lineHighlightColour);
 }
+
+
+

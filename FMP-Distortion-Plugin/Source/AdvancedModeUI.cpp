@@ -132,7 +132,8 @@ AdvancedModeUI::AdvancedModeUI(FMPDistortionPluginAudioProcessor& processor, flo
     sinePath.setCurrentPath(SvgPathManager::sine);
 
     addAndMakeVisible(pathSelector);
-    pathSelector.setCurrentPath(SvgPathManager::softclip);
+
+    pathSelector.setCurrentPath(pathSelector.getPath(algorithmSelector.getSelectedId()));
 }
 
 AdvancedModeUI::~AdvancedModeUI()

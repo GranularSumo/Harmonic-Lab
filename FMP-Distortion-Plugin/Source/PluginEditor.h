@@ -35,6 +35,14 @@ public:
     void themeChanged(int newThemeId) override;
 
 
+    void restoreUiState();
+
+    void visibilityChanged() override;
+
+protected:
+    
+
+
 private:
     // This reference is provided as a quick way for your editor to
     // access the processor object that created it.
@@ -64,8 +72,10 @@ private:
     juce::Colour sliderBackgroundColour = themeManager.getCurrentTheme().sliderBackgroundColour;
     juce::String themeType = themeManager.getCurrentTheme().ThemeType;
 
-    bool uiModeSwitcher = true;
+    bool basicModeIsSelected = true;
     bool settingsMenuIsActiveWindow = false;
+
+
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(FMPDistortionPluginAudioProcessorEditor)
 };
