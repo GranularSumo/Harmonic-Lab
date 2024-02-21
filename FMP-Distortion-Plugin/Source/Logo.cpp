@@ -133,7 +133,7 @@ void Logo::paint (juce::Graphics& g)
     path.applyTransform(juce::AffineTransform::scale(scaleFactor).translated(offsetX, offsetY));
 
     // Set the colour and draw the path
-    g.setColour(juce::Colours::white);
+    g.setColour(logoColour);
 
     if (isMouseOver)
     {
@@ -172,4 +172,17 @@ void Logo::mouseDown(const juce::MouseEvent& event)
                                            "~ HARMONIC LAB ~", 
                                            "Version " + versionNumber + "\n\nCreated by : Zeus Huxtable\n\n07 / 02 / 2024", 
                                            "OK");
+}
+
+void Logo::setTheme(const Theme& currentTheme)
+{
+    if (currentTheme.ThemeType == "Dark-Mode")
+    {
+        logoColour = juce::Colour::fromString("#ffEEEEEE");
+    }
+    else
+    {
+        logoColour = juce::Colour::fromString("#ff131313");
+    }
+
 }

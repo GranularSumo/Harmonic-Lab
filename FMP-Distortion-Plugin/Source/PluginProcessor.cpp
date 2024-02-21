@@ -58,7 +58,6 @@ FMPDistortionPluginAudioProcessor::~FMPDistortionPluginAudioProcessor()
     treestate.removeParameterListener(postFilterTypeId, this);
     treestate.removeParameterListener(postFilterCutoffId, this);
     treestate.removeParameterListener(postFilterResId, this);
-
     
 }
 
@@ -91,6 +90,7 @@ juce::AudioProcessorValueTreeState::ParameterLayout FMPDistortionPluginAudioProc
     parameters.push_back(std::make_unique<juce::AudioParameterChoice>(postFilterTypeId, postFilterTypeName, postFilterTypes, 0));
     parameters.push_back(std::make_unique<juce::AudioParameterFloat>(postFilterCutoffId, postFilterCutoffName, juce::NormalisableRange<float>(20.0f, 20000.0f, 1.0f, 0.2f), 22000.0f));
     parameters.push_back(std::make_unique<juce::AudioParameterFloat>(postFilterResId, postFilterResName, 1.0f / std::sqrt(2), (1.0f / std::sqrt(2)) * 20.0f, 1.0f / std::sqrt(2) + 3));
+
 
     return { parameters.begin(), parameters.end() };
 }
@@ -213,6 +213,7 @@ void FMPDistortionPluginAudioProcessor::parameterChanged(const juce::String& par
     {
         postFilter.setResonance(newValue);
     }
+
 }
 
 

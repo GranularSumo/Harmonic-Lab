@@ -66,8 +66,7 @@ BasicModeUI::BasicModeUI(FMPDistortionPluginAudioProcessor& processor, float hei
 
 
     infoBox.setReadOnly(true);
-    infoBox.setColour(juce::TextEditor::backgroundColourId, juce::Colour::fromString("#ff253353"));
-    infoBox.setColour(juce::TextEditor::outlineColourId, juce::Colour::fromString("#ff47526D"));
+
     addAndMakeVisible(infoBox);
 
 
@@ -215,24 +214,42 @@ void BasicModeUI::resized()
         sinePathWidth * 0.5f);
 }
 
-void BasicModeUI::setBackgroundColour(juce::Colour& colour)
+void BasicModeUI::setTheme(const Theme& currentTheme)
+{
+    setBackgroundColour(currentTheme.backgroundColour);
+    setShadowColour(currentTheme.shadowColour);
+    setLineHighlightColour(currentTheme.highlightColour);
+    setDriveSliderColours(currentTheme.driveSliderFillColour, currentTheme.sliderBackgroundColour);
+    setInfoBoxColours(currentTheme.backgroundColour, currentTheme.highlightColour);
+
+    pathSelector.setTheme(currentTheme);
+    sinePath.setTheme(currentTheme);
+}
+
+void BasicModeUI::setBackgroundColour(const juce::Colour& colour)
 {
     backgroundColour = colour;
 }
 
-void BasicModeUI::setShadowColour(juce::Colour& colour)
+void BasicModeUI::setShadowColour(const juce::Colour& colour)
 {
     shadowColour = colour;
 }
 
-void BasicModeUI::setLineHighlightColour(juce::Colour& colour)
+void BasicModeUI::setLineHighlightColour(const juce::Colour& colour)
 {
     lineHighlightColour = colour;
 }
 
-void BasicModeUI::setDriveSliderColours(juce::Colour& fillColour, juce::Colour& backgroundColour)
+void BasicModeUI::setDriveSliderColours(const juce::Colour& fillColour, const juce::Colour& backgroundColour)
 {
     driveSlider.setColour(juce::Slider::rotarySliderFillColourId, fillColour);
     driveSlider.setColour(juce::Slider::rotarySliderOutlineColourId, backgroundColour);
     driveSlider.setColour(juce::Slider::thumbColourId, backgroundColour.brighter(0.4f));
+}
+
+void BasicModeUI::setInfoBoxColours(const juce::Colour& backgroundColour, const juce::Colour& highlightColour)
+{
+    infoBox.setColour(juce::TextEditor::backgroundColourId, backgroundColour);
+    infoBox.setColour(juce::TextEditor::outlineColourId, lineHighlightColour);
 }

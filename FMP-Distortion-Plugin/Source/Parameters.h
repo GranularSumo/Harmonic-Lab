@@ -82,6 +82,10 @@ namespace parameterInfo
                         
     const juce::String postFilterResName = "Post Filter Res";
     const juce::String postFilterResId = "postFilterRes";
+
+    const juce::String themePickerName = "Theme Picker";
+    const juce::String themePickerId = "themePicker";
+    const juce::StringArray themePickerThemes = { "Default", "Vamp" };
     
        
 

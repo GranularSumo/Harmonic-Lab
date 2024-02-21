@@ -14,20 +14,8 @@
 FMPDistortionPluginAudioProcessorEditor::FMPDistortionPluginAudioProcessorEditor (FMPDistortionPluginAudioProcessor& p)
     : AudioProcessorEditor (&p), audioProcessor (p)
 {
-    advancedModeUI.setBackgroundColour(backgroundColour);
-    advancedModeUI.setShadowColour(ShadowColour);
-    advancedModeUI.setLineHighlightColour(lineHighlightColour);
-    advancedModeUI.setDriveSliderColours(driveSliderFillColour, sliderBackgroundColour);
-    advancedModeUI.setFilterSliderColours(filterSliderFillColour, sliderBackgroundColour);
-    advancedModeUI.setGainSliderColours(gainSliderFillColour, sliderBackgroundColour);
-    advancedModeUI.setMixSliderColours(dryWetMixFillColour, sliderBackgroundColour);
-
-    basicModeUI.setBackgroundColour(backgroundColour);
-    basicModeUI.setShadowColour(ShadowColour);
-    basicModeUI.setLineHighlightColour(lineHighlightColour);
-    basicModeUI.setDriveSliderColours(driveSliderFillColour, sliderBackgroundColour);
-
-    
+    settingsMenu.setThemeChangeListener(this);
+    setTheme(themeManager.getCurrentTheme());
 
     logo.setAlwaysOnTop(true);
     addAndMakeVisible(logo);
@@ -36,7 +24,6 @@ FMPDistortionPluginAudioProcessorEditor::FMPDistortionPluginAudioProcessorEditor
     addAndMakeVisible(advancedModeUI);
     advancedModeUI.setVisible(false);
 
-    uiSelectorButton.setColour(juce::TextButton::buttonColourId, juce::Colour::fromString("#ff253353"));
     uiSelectorButton.setButtonText("Advanced View");
     uiSelectorButton.onClick = [this]()
         {
@@ -126,6 +113,35 @@ void FMPDistortionPluginAudioProcessorEditor::resized()
 
 
 }
+
+void FMPDistortionPluginAudioProcessorEditor::setTheme(const Theme& currentTheme)
+{
+    backgroundColour = themeManager.getCurrentTheme().backgroundColour;
+    ShadowColour = themeManager.getCurrentTheme().shadowColour;
+    highlightColour = themeManager.getCurrentTheme().highlightColour;
+    driveSliderFillColour = themeManager.getCurrentTheme().driveSliderFillColour;
+    filterSliderFillColour = themeManager.getCurrentTheme().filterSliderFillColour;
+    gainSliderFillColour = themeManager.getCurrentTheme().gainSliderFillColour;
+    dryWetMixFillColour = themeManager.getCurrentTheme().mixSliderFillColour;
+    sliderBackgroundColour = themeManager.getCurrentTheme().sliderBackgroundColour;
+    themeType = themeManager.getCurrentTheme().ThemeType;
+
+
+    logo.setTheme(themeManager.getCurrentTheme());
+    basicModeUI.setTheme(themeManager.getCurrentTheme());
+    advancedModeUI.setTheme(themeManager.getCurrentTheme());
+
+    repaint();
+}
+
+void FMPDistortionPluginAudioProcessorEditor::themeChanged(int newThemeId)
+{
+    themeManager.switchTheme(static_cast<ThemeManager::ThemeId>(newThemeId));
+
+    setTheme(themeManager.getCurrentTheme());
+}
+
+
 
 
 

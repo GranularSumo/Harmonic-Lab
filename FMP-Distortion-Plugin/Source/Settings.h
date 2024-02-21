@@ -15,6 +15,14 @@
 //==============================================================================
 /*
 */
+
+class ThemeChangeListener
+{
+public:
+    virtual ~ThemeChangeListener() = default;
+    virtual void themeChanged(int newThemeId) = 0;
+};
+
 class Settings  : public juce::Component
 {
 public:
@@ -24,7 +32,11 @@ public:
     void paint (juce::Graphics&) override;
     void resized() override;
 
+    void setThemeChangeListener(ThemeChangeListener* listener);
+    void notifyThemeChange();
+
 private:
+    ThemeChangeListener* themeChangeListener = nullptr;
 
     const float pluginWidth;
     const float pluginHeight;
@@ -33,7 +45,9 @@ private:
     juce::ComboBox themePicker;
     juce::ToggleButton oversampling;
 
-
+    std::unique_ptr<juce::AudioProcessorValueTreeState::ComboBoxAttachment> themePickerAttachment;
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (Settings)
 };
+
+

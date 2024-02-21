@@ -365,29 +365,44 @@ void AdvancedModeUI::resized()
         sinePathWidth * 0.5f);
 }
 
-void AdvancedModeUI::setBackgroundColour(juce::Colour& colour)
+void AdvancedModeUI::setTheme(const Theme& currentTheme)
+{
+    setBackgroundColour(currentTheme.backgroundColour);
+    setShadowColour(currentTheme.shadowColour);
+    setLineHighlightColour(currentTheme.highlightColour);
+    setDriveSliderColours(currentTheme.driveSliderFillColour, currentTheme.sliderBackgroundColour);
+    setFilterSliderColours(currentTheme.filterSliderFillColour, currentTheme.sliderBackgroundColour);
+    setGainSliderColours(currentTheme.gainSliderFillColour, currentTheme.sliderBackgroundColour);
+    setMixSliderColours(currentTheme.mixSliderFillColour, currentTheme.sliderBackgroundColour);
+
+    pathSelector.setTheme(currentTheme);
+    sinePath.setTheme(currentTheme);
+
+}
+
+void AdvancedModeUI::setBackgroundColour(const juce::Colour& colour)
 {
     backgroundColour = colour;
 }
 
-void AdvancedModeUI::setShadowColour(juce::Colour& colour)
+void AdvancedModeUI::setShadowColour(const juce::Colour& colour)
 {
     shadowColour = colour;
 }
 
-void AdvancedModeUI::setLineHighlightColour(juce::Colour& colour)
+void AdvancedModeUI::setLineHighlightColour(const juce::Colour& colour)
 {
     lineHighlightColour = colour;
 }
 
-void AdvancedModeUI::setDriveSliderColours(juce::Colour& fillColour, juce::Colour& backgroundColour)
+void AdvancedModeUI::setDriveSliderColours(const juce::Colour& fillColour, const juce::Colour& backgroundColour)
 {
     driveSlider.setColour(juce::Slider::rotarySliderFillColourId, fillColour);
     driveSlider.setColour(juce::Slider::rotarySliderOutlineColourId, backgroundColour);
     driveSlider.setColour(juce::Slider::thumbColourId, backgroundColour.brighter(0.4f));
 }
 
-void AdvancedModeUI::setFilterSliderColours(juce::Colour& fillColour, juce::Colour& backgroundColour)
+void AdvancedModeUI::setFilterSliderColours(const juce::Colour& fillColour, const juce::Colour& backgroundColour)
 {
     preFilterFreqSlider.setColour(juce::Slider::rotarySliderFillColourId, fillColour);
     preFilterFreqSlider.setColour(juce::Slider::rotarySliderOutlineColourId, backgroundColour);
@@ -406,7 +421,7 @@ void AdvancedModeUI::setFilterSliderColours(juce::Colour& fillColour, juce::Colo
     postFilterResSlider.setColour(juce::Slider::thumbColourId, backgroundColour.brighter(0.4f));
 }
 
-void AdvancedModeUI::setGainSliderColours(juce::Colour& fillColour, juce::Colour& backgroundColour)
+void AdvancedModeUI::setGainSliderColours(const juce::Colour& fillColour, const juce::Colour& backgroundColour)
 {
     inputGainSlider.setColour(juce::Slider::rotarySliderFillColourId, fillColour);
     inputGainSlider.setColour(juce::Slider::rotarySliderOutlineColourId, backgroundColour);
@@ -417,14 +432,11 @@ void AdvancedModeUI::setGainSliderColours(juce::Colour& fillColour, juce::Colour
     outputGainSlider.setColour(juce::Slider::thumbColourId, backgroundColour.brighter(0.4f));
 }
 
-void AdvancedModeUI::setMixSliderColours(juce::Colour& fillColour, juce::Colour& backgroundColour)
+void AdvancedModeUI::setMixSliderColours(const juce::Colour& fillColour, const juce::Colour& backgroundColour)
 {
     dryWetMixSlider.setColour(juce::Slider::rotarySliderFillColourId, fillColour);
     dryWetMixSlider.setColour(juce::Slider::rotarySliderOutlineColourId, backgroundColour);
     dryWetMixSlider.setColour(juce::Slider::thumbColourId, backgroundColour.brighter(0.4f));
 }
 
-void AdvancedModeUI::setAlgorithmSymbol(SvgPathManager::PathType newSymbol)
-{
-    pathSelector.setCurrentPath(newSymbol);
-}
+

@@ -15,6 +15,7 @@
 #include "PluginProcessor.h"
 #include "TextLoader.h"
 #include "SvgPathManager.h"
+#include "Theme.h"
 
 //==============================================================================
 /*
@@ -28,14 +29,20 @@ public:
     void paint (juce::Graphics&) override;
     void resized() override;
 
-    void setBackgroundColour(juce::Colour& colour);
-    void setShadowColour(juce::Colour& colour);
-    void setLineHighlightColour(juce::Colour& colour);
-    void setDriveSliderColours(juce::Colour& fillColour, juce::Colour& backgroundColour);
-    void setFilterSliderColours(juce::Colour& fillColour, juce::Colour& backgroundColour);
-    void setGainSliderColours(juce::Colour& fillColour, juce::Colour& backgroundColour);
-    void setMixSliderColours(juce::Colour& fillColour, juce::Colour& backgroundColour);
-    void setAlgorithmSymbol(SvgPathManager::PathType newSymbol);
+
+    void setTheme(const Theme& currentTheme);
+    void setBackgroundColour(const juce::Colour& colour);
+    void setShadowColour(const juce::Colour& colour);
+    void setLineHighlightColour(const juce::Colour& colour);
+    void setDriveSliderColours(const juce::Colour& fillColour, const juce::Colour& backgroundColour);
+    void setFilterSliderColours(const juce::Colour& fillColour, const juce::Colour& backgroundColour);
+    void setGainSliderColours(const juce::Colour& fillColour, const juce::Colour& backgroundColour);
+    void setMixSliderColours(const juce::Colour& fillColour, const juce::Colour& backgroundColour);
+
+
+
+
+
 private:
 
     FMPDistortionPluginAudioProcessor& audioProcessor;

@@ -10,6 +10,7 @@
 
 #pragma once
 #include <JuceHeader.h>
+#include "Theme.h"
 
 class SvgPathManager : public juce::Component
 {
@@ -33,8 +34,12 @@ public:
     void setCurrentPath(PathType newPath);
     SvgPathManager::PathType getPath(int index);
 
+    void setTheme(const Theme& currentTheme);
+
 protected:
     void paint(juce::Graphics& g) override;
+
+
 
 private:
     void drawPath(juce::Graphics& g, const unsigned char* pathData, size_t dataSize);
@@ -57,6 +62,11 @@ private:
     void drawDownsample(juce::Graphics& g);
 
     PathType currentPath;
+
+    juce::Colour backgroundColour;
+    juce::Colour shadowColour;
+    juce::Colour highlightColour;
+    juce::Colour pathColour;
 
     
 };

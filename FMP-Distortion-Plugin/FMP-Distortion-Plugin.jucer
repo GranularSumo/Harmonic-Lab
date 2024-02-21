@@ -6,6 +6,10 @@
     <GROUP id="{1792BE37-7486-8904-F4CB-FEBAA0054F22}" name="Source">
       <GROUP id="{8874B2DE-8A12-45C8-6044-2391FFB9C9EA}" name="UI">
         <GROUP id="{D7D54DCB-8074-61BF-AFCF-AEAD36CE9A22}" name="Components">
+          <FILE id="Vu4jK0" name="ThemeManager.cpp" compile="1" resource="0"
+                file="Source/ThemeManager.cpp"/>
+          <FILE id="JgsW1T" name="ThemeManager.h" compile="0" resource="0" file="Source/ThemeManager.h"/>
+          <FILE id="QpFK6S" name="Theme.h" compile="0" resource="0" file="Source/Theme.h"/>
           <FILE id="FMvqt7" name="Logo.h" compile="0" resource="0" file="Source/Logo.h"/>
           <FILE id="IdA7Fb" name="Logo.cpp" compile="1" resource="0" file="Source/Logo.cpp"/>
           <FILE id="eot5AX" name="SvgPathManager.h" compile="0" resource="0"

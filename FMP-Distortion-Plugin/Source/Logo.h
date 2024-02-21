@@ -11,6 +11,7 @@
 #pragma once
 
 #include <JuceHeader.h>
+#include "Theme.h"
 
 //==============================================================================
 /*
@@ -28,10 +29,13 @@ public:
     void mouseExit(const juce::MouseEvent& event) override;
     void mouseDown(const juce::MouseEvent& event) override;
 
+    void setTheme(const Theme& currentTheme);
+
 private:
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(Logo)
 
     bool isMouseOver = false;
     juce::String versionNumber = "0.1.0";
-    
+
+    juce::Colour logoColour;
 };

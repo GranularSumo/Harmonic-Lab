@@ -15,12 +15,13 @@
 #include "BasicModeUI.h"
 #include "AdvancedModeUI.h"
 #include "Settings.h"
+#include "ThemeManager.h"
 
 
 //==============================================================================
 /**
 */
-class FMPDistortionPluginAudioProcessorEditor : public juce::AudioProcessorEditor
+class FMPDistortionPluginAudioProcessorEditor : public juce::AudioProcessorEditor, public ThemeChangeListener
 {
 public:
     FMPDistortionPluginAudioProcessorEditor(FMPDistortionPluginAudioProcessor&);
@@ -29,6 +30,10 @@ public:
     //==============================================================================
     void paint(juce::Graphics&) override;
     void resized() override;
+
+    void setTheme(const Theme& currentTheme);
+    void themeChanged(int newThemeId) override;
+
 
 private:
     // This reference is provided as a quick way for your editor to
@@ -47,20 +52,17 @@ private:
     AdvancedModeUI advancedModeUI = AdvancedModeUI(audioProcessor, pluginHeight, pluginWidth);
     Settings settingsMenu = Settings(pluginHeight, pluginWidth);
 
-    juce::Colour backgroundColour = juce::Colour::fromString("#ff253353");
-    juce::Colour ShadowColour = juce::Colour::fromString("#ff222A3E");
-    juce::Colour lineHighlightColour = juce::Colour::fromString("#ff47526D");
+    ThemeManager themeManager;
 
-    
-    juce::Colour sliderBackgroundColour = juce::Colour::fromString("#ff1A2039");
-
-    juce::Colour driveSliderFillColour = juce::Colour::fromString("#ffDC603C");
-
-    juce::Colour filterSliderFillColour = juce::Colour::fromString("#ff8371C3");
-
-    juce::Colour gainSliderFillColour = juce::Colour::fromString("#ffBF4467");
-
-    juce::Colour dryWetMixFillColour = juce::Colour::fromString("#ffB1C371");
+    juce::Colour backgroundColour = themeManager.getCurrentTheme().backgroundColour;
+    juce::Colour ShadowColour = themeManager.getCurrentTheme().shadowColour;
+    juce::Colour highlightColour = themeManager.getCurrentTheme().highlightColour;
+    juce::Colour driveSliderFillColour = themeManager.getCurrentTheme().driveSliderFillColour;
+    juce::Colour filterSliderFillColour = themeManager.getCurrentTheme().filterSliderFillColour;
+    juce::Colour gainSliderFillColour = themeManager.getCurrentTheme().gainSliderFillColour;
+    juce::Colour dryWetMixFillColour = themeManager.getCurrentTheme().mixSliderFillColour;
+    juce::Colour sliderBackgroundColour = themeManager.getCurrentTheme().sliderBackgroundColour;
+    juce::String themeType = themeManager.getCurrentTheme().ThemeType;
 
     bool uiModeSwitcher = true;
     bool settingsMenuIsActiveWindow = false;

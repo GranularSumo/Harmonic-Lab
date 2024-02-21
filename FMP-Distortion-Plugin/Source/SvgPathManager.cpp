@@ -45,14 +45,14 @@ void SvgPathManager::paint(juce::Graphics& g)
     auto bounds = getLocalBounds();
 
     // draws the box around the pathSelector
-    g.setColour(juce::Colour::fromString("#ff222939"));
+    g.setColour(shadowColour);
     g.fillRect(bounds.toFloat());
 
     // Draw lines based on the component's local bounds
-    g.setColour(juce::Colour::fromString("#ff1F2127"));
+    g.setColour(shadowColour.darker(0.25f));
     g.drawLine(0, 0, bounds.getWidth(), 0); // Top horizontal line
     g.drawLine(0, 1, bounds.getWidth(), 1);
-    g.setColour(juce::Colour::fromString("#ff47526D"));
+    g.setColour(highlightColour);
     g.drawLine(0, bounds.getHeight(), bounds.getWidth(), bounds.getHeight()); // Bottom horizontal line
 
 
@@ -106,6 +106,23 @@ void SvgPathManager::paint(juce::Graphics& g)
     }
 }
 
+void SvgPathManager::setTheme(const Theme& currentTheme)
+{
+    backgroundColour = currentTheme.backgroundColour;
+    shadowColour = currentTheme.shadowColour;
+    highlightColour = currentTheme.highlightColour;
+    
+    if (currentTheme.ThemeType == "Dark-Mode")
+    {
+        pathColour = juce::Colour::fromString("#ffEEEEEE");
+    }
+    else
+    {
+        pathColour = juce::Colour::fromString("#ff131313");
+    }
+
+}
+
 void SvgPathManager::drawPath(juce::Graphics& g, const unsigned char* pathData, size_t dataSize)
 {
 
@@ -127,7 +144,7 @@ void SvgPathManager::drawPath(juce::Graphics& g, const unsigned char* pathData, 
     juce::AffineTransform transform = juce::AffineTransform::scale(scale).translated(translateX, translateY);
     path.applyTransform(transform);
 
-    g.setColour(juce::Colours::white);
+    g.setColour(pathColour);
     juce::PathStrokeType strokeType(3.0f);
     g.strokePath(path, strokeType);
 }
