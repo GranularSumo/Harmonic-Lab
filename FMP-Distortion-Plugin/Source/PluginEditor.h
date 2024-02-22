@@ -14,7 +14,7 @@
 #include "TextLoader.h"
 #include "BasicModeUI.h"
 #include "AdvancedModeUI.h"
-#include "Settings.h"
+#include "SettingsMenu.h"
 #include "ThemeManager.h"
 #include "UiSwitcherButton.h"
 
@@ -59,7 +59,7 @@ private:
 
     BasicModeUI basicModeUI = BasicModeUI(audioProcessor, pluginHeight, pluginWidth);
     AdvancedModeUI advancedModeUI = AdvancedModeUI(audioProcessor, pluginHeight, pluginWidth);
-    Settings settingsMenu = Settings(pluginHeight, pluginWidth);
+    SettingsMenu settingsMenu = SettingsMenu(pluginHeight, pluginWidth);
 
     UiSwitcherButton uiModeButton = UiSwitcherButton("Advanced View");
 
