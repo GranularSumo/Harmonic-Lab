@@ -20,7 +20,8 @@ struct Theme {
     juce::Colour mixSliderFillColour;
     juce::Colour gainSliderFillColour;
     juce::Colour sliderBackgroundColour;
-    juce::String ThemeType;
+    juce::Colour textColour;
+    juce::String themeType;
 
     Theme() = default;
 
@@ -32,8 +33,9 @@ struct Theme {
         const juce::Colour& filterFill,
         const juce::Colour& mixFill,
         const juce::Colour& gainFill,
-        const juce::Colour& sliderBg, 
-        const juce::String& type) 
+        const juce::Colour& sliderBg,
+        const juce::Colour& textColour,
+        const juce::String& type)
         :
         backgroundColour(bgColour),
         shadowColour(shadow),
@@ -43,7 +45,8 @@ struct Theme {
         mixSliderFillColour(mixFill),
         gainSliderFillColour(gainFill),
         sliderBackgroundColour(sliderBg),
-        ThemeType(type)
+        textColour(textColour),
+        themeType(type)
         {}
 
 };

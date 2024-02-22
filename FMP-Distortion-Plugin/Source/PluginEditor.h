@@ -16,6 +16,7 @@
 #include "AdvancedModeUI.h"
 #include "Settings.h"
 #include "ThemeManager.h"
+#include "UiSwitcherButton.h"
 
 
 //==============================================================================
@@ -60,6 +61,8 @@ private:
     AdvancedModeUI advancedModeUI = AdvancedModeUI(audioProcessor, pluginHeight, pluginWidth);
     Settings settingsMenu = Settings(pluginHeight, pluginWidth);
 
+    UiSwitcherButton uiModeButton = UiSwitcherButton("Advanced View");
+
     ThemeManager themeManager;
 
     juce::Colour backgroundColour = themeManager.getCurrentTheme().backgroundColour;
@@ -70,7 +73,7 @@ private:
     juce::Colour gainSliderFillColour = themeManager.getCurrentTheme().gainSliderFillColour;
     juce::Colour dryWetMixFillColour = themeManager.getCurrentTheme().mixSliderFillColour;
     juce::Colour sliderBackgroundColour = themeManager.getCurrentTheme().sliderBackgroundColour;
-    juce::String themeType = themeManager.getCurrentTheme().ThemeType;
+    juce::String themeType = themeManager.getCurrentTheme().themeType;
 
     bool basicModeIsSelected = true;
     bool settingsMenuIsActiveWindow = false;

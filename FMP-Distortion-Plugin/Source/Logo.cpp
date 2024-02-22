@@ -176,13 +176,5 @@ void Logo::mouseDown(const juce::MouseEvent& event)
 
 void Logo::setTheme(const Theme& currentTheme)
 {
-    if (currentTheme.ThemeType == "Dark-Mode")
-    {
-        logoColour = juce::Colour::fromString("#ffEEEEEE");
-    }
-    else
-    {
-        logoColour = juce::Colour::fromString("#ff131313");
-    }
-
+    logoColour = currentTheme.textColour;
 }

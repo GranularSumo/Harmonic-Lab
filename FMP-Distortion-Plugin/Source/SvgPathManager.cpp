@@ -112,7 +112,7 @@ void SvgPathManager::setTheme(const Theme& currentTheme)
     shadowColour = currentTheme.shadowColour;
     highlightColour = currentTheme.highlightColour;
     
-    if (currentTheme.ThemeType == "Dark-Mode")
+    if (currentTheme.themeType == "Dark-Mode")
     {
         pathColour = juce::Colour::fromString("#ffEEEEEE");
     }

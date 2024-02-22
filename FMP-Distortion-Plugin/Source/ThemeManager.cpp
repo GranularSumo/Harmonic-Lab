@@ -24,6 +24,7 @@ ThemeManager::ThemeManager()
         Colour - mix slider fill
         Colour - gain slider fill
         Colour - slider background
+        Colour - text colour
         String - theme type
     
     */
@@ -36,6 +37,7 @@ ThemeManager::ThemeManager()
                             juce::Colour::fromString("#ffBF4467"), 
                             juce::Colour::fromString("#ffB1C371"), 
                             juce::Colour::fromString("#ff1A2039"),
+                            juce::Colour::fromString("#ffEEEEEE"),
                             juce::String("Dark-Mode"));
 
     themes[DarkMode] = Theme(   juce::Colour::fromString("#ff252525"),
@@ -46,6 +48,7 @@ ThemeManager::ThemeManager()
                             juce::Colour::fromString("#ffBF4467"),
                             juce::Colour::fromString("#ffB1C371"),
                             juce::Colour::fromString("#ff171717"),
+                            juce::Colour::fromString("#ffEEEEEE"),
                             juce::String("Dark-Mode"));
     
 

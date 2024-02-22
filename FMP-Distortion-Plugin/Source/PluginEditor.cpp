@@ -14,8 +14,36 @@
 FMPDistortionPluginAudioProcessorEditor::FMPDistortionPluginAudioProcessorEditor (FMPDistortionPluginAudioProcessor& p)
     : AudioProcessorEditor (&p), audioProcessor (p)
 {
-    settingsMenu.setThemeChangeListener(this);
+
     setTheme(themeManager.getCurrentTheme());
+
+    addAndMakeVisible(uiModeButton);
+    uiModeButton.setAlwaysOnTop(true);
+    uiModeButton.onClick = [this]()
+        {
+            // Toggle the mode
+            basicModeIsSelected = !basicModeIsSelected;
+            audioProcessor.treestate.getParameter(parameterInfo::uiModeId)->setValueNotifyingHost(basicModeIsSelected ? 1.0f : 0.0f);
+
+            // Update UI based on the new state
+            if (basicModeIsSelected)
+            {
+                basicModeUI.setVisible(true);
+                advancedModeUI.setVisible(false);
+                uiModeButton.setButtonText("Advanced View");
+                setSize(basicModeUI.getWidth(), basicModeUI.getHeight());
+            }
+            else
+            {
+                basicModeUI.setVisible(false);
+                advancedModeUI.setVisible(true);
+                uiModeButton.setButtonText("Basic View");
+                setSize(advancedModeUI.getWidth(), advancedModeUI.getHeight());
+            }
+        };
+
+    settingsMenu.setThemeChangeListener(this);
+
 
     logo.setAlwaysOnTop(true);
     addAndMakeVisible(logo);
@@ -47,8 +75,8 @@ FMPDistortionPluginAudioProcessorEditor::FMPDistortionPluginAudioProcessorEditor
                 setSize(advancedModeUI.getWidth(), advancedModeUI.getHeight());
             }
         };
-    uiSelectorButton.setAlwaysOnTop(true);
-    addAndMakeVisible(uiSelectorButton);
+    //uiSelectorButton.setAlwaysOnTop(true);
+    //addAndMakeVisible(uiSelectorButton);
     
     settingsButton.setButtonText("Settings");
     settingsButton.onClick = [this]()
@@ -108,8 +136,10 @@ void FMPDistortionPluginAudioProcessorEditor::resized()
 
     // set bounds for the constant elements.
     logo.setBounds(header.removeFromLeft(pluginWidth * 0.2).reduced(10));
-    uiSelectorButton.setBounds(header.removeFromLeft(header.getWidth() * 0.5f).reduced(10));
-    settingsButton.setBounds(header.removeFromRight(header.getWidth() * 0.5f));
+    uiModeButton.setBounds(header.removeFromLeft(header.getWidth() * 0.5f).reduced(100, 20));
+
+    //uiSelectorButton.setBounds(header.removeFromLeft(header.getWidth() * 0.5f).reduced(10));
+    settingsButton.setBounds(header.removeFromRight(header.getWidth() * 0.5f).reduced(50, 20));
 
     // set the bounds for the UI container components.
     advancedModeUI.setBounds(getLocalBounds());
@@ -129,10 +159,11 @@ void FMPDistortionPluginAudioProcessorEditor::setTheme(const Theme& currentTheme
     gainSliderFillColour = themeManager.getCurrentTheme().gainSliderFillColour;
     dryWetMixFillColour = themeManager.getCurrentTheme().mixSliderFillColour;
     sliderBackgroundColour = themeManager.getCurrentTheme().sliderBackgroundColour;
-    themeType = themeManager.getCurrentTheme().ThemeType;
+    themeType = themeManager.getCurrentTheme().themeType;
 
 
     logo.setTheme(themeManager.getCurrentTheme());
+    uiModeButton.setTheme(themeManager.getCurrentTheme());
     basicModeUI.setTheme(themeManager.getCurrentTheme());
     advancedModeUI.setTheme(themeManager.getCurrentTheme());
 

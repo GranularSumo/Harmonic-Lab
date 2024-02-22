@@ -6,6 +6,10 @@
     <GROUP id="{1792BE37-7486-8904-F4CB-FEBAA0054F22}" name="Source">
       <GROUP id="{8874B2DE-8A12-45C8-6044-2391FFB9C9EA}" name="UI">
         <GROUP id="{D7D54DCB-8074-61BF-AFCF-AEAD36CE9A22}" name="Components">
+          <FILE id="cENtAE" name="UiSwitcherButton.cpp" compile="1" resource="0"
+                file="Source/UiSwitcherButton.cpp"/>
+          <FILE id="xr03xe" name="UiSwitcherButton.h" compile="0" resource="0"
+                file="Source/UiSwitcherButton.h"/>
           <FILE id="Vu4jK0" name="ThemeManager.cpp" compile="1" resource="0"
                 file="Source/ThemeManager.cpp"/>
           <FILE id="JgsW1T" name="ThemeManager.h" compile="0" resource="0" file="Source/ThemeManager.h"/>
