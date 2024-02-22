@@ -11,6 +11,7 @@
 #pragma once
 
 #include <JuceHeader.h>
+#include "PluginProcessor.h"
 
 //==============================================================================
 /*
@@ -26,7 +27,7 @@ public:
 class SettingsMenu : public juce::Component
 {
 public:
-    SettingsMenu(float height, float width);
+    SettingsMenu(FMPDistortionPluginAudioProcessor& processor, float height, float width);
     ~SettingsMenu() override;
 
     void paint(juce::Graphics&) override;
@@ -36,6 +37,8 @@ public:
     void notifyThemeChange();
 
 private:
+    FMPDistortionPluginAudioProcessor& audioProcessor;
+
     ThemeChangeListener* themeChangeListener = nullptr;
 
     const float pluginWidth;

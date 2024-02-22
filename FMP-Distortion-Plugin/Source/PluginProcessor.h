@@ -11,6 +11,7 @@
 #include <JuceHeader.h>
 #include "Parameters.h"
 #include "Dsp.h"
+#include "ThemeManager.h"
 
 //==============================================================================
 /**
@@ -82,6 +83,8 @@ private:
     juce::dsp::ProcessSpec spec;
     double currentSampleRate = 0.0;
     int currentSamplePerBlock = 0;
+
+    int currentThemeId;
 
     //==============================================================================
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (FMPDistortionPluginAudioProcessor)

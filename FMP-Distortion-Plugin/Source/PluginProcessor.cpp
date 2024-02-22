@@ -39,6 +39,7 @@ FMPDistortionPluginAudioProcessor::FMPDistortionPluginAudioProcessor()
     treestate.addParameterListener(postFilterTypeId, this);
     treestate.addParameterListener(postFilterCutoffId, this);
     treestate.addParameterListener(postFilterResId, this);
+    treestate.addParameterListener(themeId, this);
 }
 
 FMPDistortionPluginAudioProcessor::~FMPDistortionPluginAudioProcessor()
@@ -58,6 +59,7 @@ FMPDistortionPluginAudioProcessor::~FMPDistortionPluginAudioProcessor()
     treestate.removeParameterListener(postFilterTypeId, this);
     treestate.removeParameterListener(postFilterCutoffId, this);
     treestate.removeParameterListener(postFilterResId, this);
+    treestate.removeParameterListener(themeId, this);
     
 }
 
@@ -92,6 +94,7 @@ juce::AudioProcessorValueTreeState::ParameterLayout FMPDistortionPluginAudioProc
     parameters.push_back(std::make_unique<juce::AudioParameterFloat>(postFilterResId, postFilterResName, 1.0f / std::sqrt(2), (1.0f / std::sqrt(2)) * 20.0f, 1.0f / std::sqrt(2) + 3));
 
     parameters.push_back(std::make_unique<juce::AudioParameterBool>(uiModeId, uiModeName, true));
+    parameters.push_back(std::make_unique<juce::AudioParameterChoice>(themeId, themeName, themeList, 0));
 
 
     return { parameters.begin(), parameters.end() };
@@ -214,6 +217,12 @@ void FMPDistortionPluginAudioProcessor::parameterChanged(const juce::String& par
     if (parameterID == postFilterResId)
     {
         postFilter.setResonance(newValue);
+    }
+
+
+    if (parameterID == themeId)
+    {
+        currentThemeId = static_cast<int>(newValue);
     }
 
 }
@@ -412,7 +421,12 @@ bool FMPDistortionPluginAudioProcessor::hasEditor() const
 
 juce::AudioProcessorEditor* FMPDistortionPluginAudioProcessor::createEditor()
 {
-    return new FMPDistortionPluginAudioProcessorEditor (*this);
+    //auto* editor = new FMPDistortionPluginAudioProcessorEditor(*this);
+    //auto theme = editor->getTheme(currentThemeId);
+    //auto themeManager = editor->getThemeManager();
+    //themeManager.switchTheme(theme);
+    //editor.setTheme(editor.getTheme(currentThemeId));
+    return new FMPDistortionPluginAudioProcessorEditor(*this);
     //return new juce::GenericAudioProcessorEditor(*this);
 }
 
@@ -422,8 +436,14 @@ void FMPDistortionPluginAudioProcessor::getStateInformation (juce::MemoryBlock& 
     // You should use this method to store your parameters in the memory block.
     // You could do that either as raw data, or use the XML or ValueTree classes
     // as intermediaries to make it easy to save and load complex data.
+
+
+
+
     auto state = treestate.copyState();
     std::unique_ptr<juce::XmlElement> xml(state.createXml());
+
+    xml->setAttribute("ThemeID", currentThemeId);
     copyXmlToBinary(*xml, destData);
 }
 
@@ -438,6 +458,10 @@ void FMPDistortionPluginAudioProcessor::setStateInformation (const void* data, i
         if (xmlState->hasTagName(treestate.state.getType()))
         {
             treestate.replaceState(juce::ValueTree::fromXml(*xmlState));
+            if (xmlState->hasAttribute("ThemeID"))
+            {
+                currentThemeId = xmlState->getIntAttribute("ThemeID");
+            }
         }
     }
 }

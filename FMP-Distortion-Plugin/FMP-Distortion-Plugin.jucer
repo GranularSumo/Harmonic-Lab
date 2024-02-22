@@ -26,8 +26,6 @@
           <FILE id="yQ7RFr" name="TextLoader.cpp" compile="1" resource="0" file="Source/TextLoader.cpp"/>
           <FILE id="v3b5sA" name="TextLoader.h" compile="0" resource="0" file="Source/TextLoader.h"/>
         </GROUP>
-        <FILE id="BoyE0E" name="Settings.cpp" compile="1" resource="0" file="Source/Settings.cpp"/>
-        <FILE id="yZUDid" name="Settings.h" compile="0" resource="0" file="Source/Settings.h"/>
         <FILE id="uAz3QV" name="AdvancedModeUI.cpp" compile="1" resource="0"
               file="Source/AdvancedModeUI.cpp"/>
         <FILE id="xXPdXB" name="AdvancedModeUI.h" compile="0" resource="0"

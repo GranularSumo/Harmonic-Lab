@@ -90,6 +90,10 @@ namespace parameterInfo
     const juce::String uiModeName = "UI Mode";
     const juce::String uiModeId = "uiMode";
 
+    const juce::String themeName = "Theme";
+    const juce::String themeId = "theme";
+    const juce::StringArray themeList = { "Default", "DarkMode" };
+
     Dsp::Algorithm indexToAlgorithm(int index);
 
 }                                            

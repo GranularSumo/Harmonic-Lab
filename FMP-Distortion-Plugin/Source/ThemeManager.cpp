@@ -72,3 +72,8 @@ const Theme& ThemeManager::getCurrentTheme()
 {
     return themes.at(currentThemeId);
 }
+
+int ThemeManager::getCurrentThemeId()
+{
+    return currentThemeId;
+}

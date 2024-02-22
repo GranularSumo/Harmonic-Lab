@@ -14,8 +14,20 @@
 FMPDistortionPluginAudioProcessorEditor::FMPDistortionPluginAudioProcessorEditor (FMPDistortionPluginAudioProcessor& p)
     : AudioProcessorEditor (&p), audioProcessor (p)
 {
+    auto currentThemeIdParameter = audioProcessor.treestate.getRawParameterValue(parameterInfo::themeId);
+    if (currentThemeIdParameter != nullptr)
+    {
+        // The actual index value is obtained directly since getRawParameterValue returns a pointer to the value
+        int currentThemeId = static_cast<int>(*currentThemeIdParameter);
 
-    setTheme(themeManager.getCurrentTheme());
+        // Use this index to switch the theme
+        themeManager.switchTheme(static_cast<ThemeManager::ThemeId>(currentThemeId));
+
+        // Assuming setTheme takes a Theme object, retrieve the current theme from the manager after switching
+        setTheme(themeManager.getCurrentTheme());
+    }
+    //themeManager.switchTheme(currentThemeId);
+    //setTheme(themeManager.getCurrentTheme());
 
     addAndMakeVisible(uiModeButton);
     uiModeButton.setAlwaysOnTop(true);
@@ -170,11 +182,22 @@ void FMPDistortionPluginAudioProcessorEditor::setTheme(const Theme& currentTheme
     repaint();
 }
 
+int FMPDistortionPluginAudioProcessorEditor::getTheme(int themeId)
+{
+    return themeManager.getCurrentThemeId();
+}
+
+ThemeManager& FMPDistortionPluginAudioProcessorEditor::getThemeManager()
+{
+    return themeManager;
+}
+
 void FMPDistortionPluginAudioProcessorEditor::themeChanged(int newThemeId)
 {
     themeManager.switchTheme(static_cast<ThemeManager::ThemeId>(newThemeId));
 
     setTheme(themeManager.getCurrentTheme());
+
 }
 
 
@@ -185,6 +208,7 @@ void FMPDistortionPluginAudioProcessorEditor::restoreUiState()
 
     if (basicModeIsSelected)
     {
+
         basicModeUI.setVisible(true);
         advancedModeUI.setVisible(false);
         uiSelectorButton.setButtonText("Advanced View");
@@ -192,6 +216,7 @@ void FMPDistortionPluginAudioProcessorEditor::restoreUiState()
     }
     else
     {
+
         advancedModeUI.setVisible(true);
         basicModeUI.setVisible(false);
         uiSelectorButton.setButtonText("Basic View");

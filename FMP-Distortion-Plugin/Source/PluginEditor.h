@@ -33,6 +33,8 @@ public:
     void resized() override;
 
     void setTheme(const Theme& currentTheme);
+    int getTheme(int themeId);
+    ThemeManager& getThemeManager();
     void themeChanged(int newThemeId) override;
 
 
@@ -59,7 +61,7 @@ private:
 
     BasicModeUI basicModeUI = BasicModeUI(audioProcessor, pluginHeight, pluginWidth);
     AdvancedModeUI advancedModeUI = AdvancedModeUI(audioProcessor, pluginHeight, pluginWidth);
-    SettingsMenu settingsMenu = SettingsMenu(pluginHeight, pluginWidth);
+    SettingsMenu settingsMenu = SettingsMenu(audioProcessor, pluginHeight, pluginWidth);
 
     UiSwitcherButton uiModeButton = UiSwitcherButton("Advanced View");
 

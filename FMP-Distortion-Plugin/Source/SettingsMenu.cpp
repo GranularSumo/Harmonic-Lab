@@ -13,7 +13,7 @@
 
 
 //==============================================================================
-SettingsMenu::SettingsMenu(float height, float width) : pluginHeight(height), pluginWidth(width)
+SettingsMenu::SettingsMenu(FMPDistortionPluginAudioProcessor& processor, float height, float width) : audioProcessor(processor), pluginHeight(height), pluginWidth(width)
 {
 
     themePickerLabel.setText("Themes", juce::dontSendNotification);
@@ -27,6 +27,8 @@ SettingsMenu::SettingsMenu(float height, float width) : pluginHeight(height), pl
     themePicker.addItem("DarkMode", 2);
     themePicker.addSeparator();
     themePicker.addSectionHeading("Light Themes");
+
+    themePickerAttachment = std::make_unique<juce::AudioProcessorValueTreeState::ComboBoxAttachment>(audioProcessor.treestate, parameterInfo::themeId, themePicker);
 
     themePicker.setSelectedId(1, juce::dontSendNotification);
     addAndMakeVisible(themePicker);

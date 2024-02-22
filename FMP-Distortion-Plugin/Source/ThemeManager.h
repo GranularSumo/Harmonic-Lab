@@ -20,6 +20,7 @@ public:
 
     void switchTheme(ThemeId newTheme);
     const Theme& getCurrentTheme();
+    int getCurrentThemeId();
 private:
     std::map<ThemeId, Theme> themes;
     ThemeId currentThemeId;
