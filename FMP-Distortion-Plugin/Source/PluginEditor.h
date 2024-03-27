@@ -17,6 +17,8 @@
 #include "SettingsMenu.h"
 #include "ThemeManager.h"
 #include "UiSwitcherButton.h"
+#include "AdvancedModeDescriptionSection.h"
+#include "TutorialSection.h"
 
 
 //==============================================================================
@@ -52,10 +54,13 @@ private:
     FMPDistortionPluginAudioProcessor& audioProcessor;
 
     const float pluginWidth = 900.0f;
+    const float advancedModePluginWidthOffset = 300.0f;
     const float pluginHeight = 675.0f;
 
     juce::TextButton uiSelectorButton;
     juce::TextButton settingsButton;
+    juce::ToggleButton oversamplingButton;
+    juce::Label oversamplingLabel;
 
     Logo logo;
 
@@ -63,12 +68,16 @@ private:
     AdvancedModeUI advancedModeUI = AdvancedModeUI(audioProcessor, pluginHeight, pluginWidth);
     SettingsMenu settingsMenu = SettingsMenu(audioProcessor, pluginHeight, pluginWidth);
 
-    UiSwitcherButton uiModeButton = UiSwitcherButton("Advanced View");
+    UiSwitcherButton uiModeButton = UiSwitcherButton("Basic");
 
     ThemeManager themeManager;
+    
+
+    AdvancedModeDescriptionSection descriptionSection;
+    TutorialSection tutorialSection;
 
     juce::Colour backgroundColour = themeManager.getCurrentTheme().backgroundColour;
-    juce::Colour ShadowColour = themeManager.getCurrentTheme().shadowColour;
+    juce::Colour shadowColour = themeManager.getCurrentTheme().shadowColour;
     juce::Colour highlightColour = themeManager.getCurrentTheme().highlightColour;
     juce::Colour driveSliderFillColour = themeManager.getCurrentTheme().driveSliderFillColour;
     juce::Colour filterSliderFillColour = themeManager.getCurrentTheme().filterSliderFillColour;
@@ -79,6 +88,8 @@ private:
 
     bool basicModeIsSelected = true;
     bool settingsMenuIsActiveWindow = false;
+
+    std::unique_ptr<juce::AudioProcessorValueTreeState::ButtonAttachment> oversamplingAttachment;
 
 
 

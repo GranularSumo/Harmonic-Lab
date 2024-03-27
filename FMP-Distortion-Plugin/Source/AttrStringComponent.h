@@ -1,8 +1,8 @@
 /*
   ==============================================================================
 
-    Logo.h
-    Created: 6 Feb 2024 4:47:14pm
+    AttrStringComponent.h
+    Created: 26 Mar 2024 7:59:12pm
     Author:  zeush
 
   ==============================================================================
@@ -16,26 +16,24 @@
 //==============================================================================
 /*
 */
-class Logo  : public juce::Component
+class AttrStringComponent  : public juce::Component
 {
 public:
-    Logo();
-    ~Logo() override;
+    AttrStringComponent();
+    ~AttrStringComponent() override;
 
     void paint (juce::Graphics&) override;
     void resized() override;
 
-    void mouseEnter(const juce::MouseEvent& event) override;
-    void mouseExit(const juce::MouseEvent& event) override;
-    void mouseDown(const juce::MouseEvent& event) override;
-
+    void setAttributedString(const juce::AttributedString& newAttrString);
     void setTheme(const Theme& currentTheme);
 
 private:
-    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(Logo)
+    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(AttrStringComponent)
 
-    bool isMouseOver = false;
-    juce::String versionNumber = "0.2.0";
+    juce::AttributedString attrString;
 
-    juce::Colour logoColour;
+    juce::Colour backgroundColour;
+    juce::Colour highlightColour;
+    juce::Colour shadowColour;
 };

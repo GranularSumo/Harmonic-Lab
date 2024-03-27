@@ -81,7 +81,7 @@ juce::AudioProcessorValueTreeState::ParameterLayout FMPDistortionPluginAudioProc
 
     parameters.push_back(std::make_unique<juce::AudioParameterChoice>(distortionTypeId, distortionTypeName, distortionTypes, 0));
 
-    parameters.push_back(std::make_unique<juce::AudioParameterFloat>(driveId, driveName, 1.0f, 24.0f, 1.0f));
+    parameters.push_back(std::make_unique<juce::AudioParameterFloat>(driveId, driveName, 1.0f, 24.0f, 4.0f));
 
     parameters.push_back(std::make_unique<juce::AudioParameterBool>(preFilterId, preFilterName, false));
     parameters.push_back(std::make_unique<juce::AudioParameterChoice>(preFilterTypeId, preFilterTypeName, preFilterTypes, 0));
@@ -319,7 +319,8 @@ void FMPDistortionPluginAudioProcessor::prepareToPlay (double sampleRate, int sa
     dspProcessor.updateDcBlockerCoefficient(sampleRate);
 
     dspProcessor.getSmoothedDrive().reset(sampleRate, 0.25);
-    dspProcessor.getSmoothedDrive().setCurrentAndTargetValue(1.0);
+    dspProcessor.getSmoothedDrive().setCurrentAndTargetValue(treestate.getRawParameterValue(parameterInfo::driveId)->load());
+
 
     preFilter.prepare(spec);
     preFilter.setType(juce::dsp::StateVariableTPTFilterType::lowpass);
@@ -421,11 +422,7 @@ bool FMPDistortionPluginAudioProcessor::hasEditor() const
 
 juce::AudioProcessorEditor* FMPDistortionPluginAudioProcessor::createEditor()
 {
-    //auto* editor = new FMPDistortionPluginAudioProcessorEditor(*this);
-    //auto theme = editor->getTheme(currentThemeId);
-    //auto themeManager = editor->getThemeManager();
-    //themeManager.switchTheme(theme);
-    //editor.setTheme(editor.getTheme(currentThemeId));
+
     return new FMPDistortionPluginAudioProcessorEditor(*this);
     //return new juce::GenericAudioProcessorEditor(*this);
 }

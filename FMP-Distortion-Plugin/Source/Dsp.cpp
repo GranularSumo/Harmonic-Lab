@@ -34,7 +34,7 @@ void Dsp::setSampleRate(float sampleRate)
 
 void Dsp::updateDcBlockerCoefficient(float sampleRate)
 {
-    const float cutoffFrequency = 15.0f; // DC blocker cutoff frequency in Hz
+    const float cutoffFrequency = 1.0f; // DC blocker cutoff frequency in Hz
     dcBlockerAlpha = 1.0f / (1.0f + (2.0f * pi * cutoffFrequency / sampleRate));
 }
 
@@ -164,7 +164,8 @@ float Dsp::BiasShaper(float currentSample)
     }
     else
     {
-        return softClipper(currentSample + 0.75) - 0.75;
+        currentSample = softClipper(currentSample + 0.75) - 0.75;
+        return softClipper(currentSample);
     }
 }
 
@@ -196,6 +197,7 @@ float Dsp::dualPathBitFolder(float currentSample, int channel)
         return feedbackWavefolder(downSampler(currentSample, channel), channel);
     }
 }
+
 
 float Dsp::downSampler(float currentSample, int channel)
 {
@@ -257,6 +259,7 @@ void Dsp::process(juce::dsp::AudioBlock<float>& block)
             {
                 channelData[sample] = processDcBlocker(channelData[sample], channel);
             }
+            
         }
 
     }
@@ -320,7 +323,6 @@ void Dsp::algorithmSelector(float& sample, int channel)
             dcFilterOn = true;
             sample = dualPathBitFolder(sample, channel);
             break;
-
 
         // quantization algorithms
 

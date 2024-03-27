@@ -43,7 +43,7 @@ namespace parameterInfo
                                                 "biasShape", 
                                                 "biasFold", 
                                                 "foldCrush", 
-                                                "dualPathBitFold", 
+                                                "dualPathBitFold",
                                                 "bitcrush", 
                                                 "squarefold", 
                                                 "downsample"};

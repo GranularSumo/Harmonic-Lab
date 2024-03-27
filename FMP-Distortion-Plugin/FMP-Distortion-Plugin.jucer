@@ -5,10 +5,26 @@
   <MAINGROUP id="Era7EM" name="FMP-Distortion-Plugin">
     <GROUP id="{1792BE37-7486-8904-F4CB-FEBAA0054F22}" name="Source">
       <GROUP id="{8874B2DE-8A12-45C8-6044-2391FFB9C9EA}" name="UI">
+        <FILE id="FhLFbV" name="TutorialSection.cpp" compile="1" resource="0"
+              file="Source/TutorialSection.cpp"/>
+        <FILE id="tA6kfb" name="TutorialSection.h" compile="0" resource="0"
+              file="Source/TutorialSection.h"/>
+        <FILE id="lWai1i" name="AdvancedModeDescriptionSection.cpp" compile="1"
+              resource="0" file="Source/AdvancedModeDescriptionSection.cpp"/>
+        <FILE id="qakYyf" name="AdvancedModeDescriptionSection.h" compile="0"
+              resource="0" file="Source/AdvancedModeDescriptionSection.h"/>
         <FILE id="cVlXiW" name="SettingsMenu.cpp" compile="1" resource="0"
               file="Source/SettingsMenu.cpp"/>
         <FILE id="P7VGIC" name="SettingsMenu.h" compile="0" resource="0" file="Source/SettingsMenu.h"/>
         <GROUP id="{D7D54DCB-8074-61BF-AFCF-AEAD36CE9A22}" name="Components">
+          <FILE id="ctJwHM" name="AttrStringComponent.cpp" compile="1" resource="0"
+                file="Source/AttrStringComponent.cpp"/>
+          <FILE id="SdF2ZW" name="AttrStringComponent.h" compile="0" resource="0"
+                file="Source/AttrStringComponent.h"/>
+          <FILE id="t54tXc" name="FocusOverlayComponent.cpp" compile="1" resource="0"
+                file="Source/FocusOverlayComponent.cpp"/>
+          <FILE id="hsusdJ" name="FocusOverlayComponent.h" compile="0" resource="0"
+                file="Source/FocusOverlayComponent.h"/>
           <FILE id="cENtAE" name="UiSwitcherButton.cpp" compile="1" resource="0"
                 file="Source/UiSwitcherButton.cpp"/>
           <FILE id="xr03xe" name="UiSwitcherButton.h" compile="0" resource="0"

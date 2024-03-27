@@ -28,8 +28,11 @@ BasicModeUI::BasicModeUI(FMPDistortionPluginAudioProcessor& processor, float hei
 
 
 
+    infoBox.setReadOnly(true);
+    infoBox.setMultiLine(true);
+
     algorithmSelector.setJustificationType(juce::Justification::centred);
-    algorithmSelector.addSectionHeading("Odd Harmonics");
+    algorithmSelector.addSectionHeading("Symmetrical");
     algorithmSelector.addItem("Softclipper", 1);
     algorithmSelector.addItem("Broken Softclipper", 2);
     algorithmSelector.addItem("Hardclipper", 3);
@@ -37,8 +40,8 @@ BasicModeUI::BasicModeUI(FMPDistortionPluginAudioProcessor& processor, float hei
     algorithmSelector.addItem("Foldback", 5);
 
     algorithmSelector.addSeparator();
-    algorithmSelector.addSectionHeading("Even Harmonics");
-    algorithmSelector.addItem("Asymetric Softclipper", 6);
+    algorithmSelector.addSectionHeading("Asymmetrical");
+    algorithmSelector.addItem("Assymetric Softclipper", 6);
     algorithmSelector.addItem("Bias Shaper", 7);
     algorithmSelector.addItem("Bias Folder", 8);
     algorithmSelector.addItem("Fold Crusher", 9);
@@ -63,9 +66,6 @@ BasicModeUI::BasicModeUI(FMPDistortionPluginAudioProcessor& processor, float hei
     addAndMakeVisible(algorithmSelector);
 
     selectorAttachment = std::make_unique<juce::AudioProcessorValueTreeState::ComboBoxAttachment>(audioProcessor.treestate, parameterInfo::distortionTypeId, algorithmSelector);
-
-
-    infoBox.setReadOnly(true);
 
     addAndMakeVisible(infoBox);
 
@@ -94,54 +94,35 @@ void BasicModeUI::paint (juce::Graphics& g)
 {
     auto bounds = getLocalBounds();
     auto headerBounds = bounds.removeFromTop(pluginHeight * 0.1f);
-    auto footerBounds = bounds.removeFromBottom(pluginHeight * 0.05f);
+    auto footerBounds = bounds.removeFromBottom(pluginHeight * 0.06f);
     auto mainAreaHeight = bounds.getHeight();
     auto row1Bounds = bounds.removeFromTop(mainAreaHeight * 0.2f);
     auto row2Bounds = bounds.removeFromTop(mainAreaHeight * 0.25f);
     auto row3Bounds = bounds.removeFromTop(mainAreaHeight * 0.375f);
 
-
-    g.fillAll(backgroundColour);
-
-    // colours the background of the header section
-    g.setColour(shadowColour);
-    g.fillRect(headerBounds);
-
-    // colours the background of the footer section
-    g.fillRect(footerBounds);
-
-    // draws a line to highlight the bottom of the header section
-    g.setColour(lineHighlightColour);
-    g.drawLine(
-        headerBounds.getX(),
-        headerBounds.getBottom(),
-        headerBounds.getRight(),
-        headerBounds.getBottom());
-
-    // draws a line to shade the top of the footer section
-    g.setColour(shadowColour.darker(0.3f));
-    g.drawLine(
-        footerBounds.getX(),
-        footerBounds.getY(),
-        footerBounds.getRight(),
-        footerBounds.getY());
+    float yOffset = headerBounds.getHeight() * 0.25f;
 
 
     // draws a separator line between row 2 and row 3
     g.setColour(lineHighlightColour);
     g.drawLine(
         row2Bounds.getX() + (row2Bounds.getWidth() * 0.1f),
-        row2Bounds.getBottom(),
+        row2Bounds.getBottom() - yOffset,
         row2Bounds.getRight() - (row2Bounds.getWidth() * 0.1f),
-        row2Bounds.getBottom());
+        row2Bounds.getBottom() - yOffset);
 
     // draws a shadow for the separator line between row 2 and row 3
     g.setColour(shadowColour);
     g.drawLine(
         row2Bounds.getX() + (row2Bounds.getWidth() * 0.1f),
-        row2Bounds.getBottom() - 1,
+        row2Bounds.getBottom() - 1 - yOffset,
         row2Bounds.getRight() - (row2Bounds.getWidth() * 0.1f),
-        row2Bounds.getBottom() - 1);
+        row2Bounds.getBottom() - 1 - yOffset);
+    g.drawLine(
+        row2Bounds.getX() + (row2Bounds.getWidth() * 0.1f),
+        row2Bounds.getBottom() - 2 - yOffset,
+        row2Bounds.getRight() - (row2Bounds.getWidth() * 0.1f),
+        row2Bounds.getBottom() - 2 - yOffset);
 
     // draws an arrow between sinePath and drive slider
     g.setColour(lineHighlightColour);
@@ -162,23 +143,25 @@ void BasicModeUI::resized()
 {
     auto bounds = getLocalBounds();
     auto headerBounds = bounds.removeFromTop(pluginHeight * 0.1f);
-    auto footerBounds = bounds.removeFromBottom(pluginHeight * 0.05f);
+    auto footerBounds = bounds.removeFromBottom(pluginHeight * 0.06f);
     auto mainAreaHeight = bounds.getHeight();
     auto row1Bounds = bounds.removeFromTop(mainAreaHeight * 0.2f);
     auto row2Bounds = bounds.removeFromTop(mainAreaHeight * 0.25f);
     auto row3Bounds = bounds.removeFromTop(bounds.getHeight() * 0.2);
 
+    float yOffset = headerBounds.getHeight() * 0.25f;
+
     // setting the bounds for components in row 1
     algorithmSelector.setBounds(
         row1Bounds.getX() + (row1Bounds.getWidth() * 0.375f),
-        row1Bounds.getY() + (row1Bounds.getHeight() * 0.4f),
+        row1Bounds.getY() + (row1Bounds.getHeight() * 0.4f) - yOffset,
         row1Bounds.getWidth() * 0.25f,
         row1Bounds.getHeight() * 0.25f);
 
     // setting the bounds for the components in row 2
     driveSlider.setBounds(
         row2Bounds.getX() + (row2Bounds.getWidth() * 0.375f),
-        row2Bounds.getY() - (row1Bounds.getHeight() * 0.25),
+        row2Bounds.getY() - (row1Bounds.getHeight() * 0.25) - yOffset,
         row2Bounds.getWidth() * 0.25,
         row2Bounds.getHeight());
 
@@ -186,7 +169,7 @@ void BasicModeUI::resized()
     float heightToRemove = row3Bounds.getHeight() * 0.15f;
     infoBoxTitle.setBounds(
         row3Bounds.getX(),
-        row3Bounds.getY(),
+        row3Bounds.getY() - yOffset,
         row3Bounds.getWidth(),
         row3Bounds.getHeight());
 
@@ -194,7 +177,7 @@ void BasicModeUI::resized()
     float widthToRemove = pluginWidth * 0.1f;
     infoBox.setBounds(
         bounds.getX() + widthToRemove,
-        bounds.getY(),
+        bounds.getY() - yOffset,
         bounds.getWidth() - (widthToRemove * 2),
         bounds.getHeight() - (heightToRemove * 2));
 
@@ -202,14 +185,14 @@ void BasicModeUI::resized()
     auto sinePathWidth = row2Bounds.getHeight() * 0.75f;
     sinePath.setBounds(
         row2Bounds.getX() + (row2Bounds.getWidth() * 0.25f),
-        row2Bounds.getY() + row2Bounds.getHeight() * 0.1f,
+        row2Bounds.getY() + row2Bounds.getHeight() * 0.1f - yOffset,
         sinePathWidth,
         sinePathWidth * 0.5f);
 
     // setting the bounds for the pathSelector
     pathSelector.setBounds(
         row2Bounds.getX() + (row2Bounds.getWidth() * 0.75f) - sinePathWidth,
-        row2Bounds.getY() + row2Bounds.getHeight() * 0.1f,
+        row2Bounds.getY() + row2Bounds.getHeight() * 0.1f - yOffset,
         sinePathWidth,
         sinePathWidth * 0.5f);
 }
@@ -224,6 +207,9 @@ void BasicModeUI::setTheme(const Theme& currentTheme)
 
     pathSelector.setTheme(currentTheme);
     sinePath.setTheme(currentTheme);
+
+    algorithmSelector.setColour(juce::ComboBox::backgroundColourId, currentTheme.shadowColour);
+    algorithmSelector.setColour(juce::ComboBox::outlineColourId, currentTheme.highlightColour);
 }
 
 void BasicModeUI::setBackgroundColour(const juce::Colour& colour)
@@ -245,7 +231,7 @@ void BasicModeUI::setDriveSliderColours(const juce::Colour& fillColour, const ju
 {
     driveSlider.setColour(juce::Slider::rotarySliderFillColourId, fillColour);
     driveSlider.setColour(juce::Slider::rotarySliderOutlineColourId, backgroundColour);
-    driveSlider.setColour(juce::Slider::thumbColourId, backgroundColour.brighter(0.4f));
+    driveSlider.setColour(juce::Slider::thumbColourId, juce::Colours::transparentBlack);
 }
 
 void BasicModeUI::setInfoBoxColours(const juce::Colour& backgroundColour, const juce::Colour& highlightColour)

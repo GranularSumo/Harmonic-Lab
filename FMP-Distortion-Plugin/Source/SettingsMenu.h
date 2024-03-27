@@ -33,6 +33,8 @@ public:
     void paint(juce::Graphics&) override;
     void resized() override;
 
+    void setTheme(const Theme& currentTheme);
+
     void setThemeChangeListener(ThemeChangeListener* listener);
     void notifyThemeChange();
 
@@ -47,6 +49,10 @@ private:
     juce::Label themePickerLabel;
     juce::ComboBox themePicker;
     juce::ToggleButton oversampling;
+
+    juce::Colour backgroundColour;
+    juce::Colour shadowColour;
+    juce::Colour lineHighlightColour;
 
     std::unique_ptr<juce::AudioProcessorValueTreeState::ComboBoxAttachment> themePickerAttachment;
 

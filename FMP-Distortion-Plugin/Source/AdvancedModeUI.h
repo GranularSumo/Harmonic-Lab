@@ -13,9 +13,9 @@
 #include <JuceHeader.h>
 #include <JuceHeader.h>
 #include "PluginProcessor.h"
-#include "TextLoader.h"
 #include "SvgPathManager.h"
 #include "Theme.h"
+#include "FocusOverlayComponent.h"
 
 //==============================================================================
 /*
@@ -29,6 +29,10 @@ public:
     void paint (juce::Graphics&) override;
     void resized() override;
 
+    juce::String getCurrentAlgorithm();
+    void setCurrentPath(int index);
+
+    juce::ComboBox& getAlgorithmSelector();
 
     void setTheme(const Theme& currentTheme);
     void setBackgroundColour(const juce::Colour& colour);
@@ -39,8 +43,11 @@ public:
     void setGainSliderColours(const juce::Colour& fillColour, const juce::Colour& backgroundColour);
     void setMixSliderColours(const juce::Colour& fillColour, const juce::Colour& backgroundColour);
 
+    void setHighlightedArea(juce::String component);
+    void clearHighlightedAreas();
 
 
+    void showOverlay(bool shouldShow);
 
 
 private:
@@ -50,8 +57,12 @@ private:
     float pluginHeight;
     float pluginWidth;
 
+    FocusOverlayComponent focusOverlay;
+
     SvgPathManager sinePath;
     SvgPathManager pathSelector;
+
+    juce::String currentAlgorithm;
 
     juce::Colour backgroundColour;
     juce::Colour shadowColour;
@@ -64,17 +75,24 @@ private:
     juce::ToggleButton preFilterButton;
     juce::ComboBox preFilterSelector;
     juce::Slider preFilterFreqSlider;
+    juce::Label preFilterFreqLabel;
     juce::Slider preFilterResSlider;
+    juce::Label preFilterResLabel;
 
     juce::Label postFilterLabel;
     juce::ToggleButton postFilterButton;
     juce::ComboBox postFilterSelector;
     juce::Slider postFilterFreqSlider;
+    juce::Label postFilterFreqLabel;
     juce::Slider postFilterResSlider;
+    juce::Label postFilterResLabel;
 
     juce::Slider inputGainSlider;
+    juce::Label inputGainLabel;
     juce::Slider outputGainSlider;
+    juce::Label outputGainLabel;
     juce::Slider dryWetMixSlider;
+    juce::Label dryWetMixLabel;
 
     std::unique_ptr<juce::AudioProcessorValueTreeState::SliderAttachment> distortionAttachment;
     std::unique_ptr<juce::AudioProcessorValueTreeState::ComboBoxAttachment> selectorAttachment;

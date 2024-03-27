@@ -14,7 +14,7 @@
 
 class ThemeManager {
 public:
-    enum ThemeId { Default, DarkMode };
+    enum ThemeId { Default, Vista };
 
     ThemeManager();
 

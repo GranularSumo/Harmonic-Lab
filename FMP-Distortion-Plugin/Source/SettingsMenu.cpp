@@ -24,7 +24,7 @@ SettingsMenu::SettingsMenu(FMPDistortionPluginAudioProcessor& processor, float h
 
     themePicker.addSectionHeading("Dark Themes");
     themePicker.addItem("Default", 1);
-    themePicker.addItem("DarkMode", 2);
+    themePicker.addItem("Vista", 2);
     themePicker.addSeparator();
     themePicker.addSectionHeading("Light Themes");
 
@@ -32,11 +32,6 @@ SettingsMenu::SettingsMenu(FMPDistortionPluginAudioProcessor& processor, float h
 
     themePicker.setSelectedId(1, juce::dontSendNotification);
     addAndMakeVisible(themePicker);
-
-
-
-    oversampling.setButtonText("oversampling");
-    addAndMakeVisible(oversampling);
 
     setSize(pluginWidth, pluginHeight);
 }
@@ -47,13 +42,14 @@ SettingsMenu::~SettingsMenu()
 
 void SettingsMenu::paint(juce::Graphics& g)
 {
-    g.fillAll(getLookAndFeel().findColour(juce::ResizableWindow::backgroundColourId));   // clear the background
+    auto bounds = getLocalBounds();
+    auto headerBounds = bounds.removeFromTop(pluginHeight * 0.1f);
+    auto footerBounds = bounds.removeFromBottom(pluginHeight * 0.05f);
+    auto mainAreaHeight = bounds.getHeight();
+    auto row1Bounds = bounds.removeFromTop(mainAreaHeight * 0.2f);
+    auto row2Bounds = bounds.removeFromTop(mainAreaHeight * 0.25f);
+    auto row3Bounds = bounds.removeFromTop(mainAreaHeight * 0.375f);
 
-    g.setColour(juce::Colours::grey);
-    g.drawRect(getLocalBounds(), 1);   // draw an outline around the component
-
-    g.setColour(juce::Colours::white);
-    g.setFont(14.0f);
 }
 
 void SettingsMenu::resized()
@@ -68,6 +64,14 @@ void SettingsMenu::resized()
 
     themePickerLabel.setBounds(100, 100, 250, 30);
     themePicker.setBounds(bounds.getCentreX() - (themePickerWidth * 0.5), bounds.getY() + 50 + themePickerHeight, themePickerWidth, themePickerHeight);
+}
+
+void SettingsMenu::setTheme(const Theme& currentTheme)
+{
+    backgroundColour = currentTheme.backgroundColour;
+    shadowColour = currentTheme.shadowColour;
+    lineHighlightColour = currentTheme.highlightColour;
+	repaint();
 }
 
 void SettingsMenu::setThemeChangeListener(ThemeChangeListener* listener)
