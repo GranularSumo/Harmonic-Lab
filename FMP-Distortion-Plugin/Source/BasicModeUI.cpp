@@ -31,6 +31,12 @@ BasicModeUI::BasicModeUI(FMPDistortionPluginAudioProcessor& processor, float hei
     infoBox.setReadOnly(true);
     infoBox.setMultiLine(true);
 
+    addAndMakeVisible(viewport);
+    viewport.setViewedComponent(&attrStringComp, false);
+    viewport.setScrollBarsShown(true, false);
+    viewport.setVisible(true);
+    
+
     algorithmSelector.setJustificationType(juce::Justification::centred);
     algorithmSelector.addSectionHeading("Symmetrical");
     algorithmSelector.addItem("Softclipper", 1);
@@ -41,7 +47,7 @@ BasicModeUI::BasicModeUI(FMPDistortionPluginAudioProcessor& processor, float hei
 
     algorithmSelector.addSeparator();
     algorithmSelector.addSectionHeading("Asymmetrical");
-    algorithmSelector.addItem("Assymetric Softclipper", 6);
+    algorithmSelector.addItem("Asymmetric Softclipper", 6);
     algorithmSelector.addItem("Bias Shaper", 7);
     algorithmSelector.addItem("Bias Folder", 8);
     algorithmSelector.addItem("Fold Crusher", 9);
@@ -57,7 +63,13 @@ BasicModeUI::BasicModeUI(FMPDistortionPluginAudioProcessor& processor, float hei
         {
 
             selectedPath = algorithmSelector.getText();
-            textLoader.setAlgorithm(selectedPath);
+            
+
+
+            juce::AttributedString description;
+            selectedPath = algorithmSelector.getText();
+            textLoader.setAlgorithm(selectedPath); // Ensure the loader has updated content
+            updateAlgorithmDescription();
             infoBox.setText(textLoader.getAlgorithmDescription(selectedPath), juce::dontSendNotification);
 
             pathSelector.setCurrentPath(pathSelector.getPath(algorithmSelector.getSelectedId()));
@@ -67,7 +79,7 @@ BasicModeUI::BasicModeUI(FMPDistortionPluginAudioProcessor& processor, float hei
 
     selectorAttachment = std::make_unique<juce::AudioProcessorValueTreeState::ComboBoxAttachment>(audioProcessor.treestate, parameterInfo::distortionTypeId, algorithmSelector);
 
-    addAndMakeVisible(infoBox);
+    //addAndMakeVisible(infoBox);
 
 
     infoBoxTitle.setText("Algorithm Details", juce::NotificationType::dontSendNotification);
@@ -175,11 +187,19 @@ void BasicModeUI::resized()
 
     
     float widthToRemove = pluginWidth * 0.1f;
-    infoBox.setBounds(
+    //infoBox.setBounds(
+    //    bounds.getX() + widthToRemove,
+    //    bounds.getY() - yOffset,
+    //    bounds.getWidth() - (widthToRemove * 2),
+    //    bounds.getHeight() - (heightToRemove * 2));
+
+    viewport.setBounds(
         bounds.getX() + widthToRemove,
         bounds.getY() - yOffset,
         bounds.getWidth() - (widthToRemove * 2),
         bounds.getHeight() - (heightToRemove * 2));
+
+    attrStringComp.setSize(viewport.getWidth(), viewport.getHeight() * 2.0f);
 
     // setting the bounds for the sinePath
     auto sinePathWidth = row2Bounds.getHeight() * 0.75f;
@@ -210,6 +230,10 @@ void BasicModeUI::setTheme(const Theme& currentTheme)
 
     algorithmSelector.setColour(juce::ComboBox::backgroundColourId, currentTheme.shadowColour);
     algorithmSelector.setColour(juce::ComboBox::outlineColourId, currentTheme.highlightColour);
+
+    attrStringComp.setBackgroundColour(currentTheme.backgroundColour.darker(0.3f));
+    textColour = currentTheme.textColour;
+    updateAlgorithmDescription();
 }
 
 void BasicModeUI::setBackgroundColour(const juce::Colour& colour)
@@ -238,6 +262,79 @@ void BasicModeUI::setInfoBoxColours(const juce::Colour& backgroundColour, const 
 {
     infoBox.setColour(juce::TextEditor::backgroundColourId, backgroundColour);
     infoBox.setColour(juce::TextEditor::outlineColourId, lineHighlightColour);
+}
+
+void BasicModeUI::updateAlgorithmDescription()
+{
+    if (algorithmSelector.getText().isEmpty()) {
+        return; // Guard against empty selection
+    }
+
+    juce::AttributedString description;
+
+    // Match algorithm text and set description accordingly
+    auto selectedAlgorithm = algorithmSelector.getText();
+    if (selectedAlgorithm == "Softclipper")
+    {
+        description = textLoader.createSoftclipperDescription();
+    }
+    else if (selectedAlgorithm == "Broken Softclipper")
+    {
+        description = textLoader.createBrokenSoftclipperDescription();
+    }
+    else if (selectedAlgorithm == "Hardclipper")
+    {
+        description = textLoader.createHardclipperDescription();
+    }
+    else if (selectedAlgorithm == "Wavefolder")
+    {
+        description = textLoader.createWavefolderDescription();
+    }
+    else if (selectedAlgorithm == "Foldback")
+    {
+        description = textLoader.createFoldbackDescription();
+    }
+    else if (selectedAlgorithm == "Asymmetric Softclipper")
+    {
+        description = textLoader.createAsymmetricSoftclipperDescription();
+    }
+    else if (selectedAlgorithm == "Bias Shaper")
+    {
+        description = textLoader.createBiasShaperDescription();
+    }
+    else if (selectedAlgorithm == "Bias Folder")
+    {
+        description = textLoader.createBiasFolderDescription();
+    }
+    else if (selectedAlgorithm == "Fold Crusher")
+    {
+        description = textLoader.createFoldCrusherDescription();
+    }
+    else if (selectedAlgorithm == "Dual Path BitFolder")
+    {
+        description = textLoader.createDualPathBitFolderDescription();
+    }
+    else if (selectedAlgorithm == "Bitcrusher")
+    {
+        description = textLoader.createBitCrusherDescription();
+    }
+    else if (selectedAlgorithm == "Square Folder")
+    {
+        description = textLoader.createSquareFolderDescription();
+    }
+    else if (selectedAlgorithm == "Downsample")
+    {
+        description = textLoader.createDownSamplerDescription();
+    }
+    else
+    {
+        // Fallback for any algorithms without a specific description function
+        description.append(textLoader.getAlgorithmDescription(selectedAlgorithm), juce::Font(14.0f), textColour);
+    }
+
+    description.setColour(textColour);
+    attrStringComp.setAttributedString(description);
+    viewport.setViewPosition(0, 0);
 }
 
 

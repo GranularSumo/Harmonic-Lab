@@ -47,8 +47,6 @@ FMPDistortionPluginAudioProcessorEditor::FMPDistortionPluginAudioProcessorEditor
                 descriptionSection.setVisible(false);
                 tutorialSection.setVisible(false);
                 uiModeButton.setButtonText("Basic");
-                oversamplingButton.setVisible(true);
-                oversamplingLabel.setVisible(true);
                 setSize(pluginWidth, basicModeUI.getHeight());
             }
             else
@@ -57,8 +55,6 @@ FMPDistortionPluginAudioProcessorEditor::FMPDistortionPluginAudioProcessorEditor
                 advancedModeUI.setVisible(true);
                 descriptionSection.setVisible(true);
                 tutorialSection.setVisible(true);
-                oversamplingButton.setVisible(true);
-                oversamplingLabel.setVisible(true);
                 uiModeButton.setButtonText("Advanced");
                 setSize(pluginWidth + (advancedModePluginWidthOffset * 2.0f), advancedModeUI.getHeight());
                 
@@ -66,16 +62,6 @@ FMPDistortionPluginAudioProcessorEditor::FMPDistortionPluginAudioProcessorEditor
         };
 
     settingsMenu.setThemeChangeListener(this);
-
-    addAndMakeVisible(oversamplingLabel);
-    oversamplingLabel.setAlwaysOnTop(true);
-    oversamplingLabel.setJustificationType(juce::Justification::centred);
-    oversamplingLabel.setText("Oversampling", juce::dontSendNotification);
-    addAndMakeVisible(oversamplingButton);
-    oversamplingButton.setAlwaysOnTop(true);
-
-    oversamplingAttachment = std::make_unique<juce::AudioProcessorValueTreeState::ButtonAttachment>(audioProcessor.treestate, parameterInfo::oversamplingId, oversamplingButton);
-
 
     logo.setAlwaysOnTop(true);
     addAndMakeVisible(logo);
@@ -95,8 +81,6 @@ FMPDistortionPluginAudioProcessorEditor::FMPDistortionPluginAudioProcessorEditor
                 descriptionSection.setVisible(false);
                 tutorialSection.setVisible(false);
                 uiModeButton.setVisible(false);
-                oversamplingButton.setVisible(false);
-                oversamplingLabel.setVisible(false);
                 addAndMakeVisible(settingsMenu);
                 settingsButton.setButtonText("Close");
                 settingsMenuIsActiveWindow = true; // Update flag
@@ -115,8 +99,6 @@ FMPDistortionPluginAudioProcessorEditor::FMPDistortionPluginAudioProcessorEditor
                     basicModeUI.setVisible(true);
                     descriptionSection.setVisible(false);
                     tutorialSection.setVisible(false);
-                    oversamplingButton.setVisible(true);
-                    oversamplingLabel.setVisible(true);
                     setSize(basicModeUI.getWidth(), basicModeUI.getHeight());
                 }
                 else
@@ -124,8 +106,6 @@ FMPDistortionPluginAudioProcessorEditor::FMPDistortionPluginAudioProcessorEditor
                     advancedModeUI.setVisible(true);
                     descriptionSection.setVisible(true);
                     tutorialSection.setVisible(true);
-                    oversamplingButton.setVisible(true);
-                    oversamplingLabel.setVisible(true);
                     setSize(pluginWidth + (advancedModePluginWidthOffset * 2.0f), advancedModeUI.getHeight());
                 }
                 settingsMenuIsActiveWindow = false; // Update flag
@@ -159,13 +139,57 @@ void FMPDistortionPluginAudioProcessorEditor::paint (juce::Graphics& g)
     auto bounds = getLocalBounds();
     auto headerBounds = bounds.removeFromTop(pluginHeight * 0.1f);
     auto footerBounds = bounds.removeFromBottom(pluginHeight * 0.075f);
+
+    g.fillAll(backgroundColour);
+
+    // Paint the overall background
+    g.fillAll(backgroundColour);
+
+    // Paint header section
+    g.setColour(shadowColour);
+    g.fillRect(headerBounds);
+
+    // Paint footer section
+    g.fillRect(footerBounds);
+
+    // Additional UI drawing code...
+
+    if (!basicModeIsSelected) {
+        // In advanced mode, fill the main area excluding header, footer, and potentially other sections
+
+        auto bounds = getLocalBounds();
+        auto mainAreaBounds = bounds;
+
+        // Exclude header area
+        auto headerHeight = pluginHeight * 0.1f; // adjust according to your UI structure
+        mainAreaBounds.removeFromTop(headerHeight);
+
+        // Exclude footer area
+        auto footerHeight = pluginHeight * 0.075f; // adjust according to your UI structure
+        mainAreaBounds.removeFromBottom(footerHeight);
+
+        // At this point, mainAreaBounds should represent the main UI area without header and footer
+        // Now fill this adjusted area with the darker color
+        g.setColour(backgroundColour.brighter(0.05f));
+        auto leftPanel = mainAreaBounds.removeFromLeft(advancedModePluginWidthOffset);
+        auto rightPanel = mainAreaBounds.removeFromRight(advancedModePluginWidthOffset);
+        g.fillRect(leftPanel);
+        g.fillRect(rightPanel);
+
+        g.setColour(shadowColour);
+        g.drawLine(leftPanel.getRight() + 1, leftPanel.getY(), leftPanel.getRight() + 1, leftPanel.getBottom());
+        g.drawLine(rightPanel.getX() - 1, rightPanel.getY(), rightPanel.getX() - 1, rightPanel.getBottom());
+    }
+
+
+
+
     auto mainAreaHeight = bounds.getHeight();
     auto row1Bounds = bounds.removeFromTop(mainAreaHeight * 0.2f);
     auto row2Bounds = bounds.removeFromTop(mainAreaHeight * 0.25f);
     auto row3Bounds = bounds.removeFromTop(mainAreaHeight * 0.375f);
 
 
-    g.fillAll(backgroundColour);
 
     // colours the background of the header section
     g.setColour(shadowColour);
@@ -232,8 +256,6 @@ void FMPDistortionPluginAudioProcessorEditor::resized()
             footerBounds.getHeight() - footerBounds.getHeight() * 0.2f);
         settingsButton.setBounds(header.removeFromRight(header.getWidth() * 0.4f).reduced(100, 20));
 
-        oversamplingButton.setBounds(settingsButton.getX() - 100, settingsButton.getY(), 30.0f, 30.0f);
-        oversamplingLabel.setBounds(oversamplingButton.getBounds().getCentreX() - 50, oversamplingButton.getBottom() - 5, 100.0f, 20.0f);
         settingsMenu.setBounds(getLocalBounds());
     }
     else
@@ -250,8 +272,6 @@ void FMPDistortionPluginAudioProcessorEditor::resized()
             footerBounds.getHeight() - footerBounds.getHeight() * 0.2f);
         settingsButton.setBounds(header.removeFromRight(header.getWidth() * 0.5f).reduced(100, 20));
 
-        oversamplingButton.setBounds(settingsButton.getX() - 100, settingsButton.getY(), 30.0f, 30.0f);
-        oversamplingLabel.setBounds(oversamplingButton.getBounds().getCentreX() - 50, oversamplingButton.getBottom() - 5, 100.0f, 20.0f);
         settingsMenu.setBounds(advancedModeBounds);
 
         auto descriptionBounds = juce::Rectangle<int>(getLocalBounds().getX(), header.getBottom(), advancedModePluginWidthOffset, getLocalBounds().getHeight() - (footerBounds.getHeight() + header.getHeight()));

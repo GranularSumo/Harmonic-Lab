@@ -13,6 +13,7 @@
 #include <JuceHeader.h>
 #include "Theme.h"
 #include "TextLoader.h"
+#include "AttrStringComponent.h"
 
 //==============================================================================
 /*
@@ -32,7 +33,10 @@ public:
 
 private:
 
-    juce::TextEditor descriptionBox;
+    //juce::TextEditor descriptionBox;
+    juce::Viewport viewport;
+    AttrStringComponent attrStringComp;
+
     juce::Label descriptionLabel;
 
     TextLoader textLoader;

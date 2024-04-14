@@ -50,11 +50,16 @@ private:
     juce::ComboBox themePicker;
     juce::ToggleButton oversampling;
 
+    juce::Label oversamplingLabel;
+    juce::ToggleButton oversamplingButton;
+    juce::Label oversamplingNoticeLabel;
+
     juce::Colour backgroundColour;
     juce::Colour shadowColour;
     juce::Colour lineHighlightColour;
 
     std::unique_ptr<juce::AudioProcessorValueTreeState::ComboBoxAttachment> themePickerAttachment;
+    std::unique_ptr<juce::AudioProcessorValueTreeState::ButtonAttachment> oversamplingAttachment;
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(SettingsMenu)
 };

@@ -27,6 +27,7 @@ public:
 
     void setAttributedString(const juce::AttributedString& newAttrString);
     void setTheme(const Theme& currentTheme);
+    void setBackgroundColour(const juce::Colour& colour);
 
 private:
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(AttrStringComponent)

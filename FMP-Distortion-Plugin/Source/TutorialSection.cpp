@@ -103,7 +103,16 @@ TutorialSection::~TutorialSection()
 
 void TutorialSection::paint (juce::Graphics& g)
 {
-    g.fillAll(backgroundColour.brighter(0.05f));
+    auto bounds = getLocalBounds();
+    g.fillAll(backgroundColour.brighter(0.1f));
+
+    g.setColour(shadowColour);
+    g.drawLine(bounds.getX(), bounds.getY(), bounds.getRight(), bounds.getY());
+    g.drawLine(bounds.getX(), bounds.getBottom(), bounds.getRight(), bounds.getBottom());
+
+    g.setColour(highlightColour.brighter(0.05f));
+    g.drawLine(bounds.getX(), bounds.getY() + 1, bounds.getRight(), bounds.getY() + 1);
+    g.drawLine(bounds.getX(), bounds.getBottom() - 1, bounds.getRight(), bounds.getBottom() - 1);
 
 
 
@@ -273,7 +282,7 @@ void TutorialSection::loadTutorialPage(const juce::String& tutorialSetId, int pa
     {
         const auto& page = tutorialSet.pages[pageIndex];
         attrStringComp.setAttributedString(page.text);
-        attrStringComp.setSize(270, 2000);
+        attrStringComp.setSize(270, 600);
         //if (ui) ui->setHighlightedArea(page.highlightedComponent);
         buttonClickedAction(page.highlightedComponent);
 

@@ -15,6 +15,7 @@
 #include "TextLoader.h"
 #include "SvgPathManager.h"
 #include "Theme.h"
+#include "AttrStringComponent.h"
 
 //==============================================================================
 /*
@@ -35,6 +36,8 @@ public:
     void setDriveSliderColours(const juce::Colour& fillColour, const juce::Colour& backgroundColour);
     void setInfoBoxColours(const juce::Colour& backgroundColour, const juce::Colour& highlightColour);
 
+    void updateAlgorithmDescription();
+
 
 private:
 
@@ -47,6 +50,10 @@ private:
     juce::ComboBox algorithmSelector;
     juce::Label infoBoxTitle;
     juce::TextEditor infoBox;
+
+    AttrStringComponent attrStringComp;
+    juce::Viewport viewport;
+    juce::Colour textColour;
 
     SvgPathManager sinePath;
     SvgPathManager pathSelector;

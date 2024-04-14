@@ -14,7 +14,7 @@
 
 class ThemeManager {
 public:
-    enum ThemeId { Default, Vista };
+    enum ThemeId { Default, Vista, Candy };
 
     ThemeManager();
 

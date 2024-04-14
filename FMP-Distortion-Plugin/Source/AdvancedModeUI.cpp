@@ -29,7 +29,7 @@ AdvancedModeUI::AdvancedModeUI(FMPDistortionPluginAudioProcessor& processor, flo
 
     algorithmSelector.addSeparator();
     algorithmSelector.addSectionHeading("Asymmetrical");
-    algorithmSelector.addItem("Assymetric Softclipper", 6);
+    algorithmSelector.addItem("Asymmetric Softclipper", 6);
     algorithmSelector.addItem("Bias Shaper", 7);
     algorithmSelector.addItem("Bias Folder", 8);
     algorithmSelector.addItem("Fold Crusher", 9);
@@ -547,6 +547,19 @@ void AdvancedModeUI::setHighlightedArea(juce::String component)
         auto algorithmSelectorBounds = focusOverlay.getLocalArea(this, algorithmSelector.getBounds().expanded(15, 10));
         focusOverlay.addHighlightedAreaBounds(algorithmSelectorBounds);
 
+    }
+
+    if (component == "Algorithm Description")
+    {
+        focusOverlay.clearHighlightedAreas();
+
+        auto xPosition = getLocalBounds().getX();
+        auto yPosition = getLocalBounds().getCentreY();
+
+        juce::Rectangle<int> boxToPointTo(xPosition, yPosition, 1, 1);
+        auto algorithmDescriptionBoxBounds = focusOverlay.getLocalArea(this, boxToPointTo);
+
+        focusOverlay.drawLineToComponent(algorithmDescriptionBoxBounds);
     }
 
     if (component == "Algorithm Display")

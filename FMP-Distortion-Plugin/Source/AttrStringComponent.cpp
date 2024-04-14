@@ -56,3 +56,9 @@ void AttrStringComponent::setTheme(const Theme& currentTheme)
     shadowColour = currentTheme.shadowColour;
     highlightColour = currentTheme.highlightColour;
 }
+
+void AttrStringComponent::setBackgroundColour(const juce::Colour& colour)
+{
+    backgroundColour = colour;
+    repaint();
+}

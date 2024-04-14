@@ -30,6 +30,11 @@ void FocusOverlayComponent::paint(juce::Graphics& g)
     int borderWidth = 2; // Define the border width
     g.setColour(juce::Colours::white); // Border colour
 
+    g.setColour(juce::Colours::white); // Set to desired line colour
+    for (const auto& line : linesToDraw) {
+        g.drawLine(line, borderWidth); // Assuming 'borderWidth' is your desired line width
+    }
+
     // The endpoint for lines is the center of the right side of the screen
     juce::Point<float> lineEnd(area.getRight() - 1, area.getCentreY()); // -1 to ensure it's within bounds
 
@@ -48,6 +53,8 @@ void FocusOverlayComponent::paint(juce::Graphics& g)
         // Draw the border around the original bounds
         g.drawRect(bounds, borderWidth); // Draw the border with the specified thickness
     }
+
+
 
     // Re-fill the overlay, which will respect the excluded regions
     g.fillAll(juce::Colours::black.withAlpha(0.7f));
@@ -75,6 +82,28 @@ void FocusOverlayComponent::addHighlightedAreaBounds(const juce::Rectangle<int>&
 void FocusOverlayComponent::clearHighlightedAreas()
 {
     highlightedAreas.clear();
+    linesToDraw.clear();
+    repaint();
+}
+
+void FocusOverlayComponent::drawLineToComponent(juce::Rectangle<int> componentBounds)
+{
+    // Assuming componentBounds is already in local coordinates relative to this component
+    // If not, you will need to adjust its position based on this component's position.
+
+    // Find the center of the right-hand side of this component
+    auto thisRightCenter = juce::Point<float>(getLocalBounds().getRight(), getHeight() / 2.0f);
+
+    // Find the center of the right-hand side of the passed bounds
+    auto targetRightCenter = juce::Point<float>(componentBounds.getRight(), componentBounds.getY() + componentBounds.getHeight() / 2.0f);
+
+    // Create a line between these two points
+    juce::Line<float> line(thisRightCenter, targetRightCenter);
+
+    // Store the line
+    linesToDraw.push_back(line);
+
+    // Request a repaint to draw the new line
     repaint();
 }
 

@@ -28,8 +28,11 @@ public:
     void addHighlightedAreaBounds(const juce::Rectangle<int>& bounds);
     void clearHighlightedAreas();
 
+    void drawLineToComponent(juce::Rectangle<int> componentBounds);
+
 private:
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(FocusOverlayComponent)
 
-        std::vector<juce::Rectangle<int>> highlightedAreas;
+    std::vector<juce::Rectangle<int>> highlightedAreas;
+    std::vector<juce::Line<float>> linesToDraw;
 };

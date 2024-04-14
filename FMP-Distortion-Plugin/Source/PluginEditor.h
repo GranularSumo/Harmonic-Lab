@@ -59,8 +59,6 @@ private:
 
     juce::TextButton uiSelectorButton;
     juce::TextButton settingsButton;
-    juce::ToggleButton oversamplingButton;
-    juce::Label oversamplingLabel;
 
     Logo logo;
 
@@ -88,8 +86,6 @@ private:
 
     bool basicModeIsSelected = true;
     bool settingsMenuIsActiveWindow = false;
-
-    std::unique_ptr<juce::AudioProcessorValueTreeState::ButtonAttachment> oversamplingAttachment;
 
 
 

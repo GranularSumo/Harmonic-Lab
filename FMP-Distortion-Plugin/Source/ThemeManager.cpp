@@ -50,6 +50,17 @@ ThemeManager::ThemeManager()
                             juce::Colour::fromString("#ffEEEEEE"),
                             juce::String("Dark-Mode"));
 
+    themes[Candy] = Theme(juce::Colour::fromString("##ffFED9B7"),
+                            juce::Colour::fromString("#ffF07167"),
+                            juce::Colour::fromString("#ffFDFCDC"),
+                            juce::Colour::fromString("#ff00AFB9"),
+                            juce::Colour::fromString("#ff00AFB9"),
+                            juce::Colour::fromString("#ff00AFB9"),
+                            juce::Colour::fromString("#ff00AFB9"),
+                            juce::Colour::fromString("#ff0081A7"),
+                            juce::Colour::fromString("#ff370651"),
+                            juce::String("Light-Mode"));
+
 
     
 
