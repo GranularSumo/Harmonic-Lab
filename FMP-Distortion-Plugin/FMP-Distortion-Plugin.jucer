@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<JUCERPROJECT id="Jf499n" name="FMP-Distortion-Plugin" projectType="audioplug"
-              useAppConfig="0" addUsingNamespaceToJuceHeader="0" jucerFormatVersion="1">
-  <MAINGROUP id="Era7EM" name="FMP-Distortion-Plugin">
+<JUCERPROJECT id="Jf499n" name="Harmonic Lab" projectType="audioplug" useAppConfig="0"
+              addUsingNamespaceToJuceHeader="0" jucerFormatVersion="1" version="1.0.1"
+              companyName="SomePluginCompanyNameGoesHere">
+  <MAINGROUP id="Era7EM" name="Harmonic Lab">
     <GROUP id="{1792BE37-7486-8904-F4CB-FEBAA0054F22}" name="Source">
       <GROUP id="{8874B2DE-8A12-45C8-6044-2391FFB9C9EA}" name="UI">
         <FILE id="FhLFbV" name="TutorialSection.cpp" compile="1" resource="0"

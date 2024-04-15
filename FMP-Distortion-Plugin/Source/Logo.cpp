@@ -170,7 +170,7 @@ void Logo::mouseDown(const juce::MouseEvent& event)
 {
     juce::AlertWindow::showMessageBoxAsync(juce::AlertWindow::NoIcon, 
                                            "~ HARMONIC LAB ~", 
-                                           "Version " + versionNumber + "\n\nCreated by : Zeus Huxtable\n\n07 / 02 / 2024", 
+                                           "Version " + juce::String(JucePlugin_VersionString) + "\n\nCreated by : Zeus Huxtable\n\n07 / 02 / 2024",
                                            "OK");
 }
 
