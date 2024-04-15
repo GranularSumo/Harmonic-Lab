@@ -75,7 +75,7 @@ void AdvancedModeDescriptionSection::resized()
     auto descriptionBoxAdjustedBounds = bounds.reduced(10, yOffSet);
     //descriptionBox.setBounds(descriptionBoxAdjustedBounds.getX(), descriptionBoxAdjustedBounds.getY(), descriptionBoxAdjustedBounds.getWidth(), descriptionBoxAdjustedBounds.getHeight() + yOffSet - 10);
     viewport.setBounds(descriptionBoxAdjustedBounds.getX(), descriptionBoxAdjustedBounds.getY(), descriptionBoxAdjustedBounds.getWidth(), descriptionBoxAdjustedBounds.getHeight() + yOffSet - 10);
-    attrStringComp.setSize(viewport.getWidth(), 900);
+    attrStringComp.setSize(viewport.getWidth(), 700);
 
     descriptionLabel.setBounds(bounds.removeFromTop(50.0f));
 
