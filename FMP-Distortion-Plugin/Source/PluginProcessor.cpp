@@ -77,7 +77,7 @@ juce::AudioProcessorValueTreeState::ParameterLayout FMPDistortionPluginAudioProc
 
     parameters.push_back(std::make_unique<juce::AudioParameterBool>(oversamplingId, oversamplingName, false));
 
-    parameters.push_back(std::make_unique<juce::AudioParameterFloat>(dryWetId, dryWetName, 0.0f, 1.0f, 1.0f));
+    parameters.push_back(std::make_unique<juce::AudioParameterFloat>(dryWetId, dryWetName, 0.0f, 1.0f, 0.5f));
 
     parameters.push_back(std::make_unique<juce::AudioParameterChoice>(distortionTypeId, distortionTypeName, distortionTypes, 0));
 

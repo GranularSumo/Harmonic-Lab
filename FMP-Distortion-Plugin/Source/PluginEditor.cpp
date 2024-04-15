@@ -316,6 +316,7 @@ void FMPDistortionPluginAudioProcessorEditor::setTheme(const Theme& currentTheme
     tutorialSection.setTheme(themeManager.getCurrentTheme());
 
     settingsButton.setColour(juce::TextButton::buttonColourId, backgroundColour);
+    settingsButton.setColour(juce::TextButton::textColourOnId, currentTheme.textColour);
 
 
     repaint();

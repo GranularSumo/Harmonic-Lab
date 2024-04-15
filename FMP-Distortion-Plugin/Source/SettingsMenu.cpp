@@ -26,9 +26,9 @@ SettingsMenu::SettingsMenu(FMPDistortionPluginAudioProcessor& processor, float h
     themePicker.addSectionHeading("Dark Themes");
     themePicker.addItem("Default", 1);
     themePicker.addItem("Vista", 2);
-    themePicker.addSeparator();
-    themePicker.addSectionHeading("Light Themes");
-    themePicker.addItem("Candy", 3);
+    //themePicker.addSeparator();
+    //themePicker.addSectionHeading("Light Themes");
+    //themePicker.addItem("Candy", 3);
 
     themePickerAttachment = std::make_unique<juce::AudioProcessorValueTreeState::ComboBoxAttachment>(audioProcessor.treestate, parameterInfo::themeId, themePicker);
 

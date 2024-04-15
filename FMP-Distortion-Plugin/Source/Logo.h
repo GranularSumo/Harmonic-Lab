@@ -35,7 +35,7 @@ private:
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(Logo)
 
     bool isMouseOver = false;
-    juce::String versionNumber = "0.2.0";
+    juce::String versionNumber = "0.3.0";
 
     juce::Colour logoColour;
 };
